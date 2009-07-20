@@ -65,7 +65,23 @@ namespace DJ.App.MarkEmptyDirs
 				
 				var deletePlaceHolder = dirInfo.GetFileSystemInfos().Length > 1;
 				if (deletePlaceHolder)
-					fileInfo.Delete();
+				{
+					try
+					{
+						if (Verbose)
+							Console.Out.Write("DELETING PLACEHOLDER: '" + fileInfo.FullName + "'...");
+						fileInfo.Delete();
+						if (Verbose)
+							Console.Out.WriteLine("FINISHED!");
+					}
+					catch (Exception ex)
+					{
+						if (Verbose)
+							Console.Out.WriteLine("FAILED! (" + ex.Message + ")");
+						else
+							Console.Error.WriteLine("DELETING PLACEHOLDER '" + fileInfo.FullName + "' FAILED! (" + ex.Message + ")");
+					}
+				}
 			}
 			
 			return true;
