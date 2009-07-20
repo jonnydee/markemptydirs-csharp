@@ -66,9 +66,7 @@ namespace DJ.App.MarkEmptyDirs
 		{
 			if (fileInfo.Name == PlaceHolderName)
 			{
-				var dirInfo = fileInfo.Directory;
-				
-				var deletePlaceHolder = RemoveOnly || dirInfo.GetFileSystemInfos().Length > 1;
+				var deletePlaceHolder = RemoveOnly || fileInfo.Directory.GetFileSystemInfos().Length > 1;
 				if (deletePlaceHolder)
 				{
 					try
