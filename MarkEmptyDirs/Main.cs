@@ -20,7 +20,7 @@ namespace DJ.App.MarkEmptyDirs
 		static void PrintUsage(TextWriter writer)
 		{
 			var cmdFile = new FileInfo(Environment.GetCommandLineArgs()[0]);
-			writer.WriteLine("USAGE: " + cmdFile.Name + " [--verbose] [--place-holder=<filename>] [--text=<\"placeholder text\">] [<directory>]");
+			writer.WriteLine("USAGE: " + cmdFile.Name + " [--verbose] [--remove-only] [--place-holder=<filename>] [--text=<\"placeholder text\">] [<directory>]");
 		}
 		
 		public static void Main(string[] args)
@@ -48,6 +48,9 @@ namespace DJ.App.MarkEmptyDirs
 						break;
 					case "verbose":
 						visitor.Verbose = true;
+						break;
+					case "remove-only":
+						visitor.RemoveOnly = true;
 						break;
 					case "help":
 						PrintUsage(Console.Out);
