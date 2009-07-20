@@ -1,0 +1,9 @@
+syntax: glob
+
+bin
+*.orig
+*~
+*.mergebackup
+*.o
+*.so
+*.userprefs
