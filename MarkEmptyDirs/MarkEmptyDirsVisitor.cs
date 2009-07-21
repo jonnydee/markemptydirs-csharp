@@ -60,8 +60,6 @@ namespace DJ.App.MarkEmptyDirs
 
 				try
 				{
-					if (Verbose)
-						Console.Out.Write("CREATING PLACEHOLDER: '" + placeHolderFile.FullName + "'...");
                     if (!DryRun)
                     {
                         using (var fileStream = placeHolderFile.Create())
@@ -71,14 +69,11 @@ namespace DJ.App.MarkEmptyDirs
                         }
                     }
 				    if (Verbose)
-						Console.Out.WriteLine("FINISHED!");
+						Console.Out.WriteLine("Created placeholder: '" + placeHolderFile.FullName + "'");
 				}
 				catch (Exception ex)
 				{
-					if (Verbose)
-						Console.Out.WriteLine("FAILED! (" + ex.Message + ")");
-					else
-						Console.Error.WriteLine("CREATING PLACEHOLDER '" + placeHolderFile.FullName + "' FAILED! (" + ex.Message + ")");
+					Console.Error.WriteLine("ERROR: Creation of placeholder '" + placeHolderFile.FullName + "' failed! (" + ex.Message + ")");
 				}
 			}
 			
@@ -94,19 +89,14 @@ namespace DJ.App.MarkEmptyDirs
 				{
 					try
 					{
-						if (Verbose)
-							Console.Out.Write("DELETING PLACEHOLDER: '" + fileInfo.FullName + "'...");
                         if (!DryRun)
 						    fileInfo.Delete();
 						if (Verbose)
-							Console.Out.WriteLine("FINISHED!");
+							Console.Out.WriteLine("Deleted placeholder: '" + fileInfo.FullName + "'");
 					}
 					catch (Exception ex)
 					{
-						if (Verbose)
-							Console.Out.WriteLine("FAILED! (" + ex.Message + ")");
-						else
-							Console.Error.WriteLine("DELETING PLACEHOLDER '" + fileInfo.FullName + "' FAILED! (" + ex.Message + ")");
+						Console.Error.WriteLine("ERROR: Deletion of placeholder '" + fileInfo.FullName + "' failed! (" + ex.Message + ")");
 					}
 				}
 			}
