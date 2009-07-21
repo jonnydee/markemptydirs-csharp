@@ -7,6 +7,9 @@ namespace DJ.App.MarkEmptyDirs
 {
 	class MainClass
 	{
+	    public const string Version = "V1.0";
+	    public const string Copyright = "Copyright (c) 2009 by Johann Duscher (alias Jonny Dee)";
+
 		static bool IsOption(string arg)
 		{
 			return arg.StartsWith("--");
@@ -19,8 +22,12 @@ namespace DJ.App.MarkEmptyDirs
 		
 		static void PrintUsage(TextWriter writer)
 		{
-			var cmdFile = new FileInfo(Environment.GetCommandLineArgs()[0]);
-			writer.WriteLine("USAGE: " + cmdFile.Name + " [--verbose] [--remove-only] [--place-holder=<filename>] [--text=<\"placeholder text\">] [<directory>]");
+            var cmdFile = new FileInfo(Environment.GetCommandLineArgs()[0]);
+		    var cmdExtension = cmdFile.Extension;
+            var cmdName = cmdFile.Name.Substring(0, cmdFile.Name.Length - cmdExtension.Length);
+
+            writer.WriteLine("\n" + cmdName + " " + Version + " -- " + Copyright + "\n");
+			writer.WriteLine("USAGE: " + cmdFile.Name + " [--verbose] [--dry-run] [--remove-only] [--place-holder=<filename>] [--text=<\"placeholder text\">] <directory>");
 		}
 		
 		public static void Main(string[] args)
