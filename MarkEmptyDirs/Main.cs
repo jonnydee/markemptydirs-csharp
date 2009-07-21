@@ -26,6 +26,7 @@ namespace DJ.App.MarkEmptyDirs
 	{
 	    public const string Version = "V1.0";
 	    public const string Copyright = "Copyright (c) 2009 by Johann Duscher (alias Jonny Dee)";
+	    public const string ProjectUrl = "http://code.google.com/p/markemptydirs";
 
 		static bool IsOption(string arg)
 		{
@@ -43,10 +44,16 @@ namespace DJ.App.MarkEmptyDirs
 		    var cmdExtension = cmdFile.Extension;
             var cmdName = cmdFile.Name.Substring(0, cmdFile.Name.Length - cmdExtension.Length);
 
-            writer.WriteLine("\n--- This program is licensed under the GNU GPLv3");
-            writer.WriteLine("---");
-            writer.WriteLine("--- " + cmdName + " " + Version + " -- " + Copyright + "\n");
-			writer.WriteLine("USAGE: " + cmdFile.Name + " [--verbose] [--dry-run] [--remove-only] [--place-holder=<filename>] [--text=<\"placeholder text\">] <directory>");
+            writer.WriteLine();
+            writer.WriteLine("***");
+            writer.WriteLine("*** " + cmdName + " " + Version + " -- " + Copyright);
+            writer.WriteLine("***");
+            writer.WriteLine("*** Project Site: " + ProjectUrl);
+            writer.WriteLine("***");
+            writer.WriteLine("*** This program is licensed under the GNU GNU General Public License, Version 3.");
+            writer.WriteLine("***");
+            writer.WriteLine();
+			writer.WriteLine("USAGE: " + cmdFile.Name + " [--verbose] [--dry-run] [--remove-only] [--place-holder=<filename>] [--text=<placeholder-text>] <directory>\n");
 		}
 		
 		public static void Main(string[] args)
