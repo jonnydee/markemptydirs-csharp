@@ -16,6 +16,7 @@
 //  along with MarkEmptyDirs.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -31,6 +32,7 @@ namespace DJ.App.MarkEmptyDirs
 			PlaceHolderText = string.Empty;
 			Verbose = false;
 		    DryRun = false;
+            Exclude = new List<string> {".bzr", ".cvs", ".hg", ".svn"};
 		}
 		
 		public string PlaceHolderName { set; get; }
@@ -43,9 +45,11 @@ namespace DJ.App.MarkEmptyDirs
 
         public bool DryRun { set; get; }
 
+        public List<string> Exclude { set; get; }
+
 		public bool PreVisit(DirectoryInfo dirInfo)
 		{
-			return true;
+			return !Exclude.Contains(dirInfo.Name);
 		}
 		
 		public bool PostVisit(DirectoryInfo dirInfo)
