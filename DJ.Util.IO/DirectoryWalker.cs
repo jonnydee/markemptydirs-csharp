@@ -10,7 +10,7 @@ namespace DJ.Util.IO
 			if (!fileSystemInfo.Exists)
 				return;
 			
-			if (fileSystemInfo.Attributes == FileAttributes.Directory)
+			if ((fileSystemInfo.Attributes & FileAttributes.Directory) != 0)
 			{
 				var dirInfo = (DirectoryInfo)fileSystemInfo;
 
