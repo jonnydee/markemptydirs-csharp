@@ -59,6 +59,9 @@ namespace DJ.App.MarkEmptyDirs
 					case "remove-only":
 						visitor.RemoveOnly = true;
 						break;
+                    case "dry-run":
+					    visitor.DryRun = true;
+					    break;
 					case "help":
 						PrintUsage(Console.Out);
 						return;
