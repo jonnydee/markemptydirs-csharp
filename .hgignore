@@ -8,6 +8,9 @@ obj
 *.o
 *.so
 *.userprefs
+*.usertasks
 _ReSharper.*
 *.resharper.user
 *.suo
+*.pidb
+
