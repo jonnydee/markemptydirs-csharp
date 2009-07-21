@@ -35,13 +35,13 @@ namespace DJ.App.MarkEmptyDirs
 			var visitor = new MarkEmptyDirsVisitor();
 			string directory = null;
 			
-			for (int i = 0; i < args.Length; i++)
+			for (var i = 0; i < args.Length; i++)
 			{
 				if (IsOption(args[i]))
 				{
-					string[] keyValuePair = ParseOption(args[i]);
-					string key = keyValuePair[0];
-					string value = keyValuePair.Length > 1 ? keyValuePair[1] : null;
+					var keyValuePair = ParseOption(args[i]);
+					var key = keyValuePair[0];
+					var value = keyValuePair.Length > 1 ? keyValuePair[1] : null;
 					
 					switch (key)
 					{
