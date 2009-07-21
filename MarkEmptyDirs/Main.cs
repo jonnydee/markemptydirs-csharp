@@ -63,7 +63,7 @@ namespace DJ.App.MarkEmptyDirs
 						PrintUsage(Console.Out);
 						return;
 					default:
-						Console.Error.WriteLine("Unknown option: " + key + " (value: " + value + ")");
+						Console.Error.WriteLine("ERROR: Unknown option: " + key + " (value: '" + value + "')!");
 						PrintUsage(Console.Error);
 						return;
 					}
@@ -81,7 +81,7 @@ namespace DJ.App.MarkEmptyDirs
 			var dirInfo = new DirectoryInfo(directory);
 			if (!dirInfo.Exists)
 			{
-				Console.Error.WriteLine("Not a directory: " + dirInfo.FullName);
+				Console.Error.WriteLine("ERROR: Not a directory: '" + dirInfo.FullName + "'!");
 				return;
 			}
 			
