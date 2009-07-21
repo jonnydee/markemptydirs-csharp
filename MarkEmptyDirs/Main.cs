@@ -26,7 +26,7 @@ namespace DJ.App.MarkEmptyDirs
 		public static void Main(string[] args)
 		{
 			var visitor = new MarkEmptyDirsVisitor();
-			var directory = ".";
+			string directory = null;
 			
 			for (int i = 0; i < args.Length; i++)
 			{
@@ -65,6 +65,12 @@ namespace DJ.App.MarkEmptyDirs
 				}
 			}
 			
+            if (null == directory)
+            {
+                Console.Error.WriteLine("ERROR: No directory specified!");
+                return;
+            }
+
 			var dirInfo = new DirectoryInfo(directory);
 			if (!dirInfo.Exists)
 			{
