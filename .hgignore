@@ -9,4 +9,5 @@ obj
 *.so
 *.userprefs
 _ReSharper.*
+*.resharper.user
 *.suo
