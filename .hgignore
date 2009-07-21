@@ -1,9 +1,11 @@
 syntax: glob
 
 bin
+obj
 *.orig
 *~
 *.mergebackup
 *.o
 *.so
 *.userprefs
+_ReSharper.*
