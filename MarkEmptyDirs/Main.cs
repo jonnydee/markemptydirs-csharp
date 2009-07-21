@@ -53,7 +53,7 @@ namespace DJ.App.MarkEmptyDirs
             writer.WriteLine("*** This program is licensed under the GNU GNU General Public License, Version 3.");
             writer.WriteLine("***");
             writer.WriteLine();
-			writer.WriteLine("USAGE: " + cmdFile.Name + " [--verbose] [--dry-run] [--remove-only] [--place-holder=<filename>] [--text=<placeholder-text>] <directory>\n");
+			writer.WriteLine("USAGE: " + cmdFile.Name + " [--verbose] [--dry-run] [--clean] [--place-holder=<filename>] [--text=<placeholder-text>] <directory>\n");
 		}
 		
 		public static void Main(string[] args)
@@ -82,8 +82,8 @@ namespace DJ.App.MarkEmptyDirs
 					case "verbose":
 						visitor.Verbose = true;
 						break;
-					case "remove-only":
-						visitor.RemoveOnly = true;
+					case "clean":
+						visitor.CleanUp = true;
 						break;
                     case "dry-run":
 					    visitor.DryRun = true;

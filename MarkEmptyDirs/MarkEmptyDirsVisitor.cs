@@ -31,13 +31,14 @@ namespace DJ.App.MarkEmptyDirs
 			PlaceHolderText = string.Empty;
 			Verbose = false;
 		    DryRun = false;
+			CleanUp = false;
 		}
 		
 		public string PlaceHolderName { set; get; }
 		
 		public string PlaceHolderText { set; get; }
 		
-		public bool RemoveOnly { set; get; }
+		public bool CleanUp { set; get; }
 
 		public bool Verbose { set; get; }
 
@@ -50,7 +51,7 @@ namespace DJ.App.MarkEmptyDirs
 		
 		public bool PostVisit(DirectoryInfo dirInfo)
 		{
-			if (RemoveOnly)
+			if (CleanUp)
 				return true;
 			
 			var createPlaceHolder = dirInfo.GetFileSystemInfos().Length == 0;
@@ -84,7 +85,7 @@ namespace DJ.App.MarkEmptyDirs
 		{
 			if (fileInfo.Name == PlaceHolderName)
 			{
-				var deletePlaceHolder = RemoveOnly || fileInfo.Directory.GetFileSystemInfos().Length > 1;
+				var deletePlaceHolder = CleanUp || fileInfo.Directory.GetFileSystemInfos().Length > 1;
 				if (deletePlaceHolder)
 				{
 					try
