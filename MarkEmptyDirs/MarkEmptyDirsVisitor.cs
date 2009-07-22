@@ -30,7 +30,8 @@ namespace DJ.App.MarkEmptyDirs
 		{
 			PlaceHolderName = ".emptydir";
 			PlaceHolderText = string.Empty;
-			Verbose = false;
+            Verbose = false;
+            Short = false;
 		    DryRun = false;
 			CleanUp = false;
             Exclude = new List<string> {".bzr", ".cvs", ".hg", ".svn"};
@@ -43,6 +44,8 @@ namespace DJ.App.MarkEmptyDirs
 		public bool CleanUp { set; get; }
 
 		public bool Verbose { set; get; }
+
+        public bool Short { set; get; }
 
         public bool DryRun { set; get; }
 
@@ -73,7 +76,9 @@ namespace DJ.App.MarkEmptyDirs
                             fileStream.Write(byteData, 0, byteData.Length);
                         }
                     }
-				    if (Verbose)
+                    if (Short)
+                        Console.Out.WriteLine(placeHolderFile.FullName);
+                    else if (Verbose)
 						Console.Out.WriteLine("Created placeholder: '" + placeHolderFile.FullName + "'");
 				}
 				catch (Exception ex)
@@ -96,7 +101,9 @@ namespace DJ.App.MarkEmptyDirs
 					{
                         if (!DryRun)
 						    fileInfo.Delete();
-						if (Verbose)
+                        if (Short)
+                            Console.Out.WriteLine(fileInfo.FullName);
+						else if (Verbose)
 							Console.Out.WriteLine("Deleted placeholder: '" + fileInfo.FullName + "'");
 					}
 					catch (Exception ex)
