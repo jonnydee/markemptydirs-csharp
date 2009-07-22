@@ -16,6 +16,7 @@
 //  along with MarkEmptyDirs.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 using DJ.Util.IO;
@@ -53,7 +54,7 @@ namespace DJ.App.MarkEmptyDirs
             writer.WriteLine("*** This program is licensed under the GNU GNU General Public License, Version 3.");
             writer.WriteLine("***");
             writer.WriteLine();
-			writer.WriteLine("USAGE: " + cmdFile.Name + " [--verbose] [--dry-run] [--clean] [--place-holder=<filename>] [--text=<placeholder-text>] <directory>\n");
+			writer.WriteLine("USAGE: " + cmdFile.Name + " [--verbose] [--dry-run] [--clean] [--exclude=<list-of-dirnames>] [--place-holder=<filename>] [--text=<placeholder-text>] <directory>\n");
 		}
 		
 		public static void Main(string[] args)
@@ -85,6 +86,12 @@ namespace DJ.App.MarkEmptyDirs
 					case "clean":
 						visitor.CleanUp = true;
 						break;
+                    case "exclude":
+                        var dirs = null != value ? value.Split(Path.PathSeparator) : new string[0];
+                        var dirList = new List<string>(dirs.Length);
+                        dirList.AddRange(dirs);
+                        visitor.Exclude = dirList;
+                        break;
                     case "dry-run":
 					    visitor.DryRun = true;
 					    break;
