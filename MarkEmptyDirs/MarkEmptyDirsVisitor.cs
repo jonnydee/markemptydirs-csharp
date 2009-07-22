@@ -34,7 +34,7 @@ namespace DJ.App.MarkEmptyDirs
             Short = false;
 		    DryRun = false;
 			CleanUp = false;
-            Exclude = new List<string> {".bzr", ".cvs", ".hg", ".svn"};
+            Exclude = new List<string> {".bzr", ".cvs", ".git", ".hg", ".svn"};
 		}
 		
 		public string PlaceHolderName { set; get; }
