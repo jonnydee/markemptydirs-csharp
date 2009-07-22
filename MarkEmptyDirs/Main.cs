@@ -25,7 +25,7 @@ namespace DJ.App.MarkEmptyDirs
 {
 	class MainClass
 	{
-	    public const string Version = "V1.0";
+	    public const string Version = "V1.0.1";
 	    public const string Copyright = "Copyright (c) 2009 by Johann Duscher (alias Jonny Dee)";
 
 		static bool IsOption(string arg)
