@@ -23,26 +23,26 @@ using DJ.Util.IO;
 
 namespace DJ.App.MarkEmptyDirs
 {
-	class MainClass
-	{
-	    public const string Version = "V1.2dev";
-	    public const string Copyright = "Copyright (c) 2009 by Johann Duscher (alias Jonny Dee)";
-	    public const string ProjectUrl = "http://code.google.com/p/markemptydirs";
+    class MainClass
+    {
+        public const string Version = "V1.2dev";
+        public const string Copyright = "Copyright (c) 2009 by Johann Duscher (alias Jonny Dee)";
+        public const string ProjectUrl = "http://code.google.com/p/markemptydirs";
 
-		static bool IsOption(string arg)
-		{
-			return arg.StartsWith("--");
-		}
-		
-		static string[] ParseOption(string arg)
-		{
-			return arg.Substring(2).Split('=');
-		}
-		
-		static void PrintUsage(TextWriter writer)
-		{
+        static bool IsOption(string arg)
+        {
+            return arg.StartsWith("--");
+        }
+
+        static string[] ParseOption(string arg)
+        {
+            return arg.Substring(2).Split('=');
+        }
+
+        static void PrintUsage(TextWriter writer)
+        {
             var cmdFile = new FileInfo(Environment.GetCommandLineArgs()[0]);
-		    var cmdExtension = cmdFile.Extension;
+            var cmdExtension = cmdFile.Extension;
             var cmdName = cmdFile.Name.Substring(0, cmdFile.Name.Length - cmdExtension.Length);
 
             writer.WriteLine();
@@ -54,77 +54,79 @@ namespace DJ.App.MarkEmptyDirs
             writer.WriteLine("*** This program is licensed under the GNU GNU General Public License, Version 3.");
             writer.WriteLine("***");
             writer.WriteLine();
-			writer.WriteLine("USAGE: " + cmdFile.Name + " [--verbose] [--short] [--dry-run] [--clean] [--exclude=<list-of-dirnames>] [--place-holder=<filename>] [--text=<placeholder-text>] <directory>\n");
-		}
-		
-		public static void Main(string[] args)
-		{
-			var visitor = new MarkEmptyDirsVisitor();
-			string directory = null;
-			
-			for (var i = 0; i < args.Length; i++)
-			{
-				if (IsOption(args[i]))
-				{
-					var keyValuePair = ParseOption(args[i]);
-					var key = keyValuePair[0];
-					var value = keyValuePair.Length > 1 ? keyValuePair[1] : null;
-					
-					switch (key)
-					{
-					case "place-holder":
-						if (!string.IsNullOrEmpty(value))
-							visitor.PlaceHolderName = value;
-						break;
-					case "text":
-						if (!string.IsNullOrEmpty(value))
-							visitor.PlaceHolderText = value + '\n';
-						break;
-					case "verbose":
-						visitor.Verbose = true;
-						break;
-                    case "short":
-                        visitor.Short = true;
-                        break;
-					case "clean":
-						visitor.CleanUp = true;
-						break;
-                    case "exclude":
-                        var dirs = null != value ? value.Split(Path.PathSeparator) : new string[0];
-                        var dirList = new List<string>(dirs.Length);
-                        dirList.AddRange(dirs);
-                        visitor.Exclude = dirList;
-                        break;
-                    case "dry-run":
-					    visitor.DryRun = true;
-					    break;
-					case "help":
-						PrintUsage(Console.Out);
-						return;
-					default:
-						Console.Error.WriteLine("ERROR: Unknown option: " + key + " (value: '" + value + "')!");
-						PrintUsage(Console.Error);
-						return;
-					}
-				} else {
-					directory = args[i];
-				}
-			}
-			
+            writer.WriteLine("USAGE: " + cmdFile.Name + " [--verbose] [--short] [--dry-run] [--clean] [--exclude=<list-of-dirnames>] [--place-holder=<filename>] [--text=<placeholder-text>] <directory>\n");
+        }
+
+        public static void Main(string[] args)
+        {
+            var visitor = new MarkEmptyDirsVisitor();
+            string directory = null;
+
+            for (var i = 0; i < args.Length; i++)
+            {
+                if (IsOption(args[i]))
+                {
+                    var keyValuePair = ParseOption(args[i]);
+                    var key = keyValuePair[0];
+                    var value = keyValuePair.Length > 1 ? keyValuePair[1] : null;
+
+                    switch (key)
+                    {
+                        case "place-holder":
+                            if (!string.IsNullOrEmpty(value))
+                                visitor.PlaceHolderName = value;
+                            break;
+                        case "text":
+                            if (!string.IsNullOrEmpty(value))
+                                visitor.PlaceHolderText = value + '\n';
+                            break;
+                        case "verbose":
+                            visitor.Verbose = true;
+                            break;
+                        case "short":
+                            visitor.Short = true;
+                            break;
+                        case "clean":
+                            visitor.CleanUp = true;
+                            break;
+                        case "exclude":
+                            var dirs = null != value ? value.Split(Path.PathSeparator) : new string[0];
+                            var dirList = new List<string>(dirs.Length);
+                            dirList.AddRange(dirs);
+                            visitor.Exclude = dirList;
+                            break;
+                        case "dry-run":
+                            visitor.DryRun = true;
+                            break;
+                        case "help":
+                            PrintUsage(Console.Out);
+                            return;
+                        default:
+                            Console.Error.WriteLine("ERROR: Unknown option: " + key + " (value: '" + value + "')!");
+                            PrintUsage(Console.Error);
+                            return;
+                    }
+                }
+                else
+                {
+                    directory = args[i];
+                }
+            }
+
             if (null == directory)
             {
                 Console.Error.WriteLine("ERROR: No directory specified!");
                 return;
             }
 
-			var dirInfo = new DirectoryInfo(directory);
-			if (!dirInfo.Exists)
-			{
-				Console.Error.WriteLine("ERROR: Not a directory: '" + dirInfo.FullName + "'!");
-				return;
-			}
-			
-			DirectoryWalker.Walk(dirInfo, visitor);
-		}
-	}
+            var dirInfo = new DirectoryInfo(directory);
+            if (!dirInfo.Exists)
+            {
+                Console.Error.WriteLine("ERROR: Not a directory: '" + dirInfo.FullName + "'!");
+                return;
+            }
+
+            DirectoryWalker.Walk(dirInfo, visitor);
+        }
+    }
 }

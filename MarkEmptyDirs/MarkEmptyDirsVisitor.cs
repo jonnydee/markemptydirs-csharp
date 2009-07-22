@@ -24,26 +24,26 @@ using DJ.Util.IO;
 
 namespace DJ.App.MarkEmptyDirs
 {
-	class MarkEmptyDirsVisitor : IDirectoryVisitor
-	{
-		public MarkEmptyDirsVisitor()
-		{
-			PlaceHolderName = ".emptydir";
-			PlaceHolderText = string.Empty;
+    class MarkEmptyDirsVisitor : IDirectoryVisitor
+    {
+        public MarkEmptyDirsVisitor()
+        {
+            PlaceHolderName = ".emptydir";
+            PlaceHolderText = string.Empty;
             Verbose = false;
             Short = false;
-		    DryRun = false;
-			CleanUp = false;
-            Exclude = new List<string> {".bzr", ".cvs", ".git", ".hg", ".svn"};
-		}
-		
-		public string PlaceHolderName { set; get; }
-		
-		public string PlaceHolderText { set; get; }
-		
-		public bool CleanUp { set; get; }
+            DryRun = false;
+            CleanUp = false;
+            Exclude = new List<string> { ".bzr", ".cvs", ".git", ".hg", ".svn" };
+        }
 
-		public bool Verbose { set; get; }
+        public string PlaceHolderName { set; get; }
+
+        public string PlaceHolderText { set; get; }
+
+        public bool CleanUp { set; get; }
+
+        public bool Verbose { set; get; }
 
         public bool Short { set; get; }
 
@@ -51,23 +51,23 @@ namespace DJ.App.MarkEmptyDirs
 
         public List<string> Exclude { set; get; }
 
-		public bool PreVisit(DirectoryInfo dirInfo)
-		{
-			return !Exclude.Contains(dirInfo.Name);
-		}
-		
-		public bool PostVisit(DirectoryInfo dirInfo)
-		{
-			if (CleanUp)
-				return true;
-			
-			var createPlaceHolder = dirInfo.GetFileSystemInfos().Length == 0;
-			if (createPlaceHolder)
-			{
-				var placeHolderFile = new FileInfo(Path.Combine(dirInfo.FullName, PlaceHolderName));
+        public bool PreVisit(DirectoryInfo dirInfo)
+        {
+            return !Exclude.Contains(dirInfo.Name);
+        }
 
-				try
-				{
+        public bool PostVisit(DirectoryInfo dirInfo)
+        {
+            if (CleanUp)
+                return true;
+
+            var createPlaceHolder = dirInfo.GetFileSystemInfos().Length == 0;
+            if (createPlaceHolder)
+            {
+                var placeHolderFile = new FileInfo(Path.Combine(dirInfo.FullName, PlaceHolderName));
+
+                try
+                {
                     if (!DryRun)
                     {
                         using (var fileStream = placeHolderFile.Create())
@@ -79,41 +79,41 @@ namespace DJ.App.MarkEmptyDirs
                     if (Short)
                         Console.Out.WriteLine(placeHolderFile.FullName);
                     else if (Verbose)
-						Console.Out.WriteLine("Created placeholder: '" + placeHolderFile.FullName + "'");
-				}
-				catch (Exception ex)
-				{
-					Console.Error.WriteLine("ERROR: Creation of placeholder '" + placeHolderFile.FullName + "' failed! (" + ex.Message + ")");
-				}
-			}
-			
-			return true;
-		}
+                        Console.Out.WriteLine("Created placeholder: '" + placeHolderFile.FullName + "'");
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine("ERROR: Creation of placeholder '" + placeHolderFile.FullName + "' failed! (" + ex.Message + ")");
+                }
+            }
 
-		public bool Visit(FileInfo fileInfo)
-		{
-			if (fileInfo.Name == PlaceHolderName)
-			{
-				var deletePlaceHolder = CleanUp || fileInfo.Directory.GetFileSystemInfos().Length > 1;
-				if (deletePlaceHolder)
-				{
-					try
-					{
+            return true;
+        }
+
+        public bool Visit(FileInfo fileInfo)
+        {
+            if (fileInfo.Name == PlaceHolderName)
+            {
+                var deletePlaceHolder = CleanUp || fileInfo.Directory.GetFileSystemInfos().Length > 1;
+                if (deletePlaceHolder)
+                {
+                    try
+                    {
                         if (!DryRun)
-						    fileInfo.Delete();
+                            fileInfo.Delete();
                         if (Short)
                             Console.Out.WriteLine(fileInfo.FullName);
-						else if (Verbose)
-							Console.Out.WriteLine("Deleted placeholder: '" + fileInfo.FullName + "'");
-					}
-					catch (Exception ex)
-					{
-						Console.Error.WriteLine("ERROR: Deletion of placeholder '" + fileInfo.FullName + "' failed! (" + ex.Message + ")");
-					}
-				}
-			}
-			
-			return true;
-		}
-	}
+                        else if (Verbose)
+                            Console.Out.WriteLine("Deleted placeholder: '" + fileInfo.FullName + "'");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Error.WriteLine("ERROR: Deletion of placeholder '" + fileInfo.FullName + "' failed! (" + ex.Message + ")");
+                    }
+                }
+            }
+
+            return true;
+        }
+    }
 }
