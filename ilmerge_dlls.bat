@@ -1,3 +1,7 @@
-set BinPath=MarkEmptyDirs\bin\Debug
+set ProjectDir=%1
+set BinPath=%ProjectDir%bin\Debug\
+set OutputPath=%2
 
-ilmerge /t:exe /out:markemptydirs.exe %BinPath%\MarkEmptyDirs.exe %BinPath%\DJ.Util.IO.dll
+echo Building '%OutputPath%MarkEmptyDirs.exe'...
+ilmerge /t:exe /out:%OutputPath%MarkEmptyDirs.exe %BinPath%MarkEmptyDirs.exe %BinPath%DJ.Util.IO.dll
+echo ...FINISHED!

@@ -47,4 +47,7 @@
       <Name>DJ.Util.IO</Name>
     </ProjectReference>
   </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent>$(SolutionDir)ilmerge_dlls.bat $(ProjectDir) $(SolutionDir)</PostBuildEvent>
+  </PropertyGroup>
 </Project>

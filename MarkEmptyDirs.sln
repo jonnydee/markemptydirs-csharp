@@ -5,6 +5,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkEmptyDirs", "MarkEmptyD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DJ.Util.IO", "DJ.Util.IO\DJ.Util.IO.csproj", "{D929695A-E1F2-4086-9573-9CD1828B6ADA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8D70ECCD-A6DC-42A8-9BE6-8C0547499558}"
+	ProjectSection(SolutionItems) = preProject
+		ilmerge_dlls.bat = ilmerge_dlls.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
