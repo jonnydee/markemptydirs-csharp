@@ -54,7 +54,7 @@ namespace DJ.App.MarkEmptyDirs
             writer.WriteLine("*** This program is licensed under the GNU GNU General Public License, Version 3.");
             writer.WriteLine("***");
             writer.WriteLine();
-            writer.WriteLine("USAGE: " + cmdFile.Name + " [--verbose] [--short] [--dry-run] [--clean] [--exclude=<list-of-dirnames>] [--place-holder=<filename>] [--text=<placeholder-text>] <directory>\n");
+            writer.WriteLine("USAGE: " + cmdFile.Name + " [--verbose] [--short] [--dry-run] [--clean] [--list] [--exclude=<list-of-dirnames>] [--place-holder=<filename>] [--text=<placeholder-text>] <directory>\n");
         }
 
         public static void Main(string[] args)
@@ -101,6 +101,11 @@ namespace DJ.App.MarkEmptyDirs
                         case "help":
                             PrintUsage(Console.Out);
                             return;
+                        case "list":
+                            visitor.Short = true;
+                            visitor.DryRun = true;
+                            visitor.CleanUp = true;
+                            break;
                         default:
                             Console.Error.WriteLine("ERROR: Unknown option: " + key + " (value: '" + value + "')!");
                             PrintUsage(Console.Error);
