@@ -1,3 +1,5 @@
+@echo off
+
 set ProjectDir=%1
 set BinPath=%ProjectDir%bin\Debug\
 set OutputPath=%2
