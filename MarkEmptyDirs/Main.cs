@@ -25,10 +25,13 @@ namespace DJ.App.MarkEmptyDirs
 {
     class MainClass
     {
+        public const string StandardCmdName = "MarkEmptyDirs";
+        public const string StandardCmdExtension = "exe";
         public const string Version = "V1.2dev";
         public const string Copyright = "Copyright (c) 2009 by Johann Duscher (alias Jonny Dee)";
         public const string ProjectUrl = "http://code.google.com/p/markemptydirs";
 
+        
         static bool IsOption(string arg)
         {
             return arg.StartsWith("--");
@@ -39,12 +42,27 @@ namespace DJ.App.MarkEmptyDirs
             return arg.Substring(2).Split('=');
         }
 
+        static string[] GetCommandFileName()
+        {
+            try
+            {
+                var cmdFile = new FileInfo(Environment.GetCommandLineArgs()[0]);
+                var cmdExtension = cmdFile.Extension;
+                var cmdName = cmdFile.Name.Substring(0, cmdFile.Name.Length - cmdExtension.Length);
+                return new[] { cmdFile.Name, cmdName, cmdExtension };
+            }
+            catch
+            {
+                return new[] { StandardCmdName + "." + StandardCmdExtension, StandardCmdName, StandardCmdExtension };
+            }
+        }
+
         static void PrintUsage(TextWriter writer)
         {
-            var cmdFile = new FileInfo(Environment.GetCommandLineArgs()[0]);
-            var cmdExtension = cmdFile.Extension;
-            var cmdName = cmdFile.Name.Substring(0, cmdFile.Name.Length - cmdExtension.Length);
-
+            var cmdFileName = GetCommandFileName();
+            var cmdFullName = cmdFileName[0];
+            var cmdName = cmdFileName[1];
+            
             writer.WriteLine();
             writer.WriteLine("***");
             writer.WriteLine("*** " + cmdName + " " + Version + " -- " + Copyright);
@@ -54,7 +72,7 @@ namespace DJ.App.MarkEmptyDirs
             writer.WriteLine("*** This program is licensed under the GNU GNU General Public License, Version 3.");
             writer.WriteLine("***");
             writer.WriteLine();
-            writer.WriteLine("USAGE: " + cmdFile.Name + " [--verbose] [--short] [--dry-run] [--clean] [--list] [--exclude=<list-of-dirnames>] [--place-holder=<filename>] [--text=<placeholder-text>] <directory>\n");
+            writer.WriteLine("USAGE: " + cmdFullName + " [--verbose] [--short] [--dry-run] [--clean] [--list] [--exclude=<list-of-dirnames>] [--place-holder=<filename>] [--text=<placeholder-text>] <directory>\n");
         }
 
         public static void Main(string[] args)
