@@ -69,7 +69,7 @@ namespace DJ.App.MarkEmptyDirs
             writer.WriteLine("***");
             writer.WriteLine("*** Project Site: " + ProjectUrl);
             writer.WriteLine("***");
-            writer.WriteLine("*** This program is licensed under the GNU GNU General Public License, Version 3.");
+            writer.WriteLine("*** This program is licensed under the GNU General Public License, Version 3.");
             writer.WriteLine("***");
             writer.WriteLine();
             writer.WriteLine("USAGE: " + cmdFullName + " [--verbose] [--short] [--dry-run] [--clean] [--list] [--exclude=<list-of-dirnames>] [--place-holder=<filename>] [--text=<placeholder-text>] <directory>\n");
