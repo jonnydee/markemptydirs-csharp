@@ -29,7 +29,7 @@ namespace DJ.App.MarkEmptyDirs
     {
         public const string StandardCmdName = "MarkEmptyDirs";
         public const string StandardCmdExtension = "exe";
-        public const string Version = "V1.2dev";
+        public const string Version = "V1.2";
         public const string Copyright = "Copyright (c) 2009 by Johann Duscher (alias Jonny Dee)";
         public const string ProjectUrl = "http://code.google.com/p/markemptydirs";
         public const string StandardPlaceHolderName = ".emptydir";
