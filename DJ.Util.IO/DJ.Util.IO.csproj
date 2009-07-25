@@ -40,6 +40,10 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="DirectoryWalker.cs" />
     <Compile Include="IDirectoryVisitor.cs" />
+    <Compile Include="OptionParser.cs" />
+    <Compile Include="OptionDescriptor.cs" />
+    <Compile Include="Option.cs" />
+    <Compile Include="Logger.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

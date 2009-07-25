@@ -24,7 +24,7 @@ using DJ.Util.IO;
 
 namespace DJ.App.MarkEmptyDirs
 {
-    class MarkEmptyDirsVisitor : IDirectoryVisitor
+    class MarkEmptyDirsVisitor : ICommand, IDirectoryVisitor
     {
         public MarkEmptyDirsVisitor()
         {
@@ -51,6 +51,93 @@ namespace DJ.App.MarkEmptyDirs
 
         public List<string> Exclude { set; get; }
 
+
+        public void Execute(List<Option> options)
+        {
+            string directory = null;
+
+            Option opt;
+            while (options.Count > 0)
+            {
+                opt = options[0];
+                options.RemoveAt(0);
+                
+                if (OptionDescriptorDefinitions.PlaceHolderOptionDescriptor == opt.Descriptor)
+                {
+                    if (!string.IsNullOrEmpty(opt.Value))
+                        PlaceHolderName = opt.Value;
+                    continue;
+                }
+                
+                if (OptionDescriptorDefinitions.TextOptionDescriptor == opt.Descriptor)
+                {
+                    if (!string.IsNullOrEmpty(opt.Value))
+                        PlaceHolderText = opt.Value + '\n';
+                    continue;
+                }
+                
+                if (OptionDescriptorDefinitions.VerboseOptionDescriptor == opt.Descriptor)
+                {
+                    Verbose = true;
+                    continue;
+                }
+                
+                if (OptionDescriptorDefinitions.ShortOptionDescriptor == opt.Descriptor)
+                {
+                    Short = true;
+                    continue;
+                }
+                
+                if (OptionDescriptorDefinitions.CleanOptionDescriptor == opt.Descriptor)
+                {
+                    CleanUp = true;
+                    continue;
+                }
+
+                if (OptionDescriptorDefinitions.DryRunOptionDescriptor == opt.Descriptor)
+                {
+                    DryRun = true;
+                    continue;
+                }
+
+                if (OptionDescriptorDefinitions.ExcludeOptionDescriptor == opt.Descriptor)
+                {
+                    var dirs = null != opt.Value ? opt.Value.Split(Path.PathSeparator) : new string[0];
+                    var dirList = new List<string>(dirs.Length);
+                    dirList.AddRange(dirs);
+                    Exclude = dirList;
+                }
+                
+                if (OptionDescriptorDefinitions.ListOptionDescriptor == opt.Descriptor)
+                {
+                    Short = DryRun = CleanUp = true;
+                    continue;
+                }
+
+                // If we have a descriptor-less option assume it is the directory parameter.
+                if (null == directory && OptionType.Short != opt.OptionType && null == opt.Descriptor)
+                {
+                    directory = opt.Value;
+                    continue;
+                }
+
+                throw new Exception(string.Format("Unknown option: '{0}'", opt.Name));
+            }
+
+            if (null == directory)
+            {
+                throw new Exception("No directory specified!");
+            }
+
+            var dirInfo = new DirectoryInfo(directory);
+            if (!dirInfo.Exists)
+            {
+                throw new Exception(string.Format("Not a directory: '{0}'", dirInfo.FullName));
+            }
+
+            DirectoryWalker.Walk(dirInfo, this);
+        }
+        
         public bool PreVisit(DirectoryInfo dirInfo)
         {
             return !Exclude.Contains(dirInfo.Name);
@@ -77,13 +164,13 @@ namespace DJ.App.MarkEmptyDirs
                         }
                     }
                     if (Short)
-                        Console.Out.WriteLine(placeHolderFile.FullName);
+                        Logger.Log(Logger.LogType.Info, placeHolderFile.FullName);
                     else if (Verbose)
-                        Console.Out.WriteLine("Created placeholder: '" + placeHolderFile.FullName + "'");
+                        Logger.Log(Logger.LogType.Info, string.Format("Created placeholder: '{0}'", placeHolderFile.FullName));
                 }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine("ERROR: Creation of placeholder '" + placeHolderFile.FullName + "' failed! (" + ex.Message + ")");
+                    Logger.Log(Logger.LogType.Error, string.Format("Creation of placeholder '{0}' failed: {1}", placeHolderFile.FullName, ex.Message));
                 }
             }
 
@@ -102,13 +189,13 @@ namespace DJ.App.MarkEmptyDirs
                         if (!DryRun)
                             fileInfo.Delete();
                         if (Short)
-                            Console.Out.WriteLine(fileInfo.FullName);
+                            Logger.Log(Logger.LogType.Info, fileInfo.FullName);
                         else if (Verbose)
-                            Console.Out.WriteLine("Deleted placeholder: '" + fileInfo.FullName + "'");
+                            Logger.Log(Logger.LogType.Info, string.Format("Deleted placeholder: '{0}'", fileInfo.FullName));
                     }
                     catch (Exception ex)
                     {
-                        Console.Error.WriteLine("ERROR: Deletion of placeholder '" + fileInfo.FullName + "' failed! (" + ex.Message + ")");
+                        Logger.Log(Logger.LogType.Info, string.Format("Deletion of placeholder '{0}' failed: {1}", fileInfo.FullName, ex.Message));
                     }
                 }
             }
