@@ -105,6 +105,12 @@ namespace DJ.App.MarkEmptyDirs
                         optionName += string.Format("<{0}>", descr.ValueIdentifier);
                 }
             }
+
+            if (descr.MandatoryOption)
+                optionName = "<" + optionName + ">";
+            else
+                optionName = "[" + optionName + "]";
+            
             return optionName;
         }
 

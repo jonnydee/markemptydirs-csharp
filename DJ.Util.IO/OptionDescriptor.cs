@@ -30,10 +30,11 @@ namespace DJ.Util.IO
         public bool CanHaveValue { set; get; }
         public bool MandatoryValue {set; get; }
         public string ValueIdentifier { set; get; }
+        public bool MandatoryOption { set; get; }
 
         public override string ToString ()
         {
-            return string.Format("[OptionDescriptor: LongNames={0}, ShortNames={1}, ShortDescription={2}, LongDescription={3}, CanHaveValue={4}, MandatoryValue={5}]", string.Join("|", LongNames), new string(ShortNames), ShortDescription, LongDescription, CanHaveValue, MandatoryValue);
+            return string.Format("[OptionDescriptor: LongNames={0}, ShortNames={1}, ShortDescription={2}, LongDescription={3}, CanHaveValue={4}, MandatoryValue={5}, ValueIdentifier={6}, MandatoryOption={7}]", LongNames, ShortNames, ShortDescription, LongDescription, CanHaveValue, MandatoryValue, ValueIdentifier, MandatoryOption);
         }
     }
 

@@ -75,7 +75,7 @@ namespace DJ.App.MarkEmptyDirs
             ShortNames = new[] { 'x' },
             ShortDescription = string.Format("skip excluded dirs (default is '{0}')", string.Join(Path.PathSeparator.ToString(), MainClass.StandardExcludedDirs)),
             CanHaveValue = true,
-            MandatoryValue = true,
+            MandatoryValue = false,
             ValueIdentifier = "list-of-dirnames",
         };
         public static readonly OptionDescriptor PlaceHolderOptionDescriptor = new OptionDescriptor
