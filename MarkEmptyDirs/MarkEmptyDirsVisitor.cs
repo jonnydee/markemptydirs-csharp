@@ -149,18 +149,43 @@ namespace DJ.App.MarkEmptyDirs
             return !Exclude.Contains(dirInfo.Name);
         }
 
+        private bool GetPlaceHolderNeeded(DirectoryInfo dirInfo)
+        {
+            var fileSystemInfos = dirInfo.GetFileSystemInfos();
+            if (fileSystemInfos.Length == 0)
+                return true;
+            
+            var fileInfos = dirInfo.GetFiles();
+            if (fileInfos.Length == 1 && fileInfos[0].Name == PlaceHolderName)
+                return true;
+            if (fileInfos.Length >= 1)
+                return false;
+            
+            var dirInfos = dirInfo.GetDirectories();
+            int numExcluded = 0;
+            foreach (var subDirInfo in dirInfos)
+            {
+                if (Exclude.Contains(subDirInfo.Name))
+                    ++numExcluded;
+            }
+            return numExcluded == dirInfos.Length;
+        }
+        
         public bool PostVisit(DirectoryInfo dirInfo)
         {
             if (CleanUp)
                 return true;
 
-            var createPlaceHolder = dirInfo.GetFileSystemInfos().Length == 0;
+            var createPlaceHolder = GetPlaceHolderNeeded(dirInfo);
             if (createPlaceHolder)
             {
                 var placeHolderFile = new FileInfo(Path.Combine(dirInfo.FullName, PlaceHolderName));
 
                 try
                 {
+                    if (placeHolderFile.Exists)
+                        return true;
+                    
                     if (!DryRun)
                     {
                         using (var fileStream = placeHolderFile.Create())
@@ -187,7 +212,7 @@ namespace DJ.App.MarkEmptyDirs
         {
             if (fileInfo.Name == PlaceHolderName)
             {
-                var deletePlaceHolder = CleanUp || fileInfo.Directory.GetFileSystemInfos().Length > 1;
+                var deletePlaceHolder = CleanUp || !GetPlaceHolderNeeded(fileInfo.Directory);
                 if (deletePlaceHolder)
                 {
                     try
