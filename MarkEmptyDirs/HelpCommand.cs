@@ -88,9 +88,9 @@ namespace DJ.App.MarkEmptyDirs
                 {
                     optionName += " ";
                     if (descr.MandatoryValue)
-                        optionName += string.Format("[{0}]", descr.ValueIdentifier);
-                    else
                         optionName += string.Format("<{0}>", descr.ValueIdentifier);
+                    else
+                        optionName += string.Format("[{0}]", descr.ValueIdentifier);
                 }
             }
             else
