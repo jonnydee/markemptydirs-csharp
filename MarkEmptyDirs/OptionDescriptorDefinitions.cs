@@ -34,7 +34,7 @@ namespace DJ.App.MarkEmptyDirs
         public static readonly OptionDescriptor ShortOptionDescriptor = new OptionDescriptor
         {
             LongNames = new[] { "short" },
-            ShortNames = new[] { 'r' },
+            ShortNames = new[] { 's' },
             ShortDescription = "output short verbose messages",
         };
         public static readonly OptionDescriptor VerboseOptionDescriptor = new OptionDescriptor
@@ -65,7 +65,7 @@ namespace DJ.App.MarkEmptyDirs
         public static readonly OptionDescriptor SyncOptionDescriptor = new OptionDescriptor
         {
             LongNames = new[] { "sync" },
-            ShortNames = new[] { 's' },
+            ShortNames = new[] { 'y' },
             ShortDescription = "create and/or remove placeholder files",
         };
 

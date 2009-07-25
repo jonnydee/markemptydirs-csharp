@@ -114,6 +114,12 @@ namespace DJ.App.MarkEmptyDirs
                     continue;
                 }
 
+                if (OptionDescriptorDefinitions.SyncOptionDescriptor == opt.Descriptor)
+                {
+                    CleanUp = false;
+                    continue;
+                }
+
                 // If we have a descriptor-less option assume it is the directory parameter.
                 if (null == directory && OptionType.Short != opt.OptionType && null == opt.Descriptor)
                 {
