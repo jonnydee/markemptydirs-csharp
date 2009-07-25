@@ -65,7 +65,8 @@ namespace DJ.App.MarkEmptyDirs
             usage.Append("*** This program is licensed under the GNU General Public License, Version 3.\n");
             usage.Append("***\n");
             usage.Append('\n');
-            usage.Append("USAGE: ").Append(cmdFullName).Append(' ');
+            
+            usage.Append("USAGE:  ").Append(cmdFullName).Append(' ');
             foreach (var descr in OptionDescriptorDefinitions.OptionDescriptors)
             {
                 string usageForm = GetUsageForm(descr);
@@ -162,7 +163,7 @@ namespace DJ.App.MarkEmptyDirs
             var description = new StringBuilder();
             foreach (var descr in optionDescriptions)
             {
-                description.AppendFormat("{0,-" + maxShortNameColumnWidth + "}  {1,-" + maxLongNameColumnWidth + "}  {2}\n", descr);
+                description.AppendFormat("  {0,-" + maxShortNameColumnWidth + "}  {1,-" + maxLongNameColumnWidth + "}  {2}\n", descr);
             }
 
             return description.ToString();
