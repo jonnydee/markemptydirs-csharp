@@ -128,7 +128,10 @@ namespace DJ.App.MarkEmptyDirs
                     continue;
                 }
 
-                throw new Exception(string.Format("Unknown option: '{0}'", opt.Name));
+                if (OptionType.NoOption == opt.OptionType)
+                    throw new Exception(string.Format("Unknown parameter: '{0}'", opt.Value));
+                else
+                    throw new Exception(string.Format("Unknown option: '{0}' (value: '{1}')", opt.Name, opt.Value));
             }
 
             if (null == directory)
