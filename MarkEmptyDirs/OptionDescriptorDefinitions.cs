@@ -62,12 +62,12 @@ namespace DJ.App.MarkEmptyDirs
             ShortNames = new[] { 'l' },
             ShortDescription = "list all placeholder files",
         };
-        public static readonly OptionDescriptor SyncOptionDescriptor = new OptionDescriptor
-        {
-            LongNames = new[] { "sync" },
-            ShortNames = new[] { 'y' },
-            ShortDescription = "create and/or remove placeholder files",
-        };
+//        public static readonly OptionDescriptor SyncOptionDescriptor = new OptionDescriptor
+//        {
+//            LongNames = new[] { "sync" },
+//            ShortNames = new[] { 'y' },
+//            ShortDescription = "create and/or remove placeholder files",
+//        };
 
         public static readonly OptionDescriptor ExcludeOptionDescriptor = new OptionDescriptor
         {
@@ -106,7 +106,7 @@ namespace DJ.App.MarkEmptyDirs
             CleanOptionDescriptor,
             HelpOptionDescriptor,
             ListOptionDescriptor,
-            SyncOptionDescriptor,
+//            SyncOptionDescriptor,
             
             ExcludeOptionDescriptor,
             PlaceHolderOptionDescriptor,
