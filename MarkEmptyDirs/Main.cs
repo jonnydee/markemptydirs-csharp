@@ -37,18 +37,18 @@ namespace DJ.App.MarkEmptyDirs
 
         public static void Main(string[] args)
         {
-            var optionParser = new OptionParser(OptionDescriptorDefinitions.OptionDescriptors);
-            var options = optionParser.ParseOptions(args);
-
-            ICommand cmd;
-
-            if (null != Option.FindFirstByDescriptor(OptionDescriptorDefinitions.HelpOptionDescriptor, options))
-                cmd = new HelpCommand() { Writer = Console.Out };
-            else
-                cmd = new MarkEmptyDirsVisitor();
-
             try
             {
+                var optionParser = new OptionParser(OptionDescriptorDefinitions.OptionDescriptors);
+                var options = optionParser.ParseOptions(args);
+    
+                ICommand cmd;
+    
+                if (null != Option.FindFirstByDescriptor(OptionDescriptorDefinitions.HelpOptionDescriptor, options))
+                    cmd = new HelpCommand() { Writer = Console.Out };
+                else
+                    cmd = new MarkEmptyDirsVisitor();
+    
                 cmd.Execute(options);
             }
             catch (Exception ex)
