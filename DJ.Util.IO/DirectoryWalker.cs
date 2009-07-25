@@ -35,9 +35,9 @@ namespace DJ.Util.IO
                     var subFileSystemInfos = dirInfo.GetFileSystemInfos();
                     foreach (var subFileSystemInfo in subFileSystemInfos)
                         Walk(subFileSystemInfo, visitor);
-                }
 
-                visitor.PostVisit(dirInfo);
+                    visitor.PostVisit(dirInfo);
+                }
             }
             else
             {
