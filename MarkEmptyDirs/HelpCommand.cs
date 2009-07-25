@@ -74,6 +74,17 @@ namespace DJ.App.MarkEmptyDirs
             usage.Append("<directory>\n\n");
             usage.Append("Option descriptions:\n");
             usage.Append(GetDescription(OptionDescriptorDefinitions.OptionDescriptors));
+            usage.Append('\n');
+
+            string envValue = MainClass.GetSettingsInEnvironmentVariable();
+            if (null != envValue)
+            {
+                if (string.Empty == envValue)
+                    envValue = "<VARIABLE EMPTY>";
+            }
+            else
+                envValue = "<VARIABLE UNDEFINED>";
+            usage.AppendFormat("Defaults set in environment variable '{0}':  {1}\n", MainClass.SettingsEnvironmentVariable, envValue);
 
             Writer.WriteLine(usage.ToString());
         }

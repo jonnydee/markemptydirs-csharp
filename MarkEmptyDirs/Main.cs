@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.IO;
 
 using DJ.Util.IO;
@@ -33,10 +34,45 @@ namespace DJ.App.MarkEmptyDirs
         public const string ProjectUrl = "http://code.google.com/p/markemptydirs";
         public const string StandardPlaceHolderName = ".emptydir";
         public static readonly string[] StandardExcludedDirs = new[] { ".bzr", ".cvs", ".git", ".hg", ".svn" };
+        public const string SettingsEnvironmentVariable = "MarkEmptyDirsOpts";
 
 
+        private static string[] ParseArgs(string argsStr)
+        {
+            // TODO Improve parsing in order to correctly handle string args of the form "...".
+            return argsStr.Split(' ');
+        }
+
+        public static string GetSettingsInEnvironmentVariable()
+        {
+            IDictionary env = Environment.GetEnvironmentVariables();
+            foreach(var key in env.Keys)
+            {
+                if (key.ToString().ToUpper() == SettingsEnvironmentVariable.ToUpper())
+                    return env[key].ToString().Trim();
+            }
+            return null;
+        }
+        
         public static void Main(string[] args)
         {
+            try
+            {
+                var envVarValue = GetSettingsInEnvironmentVariable();
+                if (null != envVarValue)
+                {
+                    string[] defaultArgs = ParseArgs(envVarValue);
+                    var newArgs = new string[defaultArgs.Length + args.Length];
+                    defaultArgs.CopyTo(newArgs, 0);
+                    args.CopyTo(newArgs, defaultArgs.Length);
+                    args = newArgs;
+                }
+            }
+            catch
+            {
+                // Ignore any exception here as there is nothing critical to handle.
+            }
+            
             try
             {
                 var optionParser = new OptionParser(OptionDescriptorDefinitions.OptionDescriptors);
