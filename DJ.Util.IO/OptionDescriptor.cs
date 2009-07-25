@@ -22,7 +22,6 @@ namespace DJ.Util.IO
     
     public class OptionDescriptor
     {
-        public string Name { get { return LongNames[0]; } }
         public string[] LongNames { set; get; }
         public char[] ShortNames { set; get; }
         public string ShortDescription { set; get; }
