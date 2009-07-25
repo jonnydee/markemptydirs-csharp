@@ -28,13 +28,13 @@ namespace DJ.App.MarkEmptyDirs
     {
         public MarkEmptyDirsVisitor()
         {
-            PlaceHolderName = ".emptydir";
+            PlaceHolderName = MainClass.StandardPlaceHolderName;
             PlaceHolderText = string.Empty;
             Verbose = false;
             Short = false;
             DryRun = false;
             CleanUp = false;
-            Exclude = new List<string> { ".bzr", ".cvs", ".git", ".hg", ".svn" };
+            Exclude = new List<string>(MainClass.StandardExcludedDirs);
         }
 
         public string PlaceHolderName { set; get; }

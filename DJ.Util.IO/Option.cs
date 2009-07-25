@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace DJ.Util.IO
 {
@@ -60,6 +61,24 @@ namespace DJ.Util.IO
         public OptionType OptionType { set; get; }
         public string Name { set; get; }
         public string Value { set; get; }
+
+        public string ToLongFromString()
+        {
+            var buf = new StringBuilder("--");
+            buf.Append(buf);
+            if (null != Value)
+                buf.Append('=').Append(Value);
+            return buf.ToString();
+        }
+        
+        public string ToShortFromString()
+        {
+            var buf = new StringBuilder("-");
+            buf.Append(buf);
+            if (null != Value)
+                buf.Append(' ').Append(Value);
+            return buf.ToString();
+        }
         
         public override string ToString ()
         {

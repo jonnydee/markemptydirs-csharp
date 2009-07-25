@@ -16,6 +16,7 @@
 //  along with MarkEmptyDirs.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.IO;
 
 using DJ.Util.IO;
 
@@ -28,59 +29,72 @@ namespace DJ.App.MarkEmptyDirs
         {
             LongNames = new[] { "dry-run", "dry" },
             ShortNames = new[] { 'd' },
+            ShortDescription = "simulate command execution without any side effects",
         };
         public static readonly OptionDescriptor ShortOptionDescriptor = new OptionDescriptor
         {
             LongNames = new[] { "short" },
             ShortNames = new[] { 'r' },
+            ShortDescription = "output short verbose messages",
         };
         public static readonly OptionDescriptor VerboseOptionDescriptor = new OptionDescriptor
         {
             LongNames = new[] { "verbose" },
             ShortNames = new[] { 'v' },
+            ShortDescription = "output verbose messages",
         };
         
         public static readonly OptionDescriptor CleanOptionDescriptor = new OptionDescriptor
         {
             LongNames = new[] { "clean" },
             ShortNames = new[] { 'c' },
+            ShortDescription = "delete all placeholder files",
         };
         public static readonly OptionDescriptor HelpOptionDescriptor = new OptionDescriptor
         {
             LongNames = new[] { "help" },
             ShortNames = new[] { 'h' },
+            ShortDescription = "print help information"
         };
         public static readonly OptionDescriptor ListOptionDescriptor = new OptionDescriptor
         {
             LongNames = new[] { "list" },
             ShortNames = new[] { 'l' },
+            ShortDescription = "list all placeholder files",
         };
         public static readonly OptionDescriptor SyncOptionDescriptor = new OptionDescriptor
         {
             LongNames = new[] { "sync" },
             ShortNames = new[] { 's' },
+            ShortDescription = "create and/or remove placeholder files",
         };
 
         public static readonly OptionDescriptor ExcludeOptionDescriptor = new OptionDescriptor
         {
             LongNames = new[] { "exclude" },
             ShortNames = new[] { 'x' },
+            ShortDescription = string.Format("skip excluded dirs (default is '{0}')", string.Join(Path.PathSeparator.ToString(), MainClass.StandardExcludedDirs)),
             CanHaveValue = true,
             MandatoryValue = true,
+            ValueIdentifier = "list-of-dirnames",
         };
         public static readonly OptionDescriptor PlaceHolderOptionDescriptor = new OptionDescriptor
         {
             LongNames = new[] { "place-holder", "keep-file" },
             ShortNames = new[] { 'p', 'k' },
+            ShortDescription = string.Format("use another name for keep files (default is '{0}')", MainClass.StandardPlaceHolderName),
             CanHaveValue = true,
             MandatoryValue = true,
+            ValueIdentifier = "filename",
         };
         public static readonly OptionDescriptor TextOptionDescriptor = new OptionDescriptor
         {
             LongNames = new[] { "text", "content" },
             ShortNames = new[] { 't' },
+            ShortDescription = "create placeholder files with the specified text as content",
             CanHaveValue = true,
             MandatoryValue = true,
+            ValueIdentifier = "placeholder-text",
         };
 
         public static readonly OptionDescriptor[] OptionDescriptors = new[]

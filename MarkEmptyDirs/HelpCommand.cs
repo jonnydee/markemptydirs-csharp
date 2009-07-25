@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 using DJ.Util.IO;
 
@@ -52,19 +53,104 @@ namespace DJ.App.MarkEmptyDirs
             var cmdFileName = GetCommandFileName();
             var cmdFullName = cmdFileName[0];
             var cmdName = cmdFileName[1];
+
+            var usage = new StringBuilder();
             
-            Writer.WriteLine();
-            Writer.WriteLine("***");
-            Writer.WriteLine("*** " + cmdName + " " + MainClass.Version + " -- " + MainClass.Copyright);
-            Writer.WriteLine("***");
-            Writer.WriteLine("*** Project Site: " + MainClass.ProjectUrl);
-            Writer.WriteLine("***");
-            Writer.WriteLine("*** This program is licensed under the GNU General Public License, Version 3.");
-            Writer.WriteLine("***");
-            Writer.WriteLine();
-            Writer.WriteLine("USAGE: " + cmdFullName + " [--verbose] [--short] [--dry-run] [--clean] [--list] [--exclude=<list-of-dirnames>] [--place-holder=<filename>] [--text=<placeholder-text>] <directory>\n");
+            usage.Append('\n');
+            usage.Append("***\n");
+            usage.Append("*** ").Append(cmdName).Append(" ").Append(MainClass.Version).Append(" -- ").Append(MainClass.Copyright).Append('\n');
+            usage.Append("***\n");
+            usage.Append("*** Project Site: ").Append(MainClass.ProjectUrl).Append('\n');
+            usage.Append("***\n");
+            usage.Append("*** This program is licensed under the GNU General Public License, Version 3.\n");
+            usage.Append("***\n");
+            usage.Append('\n');
+            usage.Append("USAGE: ").Append(cmdFullName).Append(' ');
+            foreach (var descr in OptionDescriptorDefinitions.OptionDescriptors)
+            {
+                string usageForm = GetUsageForm(descr);
+                usage.Append(usageForm).Append(' ');
+            }
+            usage.Append("<directory>\n\n");
+            usage.Append("Option descriptions:\n");
+            usage.Append(GetDescription(OptionDescriptorDefinitions.OptionDescriptors));
+
+            Writer.WriteLine(usage.ToString());
         }
 
+        public string GetUsageForm(OptionDescriptor descr)
+        {
+            string optionName = null;
+            if (null != descr.ShortNames && descr.ShortNames.Length > 0)
+            {
+                optionName = "-" + descr.ShortNames[0].ToString();
+                if (descr.CanHaveValue)
+                {
+                    optionName += " ";
+                    if (descr.MandatoryValue)
+                        optionName += string.Format("[{0}]", descr.ValueIdentifier);
+                    else
+                        optionName += string.Format("<{0}>", descr.ValueIdentifier);
+                }
+            }
+            else
+            {
+                optionName = "--" + descr.LongNames[0];
+                if (descr.CanHaveValue)
+                {
+                    optionName += "=";
+                    if (descr.MandatoryValue)
+                        optionName += string.Format("[{0}]", descr.ValueIdentifier);
+                    else
+                        optionName += string.Format("<{0}>", descr.ValueIdentifier);
+                }
+            }
+            return optionName;
+        }
+
+        public string[] GetDescriptionColumns(OptionDescriptor descr)
+        {
+            var shortNameColumn = new StringBuilder();
+            if (null != descr.ShortNames && descr.ShortNames.Length > 0)
+            {
+                shortNameColumn.Append('-').Append(descr.ShortNames[0]);
+                for (int i = 1; i < descr.ShortNames.Length; i++)
+                    shortNameColumn.Append("|").Append(descr.ShortNames[i]);
+            }
+
+            var longNameColumn = new StringBuilder();
+            if (null != descr.LongNames && descr.LongNames.Length > 0)
+            {
+                longNameColumn.Append("--").Append(descr.LongNames[0]);
+                for (int i = 1; i < descr.LongNames.Length; i++)
+                    longNameColumn.Append("|").Append(descr.LongNames[i]);
+            }
+
+            return new[] { shortNameColumn.ToString(), longNameColumn.ToString(), descr.ShortDescription ?? "" };
+        }
+
+        public string GetDescription(params OptionDescriptor[] descriptors)
+        {
+            var optionDescriptions = new List<string[]>();
+            int maxShortNameColumnWidth = 0;
+            int maxLongNameColumnWidth = 0;
+            foreach (var descr in descriptors)
+            {
+                var cols = GetDescriptionColumns(descr);
+                maxShortNameColumnWidth = Math.Max(maxShortNameColumnWidth, cols[0].Length);
+                maxLongNameColumnWidth = Math.Max(maxLongNameColumnWidth, cols[1].Length);
+                optionDescriptions.Add(cols);
+            }
+
+            var description = new StringBuilder();
+            foreach (var descr in optionDescriptions)
+            {
+                description.AppendFormat("{0,-" + maxShortNameColumnWidth + "}  {1,-" + maxLongNameColumnWidth + "}  {2}\n", descr);
+            }
+
+            return description.ToString();
+        }
+        
         public void Execute(List<Option> options)
         {
             PrintUsage();
