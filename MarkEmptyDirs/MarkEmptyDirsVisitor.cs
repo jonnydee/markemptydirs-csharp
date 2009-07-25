@@ -106,6 +106,7 @@ namespace DJ.App.MarkEmptyDirs
                     var dirList = new List<string>(dirs.Length);
                     dirList.AddRange(dirs);
                     Exclude = dirList;
+                    continue;
                 }
                 
                 if (OptionDescriptorDefinitions.ListOptionDescriptor == opt.Descriptor)
