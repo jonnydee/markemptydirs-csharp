@@ -164,7 +164,7 @@ namespace DJ.App.MarkEmptyDirs
                         }
                     }
                     if (Short)
-                        Logger.Log(Logger.LogType.Info, placeHolderFile.FullName);
+                        Logger.Log(Logger.LogType.Info, placeHolderFile.FullName, true);
                     else if (Verbose)
                         Logger.Log(Logger.LogType.Info, string.Format("Created placeholder: '{0}'", placeHolderFile.FullName));
                 }
@@ -189,7 +189,7 @@ namespace DJ.App.MarkEmptyDirs
                         if (!DryRun)
                             fileInfo.Delete();
                         if (Short)
-                            Logger.Log(Logger.LogType.Info, fileInfo.FullName);
+                            Logger.Log(Logger.LogType.Info, fileInfo.FullName, true);
                         else if (Verbose)
                             Logger.Log(Logger.LogType.Info, string.Format("Deleted placeholder: '{0}'", fileInfo.FullName));
                     }

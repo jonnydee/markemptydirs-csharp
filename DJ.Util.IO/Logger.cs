@@ -35,16 +35,21 @@ namespace DJ.Util.IO
         
         public static void Log(LogType type, string message)
         {
+            Log(type, message, false);
+        }
+        
+        public static void Log(LogType type, string message, bool shortMessage)
+        {
             switch (type)
             {
                 case LogType.Debug:
-                    Console.Out.WriteLine("DEBUG: " + message);
+                    Console.Out.WriteLine((shortMessage ? "" : "DEBUG: ") + message);
                     break;
                 case LogType.Info:
-                    Console.Out.WriteLine("INFO: " + message);
+                    Console.Out.WriteLine((shortMessage ? "" : "INFO: ") + message);
                     break;
                 case LogType.Error:
-                    Console.Error.WriteLine("ERROR: " + message);
+                    Console.Error.WriteLine((shortMessage ? "" : "ERROR: ") + message);
                     break;
             }
             
