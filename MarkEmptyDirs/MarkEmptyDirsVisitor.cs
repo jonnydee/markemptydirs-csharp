@@ -72,7 +72,10 @@ namespace DJ.App.MarkEmptyDirs
                 if (OptionDescriptorDefinitions.TextOptionDescriptor == opt.Descriptor)
                 {
                     if (!string.IsNullOrEmpty(opt.Value))
-                        PlaceHolderText = opt.Value + '\n';
+                    {
+                        var engine = new TemplateEngine(opt.Value);
+                        PlaceHolderText = engine.ToString() + '\n';
+                    }
                     continue;
                 }
                 

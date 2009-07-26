@@ -44,6 +44,13 @@
     <Compile Include="OptionDescriptor.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="TemplateEngine.cs" />
+    <Compile Include="TemplateVariable.cs" />
+    <Compile Include="GuidVariable.cs" />
+    <Compile Include="DateTimeVariable.cs" />
+    <Compile Include="EnvironmentVariable.cs" />
+    <Compile Include="LineFeedVariable.cs" />
+    <Compile Include="SpaceVariable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -85,8 +85,11 @@ namespace DJ.App.MarkEmptyDirs
             }
             else
                 envValue = "<VARIABLE UNDEFINED>";
-            usage.AppendFormat("Defaults set in environment variable '{0}':  {1}\n", MainClass.SettingsEnvironmentVariable, envValue);
+            usage.AppendFormat("Defaults set in environment variable '{0}':\n  {1}\n\n", MainClass.SettingsEnvironmentVariable, envValue);
 
+            usage.Append("Defined template variables:\n");
+            usage.Append(GetDescription(new TemplateEngine("").ListTemplateVariables()));
+            
             Writer.WriteLine(usage.ToString());
         }
 
@@ -164,6 +167,26 @@ namespace DJ.App.MarkEmptyDirs
             foreach (var descr in optionDescriptions)
             {
                 description.AppendFormat("  {0,-" + maxShortNameColumnWidth + "}  {1,-" + maxLongNameColumnWidth + "}  {2}\n", descr);
+            }
+
+            return description.ToString();
+        }
+        
+        public string GetDescription(List<TemplateVariable> variables)
+        {
+            int maxNameColumnWidth = 0;
+            foreach (var variable in variables)
+                maxNameColumnWidth = Math.Max(maxNameColumnWidth, variable.Name.Length);
+            maxNameColumnWidth += TemplateVariable.Prefix.Length + TemplateVariable.Postfix.Length;
+            
+            var description = new StringBuilder();
+            foreach (var variable in variables)
+            {
+                var variableName = TemplateVariable.Prefix + variable.Name + TemplateVariable.Postfix;
+                description.AppendFormat("  {0,-" + maxNameColumnWidth + "}  {1}\n", variableName, variable.Description);
+                if (null != variable.ArgumentDescription)
+                    description.AppendFormat("  {0,-" + maxNameColumnWidth + "}  * ARG: {1}", " ", variable.ArgumentDescription);
+                description.AppendLine();
             }
 
             return description.ToString();
