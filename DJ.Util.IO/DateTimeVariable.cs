@@ -27,18 +27,31 @@ namespace DJ.Util.IO
         {
         }
 
-        public override string Description {
-            get {
-                return "Gets the UTC time (accepts C# DateTime format pattern string as argument).";
-            }
+        public override string Description
+        {
+            get { return "Gets the UTC time"; }
         }
 
-        public override string ArgumentDescription {
-            get {
-                return "Optional C# DateTime format pattern string";
-            }
+        public override bool CanHaveArgument
+        {
+            get { return true; }
         }
-        
+
+        public override string ArgumentDescription
+        {
+            get { return "C# DateTime format pattern string"; }
+        }
+
+        public override string ArgumentIdentifier
+        {
+            get { return "format-pattern"; }
+        }
+
+        public override bool ArgumentMandatory 
+        {
+            get { return false; }
+        }
+
         public override string GetValueFor (TemplateEngine ctx, string arg)
         {
             var datetime = DateTime.Now.ToUniversalTime();

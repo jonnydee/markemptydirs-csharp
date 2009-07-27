@@ -41,17 +41,29 @@ namespace DJ.Util.IO
             return new string('\n', count);
         }
 
-        public override string Description {
-            get {
-                return "Gets a line feed character";
-            }
+        public override string Description
+        {
+            get { return "Gets a line feed character"; }
         }
 
-        public override string ArgumentDescription {
-            get {
-                return "Optional integer describing how many linefeeds should be returned";
-            }
+        public override bool CanHaveArgument
+        {
+            get { return true; }
         }
 
+        public override string ArgumentDescription
+        {
+            get { return "Integer describing how many linefeeds should be returned"; }
+        }
+
+        public override string ArgumentIdentifier
+        {
+            get { return "count"; }
+        }
+            
+        public override bool ArgumentMandatory
+        {
+            get { return false; }
+        }
     }
 }

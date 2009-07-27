@@ -37,8 +37,14 @@ namespace DJ.Util.IO
 
         abstract public string Description { get; }
         
+        abstract public bool CanHaveArgument { get; }
+
         abstract public string ArgumentDescription { get; }
+
+        abstract public string ArgumentIdentifier { get; }
         
+        abstract public bool ArgumentMandatory { get; }
+
         abstract public string GetValueFor(TemplateEngine ctx, string arg);
     }
 }
