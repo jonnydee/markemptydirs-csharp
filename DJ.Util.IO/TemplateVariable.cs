@@ -21,10 +21,10 @@ namespace DJ.Util.IO
 {
     abstract public class TemplateVariable
     {
-        public const string Prefix = "#";
-        public const string Postfix = "#";
+        public const string Prefix = "§";
+        public const string Postfix = "§";
         public const string Separator = ":";
-        public const string Pattern = @"(?<Variable>#(?<Name>[a-zA-Z][a-zA-Z_]*)(\:(?<Args>[^#]*))?#)";
+        public const string Pattern = @"(?<Variable>§(?<Name>[a-zA-Z][a-zA-Z_]*)(\:(?<Args>[^§]*))?§)";
         
         private readonly string _name;
         
