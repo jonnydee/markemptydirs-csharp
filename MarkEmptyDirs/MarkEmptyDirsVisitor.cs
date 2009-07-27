@@ -74,7 +74,26 @@ namespace DJ.App.MarkEmptyDirs
                     if (!string.IsNullOrEmpty(opt.Value))
                     {
                         var engine = new TemplateEngine(opt.Value);
-                        PlaceHolderText = engine.ToString() + '\n';
+                        PlaceHolderText = engine.ToString();
+                    }
+                    continue;
+                }
+                
+                if (OptionDescriptorDefinitions.PlaceHolderFileOptionDescriptor == opt.Descriptor)
+                {
+                    if (!string.IsNullOrEmpty(opt.Value))
+                    {
+                        try
+                        {
+                            var filename = opt.Value;
+                            var placeHolderTemplate = File.ReadAllText(filename);
+                            var engine = new TemplateEngine(placeHolderTemplate);
+                            PlaceHolderText = engine.ToString();
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Log(ex);
+                        }
                     }
                     continue;
                 }

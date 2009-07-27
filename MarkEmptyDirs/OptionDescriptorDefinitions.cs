@@ -96,6 +96,15 @@ namespace DJ.App.MarkEmptyDirs
             MandatoryValue = true,
             ValueIdentifier = "placeholder-text",
         };
+        public static readonly OptionDescriptor PlaceHolderFileOptionDescriptor = new OptionDescriptor
+        {
+            LongNames = new[] { "file" },
+            ShortNames = new[] { 'f' },
+            ShortDescription = "create placeholder files using the specified template file as content",
+            CanHaveValue = true,
+            MandatoryValue = true,
+            ValueIdentifier = "placeholder-file",
+        };
 
         public static readonly OptionDescriptor[] OptionDescriptors = new[]
         {
@@ -110,7 +119,8 @@ namespace DJ.App.MarkEmptyDirs
             
             ExcludeOptionDescriptor,
             PlaceHolderOptionDescriptor,
-            TextOptionDescriptor
+            TextOptionDescriptor,
+            PlaceHolderFileOptionDescriptor,
         };
 
     }
