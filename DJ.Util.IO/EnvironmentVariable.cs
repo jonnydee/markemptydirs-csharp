@@ -41,7 +41,7 @@ namespace DJ.Util.IO
 
         public override string Description
         {
-            get { return "Gets the value from an environment variable"; }
+            get { return "get the value from an environment variable"; }
         }
 
         public override bool CanHaveArgument
@@ -51,7 +51,7 @@ namespace DJ.Util.IO
 
         public override string ArgumentDescription
         {
-            get { return "The name of the environment variable"; }
+            get { return "the environment variable's name"; }
         }
 
         public override string ArgumentIdentifier

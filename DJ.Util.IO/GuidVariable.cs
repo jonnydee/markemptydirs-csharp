@@ -33,7 +33,7 @@ namespace DJ.Util.IO
 
         public override string Description
         {
-            get { return "Gets a new globally unique identifier (GUID)"; }
+            get { return "get a new globally unique identifier"; }
         }
 
         public override bool CanHaveArgument
