@@ -31,17 +31,29 @@ namespace DJ.Util.IO
             return Guid.NewGuid().ToString();
         }
 
-        public override string Description {
-            get {
-                return "Gets a new globally unique identifier (GUID)";
-            }
+        public override string Description
+        {
+            get { return "Gets a new globally unique identifier (GUID)"; }
         }
 
-        public override string ArgumentDescription {
-            get {
-                return null;
-            }
+        public override bool CanHaveArgument
+        {
+            get { return false; }
+        }
+        
+        public override string ArgumentDescription
+        {
+            get { return null; }
         }
 
+        public override string ArgumentIdentifier
+        {
+            get { return null; }
+        }
+
+        public override bool ArgumentMandatory
+        {
+            get { return false; }
+        }
     }
 }

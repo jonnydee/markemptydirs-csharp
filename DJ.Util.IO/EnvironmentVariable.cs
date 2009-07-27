@@ -22,7 +22,6 @@ namespace DJ.Util.IO
     
     public class EnvironmentVariable : TemplateVariable
     {
-        
         public EnvironmentVariable() : base("env")
         {
         }
@@ -40,16 +39,29 @@ namespace DJ.Util.IO
             }
         }
 
-        public override string Description {
-            get {
-                return "Gets the value from an environment variable";
-            }
+        public override string Description
+        {
+            get { return "Gets the value from an environment variable"; }
         }
 
-        public override string ArgumentDescription {
-            get {
-                return "The name of the environment variable";
-            }
+        public override bool CanHaveArgument
+        {
+            get { return true; }
+        }
+
+        public override string ArgumentDescription
+        {
+            get { return "The name of the environment variable"; }
+        }
+
+        public override string ArgumentIdentifier
+        {
+            get { return "env-var-name"; }
+        }
+
+        public override bool ArgumentMandatory
+        {
+            get { return true; }
         }
     }
     

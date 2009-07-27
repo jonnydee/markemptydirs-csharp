@@ -171,21 +171,39 @@ namespace DJ.App.MarkEmptyDirs
 
             return description.ToString();
         }
+
+        public string GetUsageForm(TemplateVariable variable)
+        {
+            var variableName = TemplateVariable.Prefix + variable.Name;
+            if (variable.CanHaveArgument)
+            {
+                if (variable.ArgumentMandatory)
+                    variableName += ":<" + variable.ArgumentIdentifier + ">";
+                else
+                    variableName += "[:<" + variable.ArgumentIdentifier + ">]";
+            }
+            variableName += TemplateVariable.Postfix;
+
+            return variableName;
+        }
         
         public string GetDescription(List<TemplateVariable> variables)
         {
+            List<string> variableNames = new List<string>();
             int maxNameColumnWidth = 0;
             foreach (var variable in variables)
-                maxNameColumnWidth = Math.Max(maxNameColumnWidth, variable.Name.Length);
-            maxNameColumnWidth += TemplateVariable.Prefix.Length + TemplateVariable.Postfix.Length;
+            {
+                var variableName = GetUsageForm(variable);
+                variableNames.Add(variableName);
+                maxNameColumnWidth = Math.Max(maxNameColumnWidth, variableName.Length);
+            }
             
             var description = new StringBuilder();
-            foreach (var variable in variables)
+            for (int i = 0; i < variables.Count; i++)
             {
-                var variableName = TemplateVariable.Prefix + variable.Name + TemplateVariable.Postfix;
-                description.AppendFormat("  {0,-" + maxNameColumnWidth + "}  {1}\n", variableName, variable.Description);
-                if (null != variable.ArgumentDescription)
-                    description.AppendFormat("  {0,-" + maxNameColumnWidth + "}  * ARG: {1}", " ", variable.ArgumentDescription);
+                description.AppendFormat("  {0,-" + maxNameColumnWidth + "}  {1}\n", variableNames[i], variables[i].Description);
+                if (null != variables[i].ArgumentDescription)
+                    description.AppendFormat("  {0,-" + maxNameColumnWidth + "}  | {1}: {2}", " ", variables[i].ArgumentIdentifier, variables[i].ArgumentDescription);
                 description.AppendLine();
             }
 
