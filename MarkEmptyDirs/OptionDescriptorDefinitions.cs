@@ -80,16 +80,16 @@ namespace DJ.App.MarkEmptyDirs
         };
         public static readonly OptionDescriptor PlaceHolderOptionDescriptor = new OptionDescriptor
         {
-            LongNames = new[] { "place-holder", "keep-file" },
-            ShortNames = new[] { 'p', 'k' },
-            ShortDescription = string.Format("use another name for keep files (default is '{0}')", MainClass.StandardPlaceHolderName),
+            LongNames = new[] { "place-holder" },
+            ShortNames = new[] { 'p' },
+            ShortDescription = string.Format("use another name for placeholder files (default is '{0}')", MainClass.StandardPlaceHolderName),
             CanHaveValue = true,
             MandatoryValue = true,
             ValueIdentifier = "filename",
         };
         public static readonly OptionDescriptor TextOptionDescriptor = new OptionDescriptor
         {
-            LongNames = new[] { "text", "content" },
+            LongNames = new[] { "text" },
             ShortNames = new[] { 't' },
             ShortDescription = "create placeholder files with the specified text as content",
             CanHaveValue = true,
