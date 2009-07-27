@@ -42,7 +42,7 @@ namespace DJ.Util.IO
 
         public override string Description
         {
-            get { return "Gets a space character"; }
+            get { return "get a space character"; }
         }
 
         public override bool CanHaveArgument
@@ -52,7 +52,7 @@ namespace DJ.Util.IO
 
         public override string ArgumentDescription
         {
-            get { return "Integer describing how many spaces should be returned"; }
+            get { return "integer describing how many spaces should be returned"; }
         }
 
         public override string ArgumentIdentifier

@@ -29,7 +29,7 @@ namespace DJ.Util.IO
 
         public override string Description
         {
-            get { return "Gets the UTC time"; }
+            get { return "get UTC time"; }
         }
 
         public override bool CanHaveArgument

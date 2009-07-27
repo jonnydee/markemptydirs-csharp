@@ -43,7 +43,7 @@ namespace DJ.Util.IO
 
         public override string Description
         {
-            get { return "Gets a line feed character"; }
+            get { return "get a line feed character"; }
         }
 
         public override bool CanHaveArgument
@@ -53,7 +53,7 @@ namespace DJ.Util.IO
 
         public override string ArgumentDescription
         {
-            get { return "Integer describing how many linefeeds should be returned"; }
+            get { return "integer describing how many linefeeds should be returned"; }
         }
 
         public override string ArgumentIdentifier
