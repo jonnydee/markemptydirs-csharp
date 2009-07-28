@@ -203,7 +203,7 @@ namespace DJ.App.MarkEmptyDirs
             {
                 description.AppendFormat("  {0,-" + maxNameColumnWidth + "}  {1}\n", variableNames[i], variables[i].Description);
                 if (null != variables[i].ArgumentDescription)
-                    description.AppendFormat("  {0,-" + maxNameColumnWidth + "}  <{1}> : {2}", " ", variables[i].ArgumentIdentifier, variables[i].ArgumentDescription);
+                    description.AppendFormat("  {0,-" + maxNameColumnWidth + "}      <{1}> : {2}", " ", variables[i].ArgumentIdentifier, variables[i].ArgumentDescription);
                 description.AppendLine();
             }
 
