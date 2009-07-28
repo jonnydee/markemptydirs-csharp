@@ -80,7 +80,7 @@ namespace DJ.App.MarkEmptyDirs
             var config = new Configuration
             {
                 PlaceHolderName = StandardPlaceHolderName,
-                PlaceHolderText = string.Empty,
+                PlaceHolderTemplate = new TemplateEngine(string.Empty),
                 Verbose = false,
                 Short = false,
                 DryRun = false,
@@ -110,8 +110,7 @@ namespace DJ.App.MarkEmptyDirs
                 {
                     if (!string.IsNullOrEmpty(opt.Value))
                     {
-                        var engine = new TemplateEngine(opt.Value);
-                        config.PlaceHolderText = engine.ToString();
+                        config.PlaceHolderTemplate = new TemplateEngine(opt.Value);
                     }
                     continue;
                 }
@@ -123,9 +122,8 @@ namespace DJ.App.MarkEmptyDirs
                         try
                         {
                             var filename = opt.Value;
-                            var placeHolderTemplate = File.ReadAllText(filename);
-                            var engine = new TemplateEngine(placeHolderTemplate);
-                            config.PlaceHolderText = engine.ToString();
+                            var placeHolderTemplateText = File.ReadAllText(filename);
+                            config.PlaceHolderTemplate = new TemplateEngine(placeHolderTemplateText);
                         }
                         catch (Exception ex)
                         {

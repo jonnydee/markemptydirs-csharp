@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
+using DJ.Util.IO;
+
 namespace DJ.App.MarkEmptyDirs
 {
     
@@ -40,7 +42,7 @@ namespace DJ.App.MarkEmptyDirs
 
         public string PlaceHolderName { set; get; }
 
-        public string PlaceHolderText { set; get; }
+        public TemplateEngine PlaceHolderTemplate { set; get; }
 
         public bool Short { set; get; }
 
