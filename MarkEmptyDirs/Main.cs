@@ -209,8 +209,6 @@ namespace DJ.App.MarkEmptyDirs
         {
             args = GetDecoratedArgs(args);
 
-            //            if (null != Option.FindFirstByDescriptor(OptionDescriptorDefinitions.HelpOptionDescriptor, options))
-
             try
             {
                 var config = ParseConfiguration(args);
