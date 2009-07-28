@@ -31,6 +31,17 @@ namespace DJ.App.MarkEmptyDirs
         public void Execute(Configuration config)
         {
             _configuration = config;
+
+            if (null == _configuration.Directory)
+            {
+                throw new Exception("No directory specified!");
+            }
+
+            if (!_configuration.Directory.Exists)
+            {
+                throw new Exception(string.Format("Not a directory: '{0}'", _configuration.Directory.FullName));
+            }            
+
             DirectoryWalker.Walk(_configuration.Directory, this);
         }
         

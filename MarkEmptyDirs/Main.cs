@@ -91,6 +91,8 @@ namespace DJ.App.MarkEmptyDirs
             var optionParser = new OptionParser(OptionDescriptorDefinitions.OptionDescriptors);
             var options = optionParser.ParseOptions(args);
 
+            
+            
             string directory = null;
 
             Option opt;
@@ -197,18 +199,7 @@ namespace DJ.App.MarkEmptyDirs
                     throw new Exception(string.Format("Unknown option: '{0}' (value: '{1}')", opt.Name, opt.Value));
             }
 
-            if (null == directory)
-            {
-                throw new Exception("No directory specified!");
-            }
-
-            var dirInfo = new DirectoryInfo(directory);
-            if (!dirInfo.Exists)
-            {
-                throw new Exception(string.Format("Not a directory: '{0}'", dirInfo.FullName));
-            }
-
-            config.Directory = dirInfo;
+            config.Directory = null != directory ? new DirectoryInfo(directory) : null;
 
             return config;
         }
@@ -216,6 +207,8 @@ namespace DJ.App.MarkEmptyDirs
         public static void Main(string[] args)
         {
             args = GetDecoratedArgs(args);
+
+            //            if (null != Option.FindFirstByDescriptor(OptionDescriptorDefinitions.HelpOptionDescriptor, options))
 
             try
             {
