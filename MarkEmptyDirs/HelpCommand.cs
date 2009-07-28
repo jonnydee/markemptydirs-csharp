@@ -210,7 +210,7 @@ namespace DJ.App.MarkEmptyDirs
             return description.ToString();
         }
         
-        public void Execute(List<Option> options)
+        public void Execute(Configuration config)
         {
             PrintUsage();
         }

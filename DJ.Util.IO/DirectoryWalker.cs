@@ -32,9 +32,13 @@ namespace DJ.Util.IO
 
                 if (visitor.PreVisit(dirInfo))
                 {
-                    var subFileSystemInfos = dirInfo.GetFileSystemInfos();
-                    foreach (var subFileSystemInfo in subFileSystemInfos)
-                        Walk(subFileSystemInfo, visitor);
+                    var subDirectories = dirInfo.GetDirectories();
+                    foreach (var subDirectory in subDirectories)
+                        Walk(subDirectory, visitor);
+                    
+                    var files = dirInfo.GetFiles();
+                    foreach (var file in files)
+                        Walk(file, visitor);
 
                     visitor.PostVisit(dirInfo);
                 }

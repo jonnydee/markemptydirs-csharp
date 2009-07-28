@@ -25,6 +25,6 @@ namespace DJ.App.MarkEmptyDirs
 
     public interface ICommand
     {        
-        void Execute(List<Option> options);
+        void Execute(Configuration config);
     }
 }

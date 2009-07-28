@@ -53,8 +53,8 @@ namespace DJ.App.MarkEmptyDirs
             }
             return null;
         }
-        
-        public static void Main(string[] args)
+
+        private static string[] GetDecoratedArgs(string[] args)
         {
             try
             {
@@ -65,27 +65,174 @@ namespace DJ.App.MarkEmptyDirs
                     var newArgs = new string[defaultArgs.Length + args.Length];
                     defaultArgs.CopyTo(newArgs, 0);
                     args.CopyTo(newArgs, defaultArgs.Length);
-                    args = newArgs;
+                    return newArgs;
                 }
             }
             catch
             {
                 // Ignore any exception here as there is nothing critical to handle.
             }
+            return args;
+        }
+
+        private static Configuration ParseConfiguration(string[] args)
+        {
+            var config = new Configuration
+            {
+                PlaceHolderName = StandardPlaceHolderName,
+                PlaceHolderText = string.Empty,
+                Verbose = false,
+                Short = false,
+                DryRun = false,
+                CleanUp = false,
+                Exclude = new List<string>(StandardExcludedDirs),
+            };
             
+            var optionParser = new OptionParser(OptionDescriptorDefinitions.OptionDescriptors);
+            var options = optionParser.ParseOptions(args);
+
+            string directory = null;
+
+            Option opt;
+            while (options.Count > 0)
+            {
+                opt = options[0];
+                options.RemoveAt(0);
+                
+                if (OptionDescriptorDefinitions.PlaceHolderOptionDescriptor == opt.Descriptor)
+                {
+                    if (!string.IsNullOrEmpty(opt.Value))
+                        config.PlaceHolderName = opt.Value;
+                    continue;
+                }
+                
+                if (OptionDescriptorDefinitions.TextOptionDescriptor == opt.Descriptor)
+                {
+                    if (!string.IsNullOrEmpty(opt.Value))
+                    {
+                        var engine = new TemplateEngine(opt.Value);
+                        config.PlaceHolderText = engine.ToString();
+                    }
+                    continue;
+                }
+                
+                if (OptionDescriptorDefinitions.PlaceHolderFileOptionDescriptor == opt.Descriptor)
+                {
+                    if (!string.IsNullOrEmpty(opt.Value))
+                    {
+                        try
+                        {
+                            var filename = opt.Value;
+                            var placeHolderTemplate = File.ReadAllText(filename);
+                            var engine = new TemplateEngine(placeHolderTemplate);
+                            config.PlaceHolderText = engine.ToString();
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Log(ex);
+                        }
+                    }
+                    continue;
+                }
+                
+                if (OptionDescriptorDefinitions.VerboseOptionDescriptor == opt.Descriptor)
+                {
+                    config.Verbose = true;
+                    continue;
+                }
+                
+                if (OptionDescriptorDefinitions.ShortOptionDescriptor == opt.Descriptor)
+                {
+                    config.Short = true;
+                    continue;
+                }
+                
+                if (OptionDescriptorDefinitions.CleanOptionDescriptor == opt.Descriptor)
+                {
+                    config.CleanUp = true;
+                    continue;
+                }
+
+                if (OptionDescriptorDefinitions.DryRunOptionDescriptor == opt.Descriptor)
+                {
+                    config.DryRun = true;
+                    continue;
+                }
+
+                if (OptionDescriptorDefinitions.ExcludeOptionDescriptor == opt.Descriptor)
+                {
+                    var dirs = null != opt.Value ? opt.Value.Split(Path.PathSeparator) : new string[0];
+                    var dirList = new List<string>(dirs.Length);
+                    dirList.AddRange(dirs);
+                    config.Exclude = dirList;
+                    continue;
+                }
+                
+                if (OptionDescriptorDefinitions.HelpOptionDescriptor == opt.Descriptor)
+                {
+                    config.Help = true;
+                    continue;
+                }
+                
+                if (OptionDescriptorDefinitions.ListOptionDescriptor == opt.Descriptor)
+                {
+                    config.Short = config.DryRun = config.CleanUp = true;
+                    continue;
+                }
+
+//                if (OptionDescriptorDefinitions.SyncOptionDescriptor == opt.Descriptor)
+//                {
+//                    CleanUp = false;
+//                    continue;
+//                }
+
+                // If we have a descriptor-less option assume it is the directory parameter.
+                if (null == directory && OptionType.Short != opt.OptionType && null == opt.Descriptor)
+                {
+                    directory = opt.Value;
+                    continue;
+                }
+
+                if (OptionType.NoOption == opt.OptionType)
+                    throw new Exception(string.Format("Unknown parameter: '{0}'", opt.Value));
+                else
+                    throw new Exception(string.Format("Unknown option: '{0}' (value: '{1}')", opt.Name, opt.Value));
+            }
+
+            if (null == directory)
+            {
+                throw new Exception("No directory specified!");
+            }
+
+            var dirInfo = new DirectoryInfo(directory);
+            if (!dirInfo.Exists)
+            {
+                throw new Exception(string.Format("Not a directory: '{0}'", dirInfo.FullName));
+            }
+
+            config.Directory = dirInfo;
+
+            return config;
+        }
+        
+        public static void Main(string[] args)
+        {
+            args = GetDecoratedArgs(args);
+
             try
             {
-                var optionParser = new OptionParser(OptionDescriptorDefinitions.OptionDescriptors);
-                var options = optionParser.ParseOptions(args);
+                var config = ParseConfiguration(args);
     
                 ICommand cmd;
-    
-                if (null != Option.FindFirstByDescriptor(OptionDescriptorDefinitions.HelpOptionDescriptor, options))
-                    cmd = new HelpCommand() { Writer = Console.Out };
+
+                if (config.Help)
+                    cmd = new HelpCommand { Writer = Console.Out };
+                else if (config.CleanUp)
+                    cmd = new CleanPlaceHoldersVisitor();
                 else
-                    cmd = new MarkEmptyDirsVisitor();
+                    cmd = new SyncPlaceHoldersVisitor();
     
-                cmd.Execute(options);
+                cmd.Execute(config);
             }
             catch (Exception ex)
             {
