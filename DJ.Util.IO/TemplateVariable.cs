@@ -27,8 +27,8 @@ namespace DJ.Util.IO
         public const string Pattern = @"(?<Variable>§(?<Name>[a-zA-Z][a-zA-Z_]*)(\:(?<Args>[^§]*))?§)";
         
         private readonly string _name;
-        
-        public TemplateVariable(string name)
+
+        protected TemplateVariable(string name)
         {
             _name = name;
         }
