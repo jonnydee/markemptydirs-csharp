@@ -45,32 +45,33 @@ namespace DJ.App.MarkEmptyDirs
 
         public static string GetSettingsInEnvironmentVariable()
         {
-            IDictionary env = Environment.GetEnvironmentVariables();
-            foreach(var key in env.Keys)
+            try
             {
-                if (key.ToString().ToUpper() == SettingsEnvironmentVariable.ToUpper())
-                    return env[key].ToString().Trim();
+                var env = Environment.GetEnvironmentVariables();
+                foreach (var key in env.Keys)
+                {
+                    if (key.ToString().ToUpper() == SettingsEnvironmentVariable.ToUpper())
+                        return env[key].ToString().Trim();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Ignore any exception here as there is nothing critical to handle.
+                Logger.Log(Logger.LogType.Warn, ex.Message);
             }
             return null;
         }
 
         private static string[] GetDecoratedArgs(string[] args)
         {
-            try
+            var envVarValue = GetSettingsInEnvironmentVariable();
+            if (null != envVarValue)
             {
-                var envVarValue = GetSettingsInEnvironmentVariable();
-                if (null != envVarValue)
-                {
-                    string[] defaultArgs = ParseArgs(envVarValue);
-                    var newArgs = new string[defaultArgs.Length + args.Length];
-                    defaultArgs.CopyTo(newArgs, 0);
-                    args.CopyTo(newArgs, defaultArgs.Length);
-                    return newArgs;
-                }
-            }
-            catch
-            {
-                // Ignore any exception here as there is nothing critical to handle.
+                var defaultArgs = ParseArgs(envVarValue);
+                var newArgs = new string[defaultArgs.Length + args.Length];
+                defaultArgs.CopyTo(newArgs, 0);
+                args.CopyTo(newArgs, defaultArgs.Length);
+                return newArgs;
             }
             return args;
         }

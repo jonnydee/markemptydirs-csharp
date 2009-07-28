@@ -147,7 +147,13 @@ namespace DJ.App.MarkEmptyDirs
                     longNameColumn.Append("|").Append(descr.LongNames[i]);
             }
 
-            return new[] { shortNameColumn.ToString(), longNameColumn.ToString(), descr.ShortDescription ?? "" };
+            var shortNameColumnString = shortNameColumn.ToString();
+            var longNameColumnString = longNameColumn.ToString();
+            var shortDescription = descr.ShortDescription ?? string.Empty;
+
+            var columns = new[] { shortNameColumnString, longNameColumnString, shortDescription };
+
+            return columns;
         }
 
         public string GetDescription(params OptionDescriptor[] descriptors)
