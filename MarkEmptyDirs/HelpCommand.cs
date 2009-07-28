@@ -44,7 +44,7 @@ namespace DJ.App.MarkEmptyDirs
             }
             catch
             {
-                return new string[] { MainClass.StandardCmdName + "." + MainClass.StandardCmdExtension, MainClass.StandardCmdName, MainClass.StandardCmdExtension };
+                return new[] { MainClass.StandardCmdName + "." + MainClass.StandardCmdExtension, MainClass.StandardCmdName, MainClass.StandardCmdExtension };
             }
         }
 
@@ -199,7 +199,7 @@ namespace DJ.App.MarkEmptyDirs
             }
             
             var description = new StringBuilder();
-            for (int i = 0; i < variables.Count; i++)
+            for (var i = 0; i < variables.Count; i++)
             {
                 description.AppendFormat("  {0,-" + maxNameColumnWidth + "}  {1}\n", variableNames[i], variables[i].Description);
                 if (null != variables[i].ArgumentDescription)
