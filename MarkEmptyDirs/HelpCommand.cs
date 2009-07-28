@@ -77,7 +77,7 @@ namespace DJ.App.MarkEmptyDirs
             usage.Append(GetDescription(OptionDescriptorDefinitions.OptionDescriptors));
             usage.Append('\n');
 
-            string envValue = MainClass.GetSettingsInEnvironmentVariable();
+            var envValue = MainClass.GetSettingsInEnvironmentVariable();
             if (null != envValue)
             {
                 if (string.Empty == envValue)
@@ -189,8 +189,8 @@ namespace DJ.App.MarkEmptyDirs
         
         public string GetDescription(List<TemplateVariable> variables)
         {
-            List<string> variableNames = new List<string>();
-            int maxNameColumnWidth = 0;
+            var variableNames = new List<string>();
+            var maxNameColumnWidth = 0;
             foreach (var variable in variables)
             {
                 var variableName = GetUsageForm(variable);

@@ -27,9 +27,10 @@ namespace DJ.App.MarkEmptyDirs
     
     public class SyncPlaceHoldersVisitor : IDirectoryVisitor, ICommand
     {
-        private List<FileInfo> _existingFiles;
+        private readonly List<FileInfo> _existingFiles;
         private Configuration _configuration;
         
+
         public SyncPlaceHoldersVisitor()
         {
             _existingFiles = new List<FileInfo>();            
@@ -64,23 +65,23 @@ namespace DJ.App.MarkEmptyDirs
             foreach (var visitedFileInfo in _existingFiles)
             {
                 var visitedFile = visitedFileInfo.FullName;
-                if (visitedFile.StartsWith(dirName))
-                {
-                    // At this point there is either a file in a sub-directory,
-                    // or in the current directory (dirInfo).
+                if (!visitedFile.StartsWith(dirName))
+                    continue;
 
-                    // If the already visited file is in a sub-directory,
-                    // then no placeholder is needed for the current directory.
-                    if (visitedFileInfo.Directory.FullName.Length > dirName.Length)
-                        return false;
+                // At this point there is either a file in a sub-directory,
+                // or in the current directory (dirInfo).
 
-                    // The already visited file is in the current directory.
-                    // So if this file is not a placeholder file we do not need
-                    // a placeholder.
-                    var visitedFileName = visitedFileInfo.Name;
-                    if (visitedFileName != _configuration.PlaceHolderName)
-                        return false;
-                }
+                // If the already visited file is in a sub-directory,
+                // then no placeholder is needed for the current directory.
+                if (visitedFileInfo.Directory.FullName.Length > dirName.Length)
+                    return false;
+
+                // The already visited file is in the current directory.
+                // So if this file is not a placeholder file we do not need
+                // a placeholder.
+                var visitedFileName = visitedFileInfo.Name;
+                if (visitedFileName != _configuration.PlaceHolderName)
+                    return false;
             }
             return true;
         }
