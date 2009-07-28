@@ -25,7 +25,8 @@ namespace DJ.Util.IO
         {
             Debug,
             Info,
-            Error
+            Error,
+            Warn
         }
 
         public static void Log(Exception ex)
@@ -50,6 +51,9 @@ namespace DJ.Util.IO
                     break;
                 case LogType.Error:
                     Console.Error.WriteLine((shortMessage ? "" : "ERROR: ") + message);
+                    break;
+                case LogType.Warn:
+                    Console.Error.WriteLine((shortMessage ? "" : "WARNING: ") + message);
                     break;
             }
             
