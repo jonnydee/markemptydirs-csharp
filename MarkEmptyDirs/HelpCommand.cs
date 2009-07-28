@@ -87,7 +87,7 @@ namespace DJ.App.MarkEmptyDirs
                 envValue = "<VARIABLE UNDEFINED>";
             usage.AppendFormat("Defaults set in environment variable '{0}':\n  {1}\n\n", MainClass.SettingsEnvironmentVariable, envValue);
 
-            usage.Append("Defined template variables:\n");
+            usage.Append("Available template variables for placeholder files:\n");
             usage.Append(GetDescription(new TemplateEngine("").ListTemplateVariables()));
             
             Writer.WriteLine(usage.ToString());
@@ -203,7 +203,7 @@ namespace DJ.App.MarkEmptyDirs
             {
                 description.AppendFormat("  {0,-" + maxNameColumnWidth + "}  {1}\n", variableNames[i], variables[i].Description);
                 if (null != variables[i].ArgumentDescription)
-                    description.AppendFormat("  {0,-" + maxNameColumnWidth + "}  | {1}: {2}", " ", variables[i].ArgumentIdentifier, variables[i].ArgumentDescription);
+                    description.AppendFormat("  {0,-" + maxNameColumnWidth + "}  <{1}> : {2}", " ", variables[i].ArgumentIdentifier, variables[i].ArgumentDescription);
                 description.AppendLine();
             }
 
