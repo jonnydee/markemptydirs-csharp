@@ -98,7 +98,7 @@ namespace DJ.Util.IO
             };
         }
         
-        [Test()]
+        [Test]
         public void TestDepthFirstVisitAllFileSystemInfos()
         {
             var visitor = new TestDepthFirstVisitAllFileSystemInfosVisitor() { FileSystemInfoFullNames = GetFileSystemInfoFullNames() };
