@@ -224,5 +224,53 @@ namespace DJ.Util.IO
                 return FileSystemInfoFullNames.Remove(fileInfo.FullName) && (StopWalkingAfterVisitFileFullName != fileInfo.FullName);
             }
         }
+
+        [Test]
+        public void TestPostVisitDirectoryReturnsFalseStopsWalking()
+        {
+            var visitor = new TestPostVisitDirectoryReturnsFalseStopsWalkingVisitor() 
+            {
+                FileSystemInfoFullNames = GetFileSystemInfoFullNames(),
+                StopWalkingAfterPostVisitDirectoryFullName = _aDirInfo.FullName,
+            };
+            DirectoryWalker.Walk(_tmpDirInfo, visitor);
+
+            var prunedFileSystemInfoFullNames = new List<string>
+            {
+                _c5FileInfo.FullName,
+                _c6FileInfo.FullName,
+                _cDirInfo.FullName,
+            };
+            
+            for (int i = 0; i < visitor.FileSystemInfoFullNames.Count; i++)
+            {
+                Console.WriteLine("Pruned: " + visitor.FileSystemInfoFullNames[i]);
+                Assert.That(visitor.FileSystemInfoFullNames[i] == prunedFileSystemInfoFullNames[i]);
+            }
+        }
+
+        class TestPostVisitDirectoryReturnsFalseStopsWalkingVisitor : IDirectoryVisitor
+        {
+            public List<string> FileSystemInfoFullNames { set; get; }
+            public string StopWalkingAfterPostVisitDirectoryFullName { set; get; }
+            
+            public bool PreVisit (DirectoryInfo dirInfo)
+            {
+                Console.WriteLine("PreVisit: " + dirInfo.FullName);
+                return true;
+            }
+            
+            public bool PostVisit (DirectoryInfo dirInfo)
+            {
+                Console.WriteLine("PostVisit: " + dirInfo.FullName);
+                return FileSystemInfoFullNames.Remove(dirInfo.FullName) && (StopWalkingAfterPostVisitDirectoryFullName != dirInfo.FullName);
+            }
+            
+            public bool Visit (FileInfo fileInfo)
+            {
+                Console.WriteLine("Visit: " + fileInfo.FullName);
+                return FileSystemInfoFullNames.Remove(fileInfo.FullName);
+            }
+        }
     }
 }
