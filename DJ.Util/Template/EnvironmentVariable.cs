@@ -17,32 +17,31 @@
 
 using System;
 
-namespace DJ.Util.IO
+namespace DJ.Util.Template
 {
     
-    public class SpaceVariable : TemplateVariable
+    public class EnvironmentVariable : TemplateVariable
     {
-        
-        public SpaceVariable() : base("sp")
+        public EnvironmentVariable() : base("env")
         {
         }
 
         public override string GetValueFor (TemplateEngine ctx, string arg)
         {
-            int count = 1;
             try
             {
-                count = Convert.ToInt32(arg);
+                var envName = arg.Split(new[] { ' ' }, 1)[0].Trim();
+                return Environment.GetEnvironmentVariable(envName);
             }
             catch
             {
+                return arg;
             }
-            return new string(' ', count);
         }
 
         public override string Description
         {
-            get { return "get a space character"; }
+            get { return "get the value from an environment variable"; }
         }
 
         public override bool CanHaveArgument
@@ -52,17 +51,18 @@ namespace DJ.Util.IO
 
         public override string ArgumentDescription
         {
-            get { return "integer describing how many spaces should be returned"; }
+            get { return "the environment variable's name"; }
         }
 
         public override string ArgumentIdentifier
         {
-            get { return "count"; }
+            get { return "env-var-name"; }
         }
 
         public override bool ArgumentMandatory
         {
-            get { return false; }
+            get { return true; }
         }
     }
+    
 }

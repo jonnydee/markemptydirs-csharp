@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -16,6 +16,8 @@
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>MarkEmptyDirs.snk</AssemblyOriginatorKeyFile>
+    <StartupObject>DJ.App.MarkEmptyDirs.MainClass</StartupObject>
+    <AssemblyName>MarkEmptyDirs</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,7 +27,8 @@
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
-    <AssemblyName>MarkEmptyDirs</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyKeyFile>MarkEmptyDirs.snk</AssemblyKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -33,7 +36,8 @@
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>DirFiller</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyKeyFile>MarkEmptyDirs.snk</AssemblyKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -53,9 +57,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\DJ.Util.IO\DJ.Util.IO.csproj">
+    <ProjectReference Include="..\DJ.Util\DJ.Util.csproj">
       <Project>{D929695A-E1F2-4086-9573-9CD1828B6ADA}</Project>
-      <Name>DJ.Util.IO</Name>
+      <Name>DJ.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

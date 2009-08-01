@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace DJ.Util.IO
+namespace DJ.Util.Template
 {
     public class TemplateEngine
     {

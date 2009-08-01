@@ -17,19 +17,32 @@
 
 using System;
 
-namespace DJ.Util.IO
+namespace DJ.Util.Template
 {
     
-    public class DateTimeVariable : TemplateVariable
+    public class SpaceVariable : TemplateVariable
     {
         
-        public DateTimeVariable() : base("datetime")
+        public SpaceVariable() : base("sp")
         {
+        }
+
+        public override string GetValueFor (TemplateEngine ctx, string arg)
+        {
+            int count = 1;
+            try
+            {
+                count = Convert.ToInt32(arg);
+            }
+            catch
+            {
+            }
+            return new string(' ', count);
         }
 
         public override string Description
         {
-            get { return "get UTC time"; }
+            get { return "get a space character"; }
         }
 
         public override bool CanHaveArgument
@@ -39,24 +52,17 @@ namespace DJ.Util.IO
 
         public override string ArgumentDescription
         {
-            get { return "C# DateTime format pattern string"; }
+            get { return "integer describing how many spaces should be returned"; }
         }
 
         public override string ArgumentIdentifier
         {
-            get { return "format-pattern"; }
+            get { return "count"; }
         }
 
-        public override bool ArgumentMandatory 
+        public override bool ArgumentMandatory
         {
             get { return false; }
         }
-
-        public override string GetValueFor (TemplateEngine ctx, string arg)
-        {
-            var datetime = DateTime.Now.ToUniversalTime();
-            return string.IsNullOrEmpty(arg) ? datetime.ToString() : datetime.ToString(arg);
-        }
-
     }
 }

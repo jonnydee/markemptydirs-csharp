@@ -17,31 +17,19 @@
 
 using System;
 
-namespace DJ.Util.IO
+namespace DJ.Util.Template
 {
     
-    public class EnvironmentVariable : TemplateVariable
+    public class DateTimeVariable : TemplateVariable
     {
-        public EnvironmentVariable() : base("env")
+        
+        public DateTimeVariable() : base("datetime")
         {
-        }
-
-        public override string GetValueFor (TemplateEngine ctx, string arg)
-        {
-            try
-            {
-                var envName = arg.Split(new[] { ' ' }, 1)[0].Trim();
-                return Environment.GetEnvironmentVariable(envName);
-            }
-            catch
-            {
-                return arg;
-            }
         }
 
         public override string Description
         {
-            get { return "get the value from an environment variable"; }
+            get { return "get UTC time"; }
         }
 
         public override bool CanHaveArgument
@@ -51,18 +39,24 @@ namespace DJ.Util.IO
 
         public override string ArgumentDescription
         {
-            get { return "the environment variable's name"; }
+            get { return "C# DateTime format pattern string"; }
         }
 
         public override string ArgumentIdentifier
         {
-            get { return "env-var-name"; }
+            get { return "format-pattern"; }
         }
 
-        public override bool ArgumentMandatory
+        public override bool ArgumentMandatory 
         {
-            get { return true; }
+            get { return false; }
         }
+
+        public override string GetValueFor (TemplateEngine ctx, string arg)
+        {
+            var datetime = DateTime.Now.ToUniversalTime();
+            return string.IsNullOrEmpty(arg) ? datetime.ToString() : datetime.ToString(arg);
+        }
+
     }
-    
 }
