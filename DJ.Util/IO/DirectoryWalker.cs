@@ -21,10 +21,10 @@ namespace DJ.Util.IO
 {
     public static class DirectoryWalker
     {
-        public static void Walk(FileSystemInfo fileSystemInfo, IDirectoryVisitor visitor)
+        public static bool Walk(FileSystemInfo fileSystemInfo, IDirectoryVisitor visitor)
         {
             if (!fileSystemInfo.Exists)
-                return;
+                return false;
 
             if ((fileSystemInfo.Attributes & FileAttributes.Directory) != 0)
             {
@@ -34,21 +34,27 @@ namespace DJ.Util.IO
                 {
                     var subDirectories = dirInfo.GetDirectories();
                     foreach (var subDirectory in subDirectories)
-                        Walk(subDirectory, visitor);
+                        if (!Walk(subDirectory, visitor))
+                            return false;
                     
                     var files = dirInfo.GetFiles();
                     foreach (var file in files)
-                        Walk(file, visitor);
+                        if (!Walk(file, visitor))
+                            return false;
 
-                    visitor.PostVisit(dirInfo);
+                    if (!visitor.PostVisit(dirInfo))
+                        return false;
                 }
             }
             else
             {
                 var fileInfo = (FileInfo)fileSystemInfo;
 
-                visitor.Visit(fileInfo);
+                if (!visitor.Visit(fileInfo))
+                    return false;
             }
+            
+            return true;
         }
     }
 }
