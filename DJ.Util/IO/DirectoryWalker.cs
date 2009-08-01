@@ -26,35 +26,46 @@ namespace DJ.Util.IO
             if (!fileSystemInfo.Exists)
                 return false;
 
+            // Check if we are walking a directory.
+            
             if ((fileSystemInfo.Attributes & FileAttributes.Directory) != 0)
             {
                 var dirInfo = (DirectoryInfo)fileSystemInfo;
 
                 if (visitor.PreVisit(dirInfo))
                 {
+                    bool continueWalking = true;
+                    
                     var subDirectories = dirInfo.GetDirectories();
                     foreach (var subDirectory in subDirectories)
-                        if (!Walk(subDirectory, visitor))
-                            return false;
-                    
-                    var files = dirInfo.GetFiles();
-                    foreach (var file in files)
-                        if (!Walk(file, visitor))
-                            return false;
+                    {
+                        continueWalking = Walk(subDirectory, visitor);
+                        if (!continueWalking)
+                            break;
+                    }
 
-                    if (!visitor.PostVisit(dirInfo))
-                        return false;
+                    if (continueWalking)
+                    {
+                        var files = dirInfo.GetFiles();
+                        foreach (var file in files)
+                        {
+                            continueWalking = Walk(file, visitor);
+                            if (!continueWalking)
+                                break;
+                        }
+                    }
+
+                    return visitor.PostVisit(dirInfo) && continueWalking;
                 }
-            }
-            else
-            {
-                var fileInfo = (FileInfo)fileSystemInfo;
 
-                if (!visitor.Visit(fileInfo))
-                    return false;
+                return true;
             }
+
+            // We must be walking a file.
             
-            return true;
+            var fileInfo = (FileInfo)fileSystemInfo;
+            
+            return visitor.Visit(fileInfo);
         }
     }
 }
