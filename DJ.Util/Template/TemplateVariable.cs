@@ -17,7 +17,7 @@
 
 using System;
 
-namespace DJ.Util.IO
+namespace DJ.Util.Template
 {
     abstract public class TemplateVariable
     {

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D929695A-E1F2-4086-9573-9CD1828B6ADA}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>DJ.Util.IO</RootNamespace>
-    <AssemblyName>DJ.Util.IO</AssemblyName>
+    <RootNamespace>DJ.Util</RootNamespace>
+    <AssemblyName>DJ.Util</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -27,6 +27,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyKeyFile>DJ.Util.snk</AssemblyKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -35,28 +37,43 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyKeyFile>DJ.Util.snk</AssemblyKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="DirectoryWalker.cs" />
-    <Compile Include="IDirectoryVisitor.cs" />
-    <Compile Include="OptionParser.cs" />
-    <Compile Include="OptionDescriptor.cs" />
-    <Compile Include="Option.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="TemplateEngine.cs" />
-    <Compile Include="TemplateVariable.cs" />
-    <Compile Include="GuidVariable.cs" />
-    <Compile Include="DateTimeVariable.cs" />
-    <Compile Include="EnvironmentVariable.cs" />
-    <Compile Include="LineFeedVariable.cs" />
-    <Compile Include="SpaceVariable.cs" />
+    <Compile Include="Template\DateTimeVariable.cs" />
+    <Compile Include="Template\EnvironmentVariable.cs" />
+    <Compile Include="Template\GuidVariable.cs" />
+    <Compile Include="Template\LineFeedVariable.cs" />
+    <Compile Include="Template\SpaceVariable.cs" />
+    <Compile Include="Template\TemplateEngine.cs" />
+    <Compile Include="Template\TemplateVariable.cs" />
+    <Compile Include="IO\DirectoryWalker.cs" />
+    <Compile Include="IO\IDirectoryVisitor.cs" />
+    <Compile Include="IO\Option.cs" />
+    <Compile Include="IO\OptionDescriptor.cs" />
+    <Compile Include="IO\OptionParser.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DJ.Util.IO.snk" />
+    <None Include="DJ.Util.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Template\" />
+    <Folder Include="IO\" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedFlat" ResourceNamePolicy="FileFormatDefault" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>
