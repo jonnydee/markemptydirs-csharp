@@ -141,7 +141,7 @@ namespace DJ.Util.IO
             var visitor = new TestPreVisitFalsePrunesDirectoryVisitor() 
             {
                 FileSystemInfoFullNames = GetFileSystemInfoFullNames(),
-                PruneDirectory = _abDirInfo,
+                PruneDirectoryFullName = _abDirInfo.FullName,
             };
             DirectoryWalker.Walk(_tmpDirInfo, visitor);
             
@@ -155,12 +155,12 @@ namespace DJ.Util.IO
         class TestPreVisitFalsePrunesDirectoryVisitor : IDirectoryVisitor
         {
             public List<string> FileSystemInfoFullNames { set; get; }
-            public DirectoryInfo PruneDirectory { set; get; }
+            public string PruneDirectoryFullName { set; get; }
             
             public bool PreVisit (DirectoryInfo dirInfo)
             {
                 Console.WriteLine("PreVisit: " + dirInfo.FullName);
-                return PruneDirectory.FullName != dirInfo.FullName;
+                return PruneDirectoryFullName != dirInfo.FullName;
             }
             
             public bool PostVisit (DirectoryInfo dirInfo)
