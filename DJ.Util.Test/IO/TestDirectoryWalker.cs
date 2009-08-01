@@ -134,5 +134,46 @@ namespace DJ.Util.IO
                 return equalFullName;
             }
         }
+
+        [Test]
+        public void TestPreVisitFalsePrunesDirectory()
+        {
+            var visitor = new TestPreVisitFalsePrunesDirectoryVisitor() 
+            {
+                FileSystemInfoFullNames = GetFileSystemInfoFullNames(),
+                PruneDirectory = _abDirInfo,
+            };
+            DirectoryWalker.Walk(_tmpDirInfo, visitor);
+            
+            foreach (var fullName in visitor.FileSystemInfoFullNames)
+            {
+                Console.WriteLine("Pruned: " + fullName);
+                Assert.That(fullName.StartsWith(_abDirInfo.FullName));
+            }
+        }
+
+        class TestPreVisitFalsePrunesDirectoryVisitor : IDirectoryVisitor
+        {
+            public List<string> FileSystemInfoFullNames { set; get; }
+            public DirectoryInfo PruneDirectory { set; get; }
+            
+            public bool PreVisit (DirectoryInfo dirInfo)
+            {
+                Console.WriteLine("PreVisit: " + dirInfo.FullName);
+                return PruneDirectory.FullName != dirInfo.FullName;
+            }
+            
+            public bool PostVisit (DirectoryInfo dirInfo)
+            {
+                Console.WriteLine("PostVisit: " + dirInfo.FullName);
+                return FileSystemInfoFullNames.Remove(dirInfo.FullName);
+            }
+            
+            public bool Visit (FileInfo fileInfo)
+            {
+                Console.WriteLine("Visit: " + fileInfo.FullName);
+                return FileSystemInfoFullNames.Remove(fileInfo.FullName);
+            }
+        }
     }
 }
