@@ -112,12 +112,13 @@ namespace DJ.Util.IO
             
             public bool PreVisit (DirectoryInfo dirInfo)
             {
+                Console.WriteLine("PreVisit: " + dirInfo.FullName);
                 return true;
             }
             
             public bool PostVisit (DirectoryInfo dirInfo)
             {
-                Console.WriteLine(dirInfo.FullName);
+                Console.WriteLine("PostVisit: " + dirInfo.FullName);
                 bool equalFullName = FileSystemInfoFullNames[0] == dirInfo.FullName;
                 if (equalFullName)
                     FileSystemInfoFullNames.RemoveAt(0);
@@ -126,7 +127,7 @@ namespace DJ.Util.IO
             
             public bool Visit (FileInfo fileInfo)
             {
-                Console.WriteLine(fileInfo.FullName);
+                Console.WriteLine("Visit: " + fileInfo.FullName);
                 bool equalFullName = FileSystemInfoFullNames[0] == fileInfo.FullName;
                 if (equalFullName)
                     FileSystemInfoFullNames.RemoveAt(0);
