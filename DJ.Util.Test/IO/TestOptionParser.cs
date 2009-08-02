@@ -322,6 +322,84 @@ namespace DJ.Util.IO
             Assert.AreEqual(options[2].OptionType, OptionType.NoOption);
         }
 
+        [Test]
+        public void TestParseUnknownShortFormOption()
+        {
+            var optionName = "u";
+            var noOption = "no-option";
+            var args = new[]
+            {
+                "-" + optionName,
+                noOption,
+            };
+
+            var parser = new OptionParser();
+            var options = parser.ParseOptions(args);
+
+            Assert.AreEqual(options.Count, 2);
+            
+            Assert.IsNull(options[0].Descriptor);
+            Assert.AreEqual(options[0].Name, optionName);
+            Assert.IsNull(options[0].Value);
+            Assert.AreEqual(options[0].OptionType, OptionType.Short);
+
+            Assert.IsNull(options[1].Descriptor);
+            Assert.IsNull(options[1].Name);
+            Assert.AreEqual(options[1].Value, noOption);
+            Assert.AreEqual(options[1].OptionType, OptionType.NoOption);
+        }
+
+        [Test]
+        public void TestParseUnknownLongFormOption()
+        {
+            var optionName = "unknown-option";
+            var noOption = "no-option";
+            var args = new[]
+            {
+                "--" + optionName,
+                noOption,
+                "--" + optionName + "=",
+                noOption,
+                "--" + optionName + "=" + noOption,
+                noOption,
+            };
+
+            var parser = new OptionParser();
+            var options = parser.ParseOptions(args);
+
+            Assert.AreEqual(options.Count, 6);
+            
+            Assert.IsNull(options[0].Descriptor);
+            Assert.AreEqual(options[0].Name, optionName);
+            Assert.IsNull(options[0].Value);
+            Assert.AreEqual(options[0].OptionType, OptionType.Long);
+
+            Assert.IsNull(options[1].Descriptor);
+            Assert.IsNull(options[1].Name);
+            Assert.AreEqual(options[1].Value, noOption);
+            Assert.AreEqual(options[1].OptionType, OptionType.NoOption);
+            
+            Assert.IsNull(options[2].Descriptor);
+            Assert.AreEqual(options[2].Name, optionName);
+            Assert.IsEmpty(options[2].Value);
+            Assert.AreEqual(options[2].OptionType, OptionType.Long);
+
+            Assert.IsNull(options[3].Descriptor);
+            Assert.IsNull(options[3].Name);
+            Assert.AreEqual(options[3].Value, noOption);
+            Assert.AreEqual(options[3].OptionType, OptionType.NoOption);
+            
+            Assert.IsNull(options[4].Descriptor);
+            Assert.AreEqual(options[4].Name, optionName);
+            Assert.AreEqual(options[4].Value, noOption);
+            Assert.AreEqual(options[4].OptionType, OptionType.Long);
+
+            Assert.IsNull(options[5].Descriptor);
+            Assert.IsNull(options[5].Name);
+            Assert.AreEqual(options[5].Value, noOption);
+            Assert.AreEqual(options[5].OptionType, OptionType.NoOption);
+        }
+
         
         public static class OptionDescriptorDefinitions
         {
