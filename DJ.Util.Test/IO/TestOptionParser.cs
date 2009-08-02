@@ -59,6 +59,8 @@ namespace DJ.Util.IO
 
             Assert.AreEqual(options.Count, 1);
             Assert.AreSame(options[0].Descriptor, optionDescriptor);
+            Assert.AreEqual(options[0].Name, optionDescriptor.LongNames[0]);
+            Assert.AreEqual(options[0].OptionType, OptionType.Long);
         }
 
         [Test]
@@ -71,8 +73,14 @@ namespace DJ.Util.IO
             var options = parser.ParseOptions(args);
 
             Assert.AreEqual(options.Count, 2);
+            
             Assert.AreSame(options[0].Descriptor, optionDescriptor);
+            Assert.AreEqual(options[0].Name, optionDescriptor.LongNames[0]);
+            Assert.AreEqual(options[0].OptionType, OptionType.Long);
+            
             Assert.AreSame(options[1].Descriptor, optionDescriptor);
+            Assert.AreEqual(options[1].Name, optionDescriptor.LongNames[1]);
+            Assert.AreEqual(options[1].OptionType, OptionType.Long);
         }
 
         
