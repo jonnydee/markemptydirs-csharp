@@ -40,6 +40,9 @@ namespace DJ.Util.IO
             
             foreach (var optionDescr in _optionDescriptors)
             {
+                if (null == optionDescr.LongNames)
+                    continue;
+                
                 foreach (var longName in optionDescr.LongNames)
                     map[longName] = optionDescr;
             }
@@ -53,6 +56,9 @@ namespace DJ.Util.IO
             
             foreach (var optionDescr in _optionDescriptors)
             {
+                if (null == optionDescr.ShortNames)
+                    continue;
+                
                 foreach (var shortName in optionDescr.ShortNames)
                     map[shortName] = optionDescr;
             }
