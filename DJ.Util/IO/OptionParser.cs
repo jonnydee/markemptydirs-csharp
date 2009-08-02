@@ -23,9 +23,14 @@ namespace DJ.Util.IO
 
     public class OptionParser
     {
-        private OptionDescriptor[] _optionDescriptors;
+        private readonly ICollection<OptionDescriptor> _optionDescriptors;
         
         public OptionParser(params OptionDescriptor[] optionDescriptors)
+            : this((ICollection<OptionDescriptor>)optionDescriptors)
+        {
+        }
+
+        public OptionParser(ICollection<OptionDescriptor> optionDescriptors)
         {
             _optionDescriptors = optionDescriptors;
         }
