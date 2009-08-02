@@ -31,12 +31,6 @@ namespace DJ.Util.Template
         {
             _source = source;
             _variableMap = new Dictionary<string, TemplateVariable>();
-
-            AddVariable(new DateTimeVariable());
-            AddVariable(new EnvironmentVariable());
-            AddVariable(new GuidVariable());
-            AddVariable(new LineFeedVariable());
-            AddVariable(new SpaceVariable());
         }
 
         public void AddVariable(TemplateVariable variable)
