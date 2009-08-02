@@ -26,7 +26,7 @@ namespace DJ.Util.Template
         {
         }
         
-        public override string GetValueFor (TemplateEngine ctx, string arg)
+        public override string EvaluateValueFor(TemplateEngine ctx, string arg)
         {
             return Guid.NewGuid().ToString();
         }

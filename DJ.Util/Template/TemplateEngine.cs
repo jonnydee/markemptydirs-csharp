@@ -38,10 +38,10 @@ namespace DJ.Util.Template
             _variableMap[variable.Name] = variable;
         }
 
-        public string GetVariableValue(string name, string args)
+        public string EvaluateVariableValue(string name, string args)
         {
             if (_variableMap.ContainsKey(name))
-                return _variableMap[name].GetValueFor(this, args);
+                return _variableMap[name].EvaluateValueFor(this, args);
             return string.Empty;
         }
 
@@ -72,7 +72,7 @@ namespace DJ.Util.Template
                 var variableName = match.Groups["Name"].ToString();
                 // TODO Use regexp to spilt args.
                 var args = match.Groups["Args"].ToString();
-                var variableValue = GetVariableValue(variableName, args);
+                var variableValue = EvaluateVariableValue(variableName, args);
                 str = str.Replace(match.Groups["Variable"].ToString(), variableValue);
             }
             return str;
