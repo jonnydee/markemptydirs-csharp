@@ -83,6 +83,166 @@ namespace DJ.Util.IO
             Assert.AreEqual(options[1].OptionType, OptionType.Long);
         }
 
+        [Test]
+        public void TestParseShortFormOnlyOptionDescriptor()
+        {
+            var optionDescriptor = OptionDescriptorDefinitions.ShortFormOnlyOptionDescriptor;
+            var args = new[] { "-" + optionDescriptor.ShortNames[0] };
+
+            var parser = new OptionParser(optionDescriptor);
+            var options = parser.ParseOptions(args);
+
+            Assert.AreEqual(options.Count, 1);
+            
+            Assert.AreSame(options[0].Descriptor, optionDescriptor);
+            Assert.AreEqual(options[0].Name, optionDescriptor.ShortNames[0].ToString());
+            Assert.AreEqual(options[0].OptionType, OptionType.Short);
+        }
+
+        [Test]
+        public void TestParseShortFormOnlyAliasOptionDescriptor()
+        {
+            var optionDescriptor = OptionDescriptorDefinitions.ShortFormOnlyAliasOptionDescriptor;
+            var args = new[] { "-" + optionDescriptor.ShortNames[0], "-" + optionDescriptor.ShortNames[1] };
+
+            var parser = new OptionParser(optionDescriptor);
+            var options = parser.ParseOptions(args);
+
+            Assert.AreEqual(options.Count, 2);
+
+            Assert.AreSame(options[0].Descriptor, optionDescriptor);
+            Assert.AreEqual(options[0].Name, optionDescriptor.ShortNames[0].ToString());
+            Assert.AreEqual(options[0].OptionType, OptionType.Short);
+
+            Assert.AreSame(options[1].Descriptor, optionDescriptor);
+            Assert.AreEqual(options[1].Name, optionDescriptor.ShortNames[1].ToString());
+            Assert.AreEqual(options[1].OptionType, OptionType.Short);
+        }
+
+        [Test]
+        public void TestParseNormalOptionDescriptor()
+        {
+            var optionDescriptor = OptionDescriptorDefinitions.NormalOptionDescriptor;
+            var args = new[]
+            {
+                "-" + optionDescriptor.ShortNames[0],
+                "--" + optionDescriptor.LongNames[0],
+                "-" + optionDescriptor.ShortNames[1],
+                "--" + optionDescriptor.LongNames[1],
+            };
+
+            var parser = new OptionParser(optionDescriptor);
+            var options = parser.ParseOptions(args);
+
+            Assert.AreEqual(options.Count, 4);
+
+            Assert.AreSame(options[0].Descriptor, optionDescriptor);
+            Assert.AreEqual(options[0].Name, optionDescriptor.ShortNames[0].ToString());
+            Assert.AreEqual(options[0].OptionType, OptionType.Short);
+
+            Assert.AreSame(options[1].Descriptor, optionDescriptor);
+            Assert.AreEqual(options[1].Name, optionDescriptor.LongNames[0]);
+            Assert.AreEqual(options[1].OptionType, OptionType.Long);
+
+            Assert.AreSame(options[2].Descriptor, optionDescriptor);
+            Assert.AreEqual(options[2].Name, optionDescriptor.ShortNames[1].ToString());
+            Assert.AreEqual(options[2].OptionType, OptionType.Short);
+
+            Assert.AreSame(options[3].Descriptor, optionDescriptor);
+            Assert.AreEqual(options[3].Name, optionDescriptor.LongNames[1]);
+            Assert.AreEqual(options[3].OptionType, OptionType.Long);
+        }
+
+        [Test]
+        public void TestParseOptionalValueLongFormOptionDescriptor()
+        {
+            var optionDescriptor = OptionDescriptorDefinitions.OptionalValueOptionDescriptor;
+            var optionalValue = "optionalValue";
+            var args = new[]
+            {
+                "--" + optionDescriptor.LongNames[0],
+                optionalValue,
+                "--" + optionDescriptor.LongNames[0] + "=",
+                optionalValue,
+                "--" + optionDescriptor.LongNames[0] + "=" + optionalValue,
+                optionalValue,
+            };
+
+            var parser = new OptionParser(optionDescriptor);
+            var options = parser.ParseOptions(args);
+
+            Assert.AreEqual(options.Count, 6);
+            
+            Assert.AreSame(options[0].Descriptor, optionDescriptor);
+            Assert.IsNull(options[0].Value);
+            Assert.AreEqual(options[0].Name, optionDescriptor.LongNames[0]);
+            Assert.AreEqual(options[0].OptionType, OptionType.Long);
+
+            Assert.IsNull(options[1].Descriptor);
+            Assert.AreEqual(options[1].Value, optionalValue);
+            Assert.IsNull(options[1].Name);
+            Assert.AreEqual(options[1].OptionType, OptionType.NoOption);
+
+            Assert.AreSame(options[2].Descriptor, optionDescriptor);
+            Assert.IsEmpty(options[2].Value);
+            Assert.AreEqual(options[2].Name, optionDescriptor.LongNames[0]);
+            Assert.AreEqual(options[2].OptionType, OptionType.Long);
+
+            Assert.IsNull(options[3].Descriptor);
+            Assert.AreEqual(options[3].Value, optionalValue);
+            Assert.IsNull(options[3].Name);
+            Assert.AreEqual(options[3].OptionType, OptionType.NoOption);
+
+            Assert.AreSame(options[4].Descriptor, optionDescriptor);
+            Assert.AreEqual(options[4].Value, optionalValue);
+            Assert.AreEqual(options[4].Name, optionDescriptor.LongNames[0]);
+            Assert.AreEqual(options[4].OptionType, OptionType.Long);
+
+            Assert.IsNull(options[5].Descriptor);
+            Assert.AreEqual(options[5].Value, optionalValue);
+            Assert.IsNull(options[5].Name);
+            Assert.AreEqual(options[5].OptionType, OptionType.NoOption);
+        }
+
+        [Test]
+        public void TestParseOptionalValueShortFormOptionDescriptor()
+        {
+            var optionDescriptor = OptionDescriptorDefinitions.OptionalValueOptionDescriptor;
+            var optionalValue = "optionalValue";
+            var args = new[]
+            {
+                "-" + optionDescriptor.ShortNames[0],
+                optionalValue,
+                "-" + optionDescriptor.ShortNames[0] + optionalValue,
+                optionalValue,
+            };
+
+            var parser = new OptionParser(optionDescriptor);
+            var options = parser.ParseOptions(args);
+
+            Assert.AreEqual(options.Count, 4);
+            
+            Assert.AreSame(options[0].Descriptor, optionDescriptor);
+            Assert.IsNull(options[0].Value);
+            Assert.AreEqual(options[0].Name, optionDescriptor.ShortNames[0].ToString());
+            Assert.AreEqual(options[0].OptionType, OptionType.Short);
+            
+            Assert.IsNull(options[1].Descriptor);
+            Assert.AreEqual(options[1].Value, optionalValue);
+            Assert.IsNull(options[1].Name);
+            Assert.AreEqual(options[1].OptionType, OptionType.NoOption);
+
+            Assert.AreSame(options[2].Descriptor, optionDescriptor);
+            Assert.AreEqual(options[2].Value, optionalValue);
+            Assert.AreEqual(options[2].Name, optionDescriptor.ShortNames[0].ToString());
+            Assert.AreEqual(options[2].OptionType, OptionType.Short);
+
+            Assert.IsNull(options[3].Descriptor);
+            Assert.AreEqual(options[3].Value, optionalValue);
+            Assert.IsNull(options[3].Name);
+            Assert.AreEqual(options[3].OptionType, OptionType.NoOption);
+        }
+
         
         public static class OptionDescriptorDefinitions
         {
