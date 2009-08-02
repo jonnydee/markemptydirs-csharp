@@ -17,6 +17,8 @@
 
 using System;
 
+using DJ.Util;
+
 namespace DJ.Util.Template
 {
     
@@ -33,8 +35,9 @@ namespace DJ.Util.Template
                 var envName = arg.Split(new[] { ' ' }, 1)[0].Trim();
                 return Environment.GetEnvironmentVariable(envName);
             }
-            catch
+            catch (Exception ex)
             {
+                Logger.Log(Logger.LogType.Warn, ex.Message);
                 return arg;
             }
         }
