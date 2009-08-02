@@ -220,6 +220,108 @@ namespace DJ.Util.IO
             Assert.AreEqual(options[3].OptionType, OptionType.NoOption);
         }
 
+        [Test]
+        [ExpectedException(typeof(Exception))]
+        public void TestParseMandatoryValueMissingLongFormOptionDescriptor()
+        {
+            var optionDescriptor = OptionDescriptorDefinitions.MandatoryValueOptionDescriptor;
+            var mandatoryValue = "mandatoryValue";
+            var args = new[]
+            {
+                "--" + optionDescriptor.LongNames[0],
+                mandatoryValue,
+            };
+
+            var parser = new OptionParser(optionDescriptor);
+            parser.ParseOptions(args);
+        }
+
+        [Test]
+        public void TestParseMandatoryValueLongFormOptionDescriptor()
+        {
+            var optionDescriptor = OptionDescriptorDefinitions.MandatoryValueOptionDescriptor;
+            var mandatoryValue = "mandatoryValue";
+            var args = new[]
+            {
+                "--" + optionDescriptor.LongNames[0] + "=",
+                mandatoryValue,
+                "--" + optionDescriptor.LongNames[0] + "=" + mandatoryValue,
+                mandatoryValue,
+            };
+
+            var parser = new OptionParser(optionDescriptor);
+            var options = parser.ParseOptions(args);
+
+            Assert.AreEqual(options.Count, 4);
+            
+            Assert.AreSame(options[0].Descriptor, optionDescriptor);
+            Assert.IsEmpty(options[0].Value);
+            Assert.AreEqual(options[0].Name, optionDescriptor.LongNames[0]);
+            Assert.AreEqual(options[0].OptionType, OptionType.Long);
+
+            Assert.IsNull(options[1].Descriptor);
+            Assert.AreEqual(options[1].Value, mandatoryValue);
+            Assert.IsNull(options[1].Name);
+            Assert.AreEqual(options[1].OptionType, OptionType.NoOption);
+
+            Assert.AreSame(options[2].Descriptor, optionDescriptor);
+            Assert.AreEqual(options[2].Value, mandatoryValue);
+            Assert.AreEqual(options[2].Name, optionDescriptor.LongNames[0]);
+            Assert.AreEqual(options[2].OptionType, OptionType.Long);
+
+            Assert.IsNull(options[3].Descriptor);
+            Assert.AreEqual(options[3].Value, mandatoryValue);
+            Assert.IsNull(options[3].Name);
+            Assert.AreEqual(options[3].OptionType, OptionType.NoOption);
+        }
+
+        [Test]
+        [ExpectedException(typeof(Exception))]
+        public void TestParseMandatoryValueMissingShortFormOptionDescriptor()
+        {
+            var optionDescriptor = OptionDescriptorDefinitions.MandatoryValueOptionDescriptor;
+            var args = new[]
+            {
+                "-" + optionDescriptor.ShortNames[0],
+            };
+
+            var parser = new OptionParser(optionDescriptor);
+            parser.ParseOptions(args);
+        }
+
+        [Test]
+        public void TestParseMandatoryValueShortFormOptionDescriptor()
+        {
+            var optionDescriptor = OptionDescriptorDefinitions.MandatoryValueOptionDescriptor;
+            var mandatoryValue = "mandatoryValue";
+            var args = new[]
+            {
+                "-" + optionDescriptor.ShortNames[0], mandatoryValue,
+                "-" + optionDescriptor.ShortNames[0] + mandatoryValue,
+                mandatoryValue,
+            };
+
+            var parser = new OptionParser(optionDescriptor);
+            var options = parser.ParseOptions(args);
+
+            Assert.AreEqual(options.Count, 3);
+            
+            Assert.AreSame(options[0].Descriptor, optionDescriptor);
+            Assert.AreEqual(options[0].Value, mandatoryValue);
+            Assert.AreEqual(options[0].Name, optionDescriptor.ShortNames[0].ToString());
+            Assert.AreEqual(options[0].OptionType, OptionType.Short);
+
+            Assert.AreSame(options[1].Descriptor, optionDescriptor);
+            Assert.AreEqual(options[1].Value, mandatoryValue);
+            Assert.AreEqual(options[1].Name, optionDescriptor.ShortNames[0].ToString());
+            Assert.AreEqual(options[1].OptionType, OptionType.Short);
+
+            Assert.IsNull(options[2].Descriptor);
+            Assert.AreEqual(options[2].Value, mandatoryValue);
+            Assert.IsNull(options[2].Name);
+            Assert.AreEqual(options[2].OptionType, OptionType.NoOption);
+        }
+
         
         public static class OptionDescriptorDefinitions
         {
