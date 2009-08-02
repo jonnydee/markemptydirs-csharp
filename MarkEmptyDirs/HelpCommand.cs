@@ -179,28 +179,13 @@ namespace DJ.App.MarkEmptyDirs
             return description.ToString();
         }
 
-        public string GetUsageForm(TemplateVariable variable)
-        {
-            var variableName = TemplateVariable.Prefix + variable.Name;
-            if (variable.CanHaveArgument)
-            {
-                if (variable.ArgumentMandatory)
-                    variableName += ":<" + variable.ArgumentIdentifier + ">";
-                else
-                    variableName += "[:<" + variable.ArgumentIdentifier + ">]";
-            }
-            variableName += TemplateVariable.Postfix;
-
-            return variableName;
-        }
-        
         public string GetDescription(List<TemplateVariable> variables)
         {
             var variableNames = new List<string>();
             var maxNameColumnWidth = 0;
             foreach (var variable in variables)
             {
-                var variableName = GetUsageForm(variable);
+                var variableName = variable.ToString();
                 variableNames.Add(variableName);
                 maxNameColumnWidth = Math.Max(maxNameColumnWidth, variableName.Length);
             }

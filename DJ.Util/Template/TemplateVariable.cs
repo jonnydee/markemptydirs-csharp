@@ -16,6 +16,7 @@
 //  along with MarkEmptyDirs.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Text;
 
 namespace DJ.Util.Template
 {
@@ -46,5 +47,24 @@ namespace DJ.Util.Template
         abstract public bool ArgumentMandatory { get; }
 
         abstract public string GetValueFor(TemplateEngine ctx, string arg);
+
+        public override string ToString ()
+        {
+            var builder = new StringBuilder();
+            
+            builder.Append(TemplateVariable.Prefix).Append(Name);
+            if (CanHaveArgument)
+            {
+                var argIdent = ArgumentIdentifier ?? "arg";
+                if (ArgumentMandatory)
+                    builder.Append(":<").Append(argIdent).Append(">");
+                else
+                    builder.Append("[:<").Append(argIdent).Append(">]");
+            }
+            builder.Append(TemplateVariable.Postfix);
+
+            return builder.ToString();
+        }
+
     }
 }
