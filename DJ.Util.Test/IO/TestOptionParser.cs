@@ -25,29 +25,6 @@ namespace DJ.Util.IO
     [TestFixture]
     public class TestOptionParser
     {
-        List<OptionDescriptor> GetOptionDescriptors()
-        {
-            return new List<OptionDescriptor>
-            {
-                OptionDescriptorDefinitions.LongFormOnlyOptionDescriptor,
-                OptionDescriptorDefinitions.LongFormOnlyAliasOptionDescriptor,
-                OptionDescriptorDefinitions.NormalOptionDescriptor,
-                OptionDescriptorDefinitions.OptionalValueOptionDescriptor,
-                OptionDescriptorDefinitions.MandatoryValueOptionDescriptor,
-            };
-        }
-
-        string[] AddNoise(params string[] args)
-        {
-            var prefix = new[] { "prefix-no-option", "--prefix-unknown-option" };
-            var postfix = new[] { "postfix-no-option", "--post-unknown-option" };
-            var newArgs = new string[prefix.Length + args.Length + postfix.Length];
-            prefix.CopyTo(newArgs, 0);
-            args.CopyTo(newArgs, prefix.Length);
-            postfix.CopyTo(newArgs, prefix.Length + args.Length);
-            return newArgs;
-        }
-        
         [Test]
         public void TestParseLongFormOnlyOptionDescriptor()
         {
