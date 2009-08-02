@@ -89,7 +89,7 @@ namespace DJ.App.MarkEmptyDirs
             usage.AppendFormat("Defaults set in environment variable '{0}':\n  {1}\n\n", MainClass.SettingsEnvironmentVariable, envValue);
 
             usage.Append("Available template variables for placeholder files:\n");
-            usage.Append(GetDescription(new TemplateEngine("").ListTemplateVariables()));
+            usage.Append(GetDescription(MainClass.CreateTemplateEngine("", true).ListTemplateVariables()));
             
             Writer.WriteLine(usage.ToString());
         }

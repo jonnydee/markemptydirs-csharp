@@ -78,12 +78,26 @@ namespace DJ.App.MarkEmptyDirs
             return args;
         }
 
+        public static TemplateEngine CreateTemplateEngine(string template, bool enableVariableSubstitution)
+        {
+            var engine = new TemplateEngine(template);
+            if (enableVariableSubstitution)
+            {
+                engine.AddVariable(new DateTimeVariable());
+                engine.AddVariable(new EnvironmentVariable());
+                engine.AddVariable(new GuidVariable());
+                engine.AddVariable(new LineFeedVariable());
+                engine.AddVariable(new SpaceVariable());
+            }
+            return engine;
+        }
+        
         private static Configuration ParseConfiguration(string[] args)
         {
             var config = new Configuration
             {
                 PlaceHolderName = StandardPlaceHolderName,
-                PlaceHolderTemplate = new TemplateEngine(string.Empty),
+                PlaceHolderTemplate = CreateTemplateEngine(string.Empty, true),
                 Verbose = false,
                 Short = false,
                 DryRun = false,
@@ -115,7 +129,7 @@ namespace DJ.App.MarkEmptyDirs
                 {
                     if (!string.IsNullOrEmpty(opt.Value))
                     {
-                        config.PlaceHolderTemplate = new TemplateEngine(opt.Value);
+                        config.PlaceHolderTemplate = CreateTemplateEngine(opt.Value, true);
                     }
                     continue;
                 }
@@ -128,7 +142,7 @@ namespace DJ.App.MarkEmptyDirs
                         {
                             var filename = opt.Value;
                             var placeHolderTemplateText = File.ReadAllText(filename);
-                            config.PlaceHolderTemplate = new TemplateEngine(placeHolderTemplateText);
+                            config.PlaceHolderTemplate = CreateTemplateEngine(placeHolderTemplateText, true);
                         }
                         catch (Exception ex)
                         {
