@@ -31,9 +31,14 @@ namespace DJ.Util
 
         public static void Log(Exception ex)
         {
-            Log(LogType.Error, ex.Message);
+            Log(LogType.Error, ex);
         }
         
+        public static void Log(LogType type, Exception ex)
+        {
+            Log(type, ex.Message, false);
+        }
+
         public static void Log(LogType type, string message)
         {
             Log(type, message, false);
