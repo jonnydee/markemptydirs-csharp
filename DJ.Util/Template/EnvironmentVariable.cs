@@ -37,7 +37,7 @@ namespace DJ.Util.Template
             }
             catch (Exception ex)
             {
-                Logger.Log(Logger.LogType.Warn, ex.Message);
+                Logger.Log(Logger.LogType.Warn, ex);
                 return arg;
             }
         }

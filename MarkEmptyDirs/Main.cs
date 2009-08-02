@@ -59,7 +59,7 @@ namespace DJ.App.MarkEmptyDirs
             catch (Exception ex)
             {
                 // Ignore any exception here as there is nothing critical to handle.
-                Logger.Log(Logger.LogType.Warn, ex.Message);
+                Logger.Log(Logger.LogType.Warn, ex);
             }
             return null;
         }
