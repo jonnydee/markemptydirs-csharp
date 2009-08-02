@@ -18,6 +18,7 @@
 using System;
 using System.IO;
 
+using DJ.Util;
 using DJ.Util.IO;
 
 namespace DJ.App.MarkEmptyDirs
