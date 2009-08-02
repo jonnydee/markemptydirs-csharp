@@ -66,5 +66,20 @@ namespace DJ.Util.Template
             return builder.ToString();
         }
 
+        public string ToString(string arg)
+        {
+            var builder = new StringBuilder();
+            
+            builder.Append(TemplateVariable.Prefix).Append(Name);
+            if (CanHaveArgument)
+            {
+                if (ArgumentMandatory || null != arg)
+                    builder.Append(":").Append(arg);
+            }
+            builder.Append(TemplateVariable.Postfix);
+
+            return builder.ToString();
+        }
+
     }
 }
