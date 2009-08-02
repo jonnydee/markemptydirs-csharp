@@ -52,7 +52,7 @@ namespace DJ.Util.Template
             get { return false; }
         }
 
-        public override string GetValueFor (TemplateEngine ctx, string arg)
+        public override string EvaluateValueFor(TemplateEngine ctx, string arg)
         {
             var datetime = DateTime.Now.ToUniversalTime();
             return string.IsNullOrEmpty(arg) ? datetime.ToString() : datetime.ToString(arg);

@@ -46,7 +46,7 @@ namespace DJ.Util.Template
         
         abstract public bool ArgumentMandatory { get; }
 
-        abstract public string GetValueFor(TemplateEngine ctx, string arg);
+        abstract public string EvaluateValueFor(TemplateEngine ctx, string arg);
 
         public override string ToString ()
         {
