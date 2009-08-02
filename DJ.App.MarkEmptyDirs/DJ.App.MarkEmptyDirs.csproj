@@ -28,7 +28,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
     <SignAssembly>true</SignAssembly>
-    <AssemblyKeyFile>MarkEmptyDirs.snk</AssemblyKeyFile>
+    <AssemblyKeyFile>DJ.App.MarkEmptyDirs.snk</AssemblyKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -53,7 +53,7 @@
     <Compile Include="Configuration.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="MarkEmptyDirs.snk" />
+    <None Include="DJ.App.MarkEmptyDirs.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -65,4 +65,13 @@
   <PropertyGroup>
     <PostBuildEvent>$(SolutionDir)ilmerge_dlls.bat $(ProjectDir) $(SolutionDir)</PostBuildEvent>
   </PropertyGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="Flat" ResourceNamePolicy="FileFormatDefault" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>
