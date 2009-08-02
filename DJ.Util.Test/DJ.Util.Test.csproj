@@ -38,10 +38,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="IO\" />
+    <Folder Include="Template\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IO\TestDirectoryWalker.cs" />
     <Compile Include="IO\TestOptionParser.cs" />
+    <Compile Include="Template\TestTemplateEngine.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
