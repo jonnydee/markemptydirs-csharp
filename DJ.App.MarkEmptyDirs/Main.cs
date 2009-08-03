@@ -27,7 +27,7 @@ using DJ.Util.Template;
 namespace DJ.App.MarkEmptyDirs
 {
 
-    class MainClass
+    public class MainClass
     {
         public const string StandardCmdName = "MarkEmptyDirs";
         public const string StandardCmdExtension = "exe";
@@ -91,10 +91,10 @@ namespace DJ.App.MarkEmptyDirs
             }
             return engine;
         }
-        
-        private static Configuration ParseConfiguration(string[] args)
+
+        public static Configuration CreateConfiguration()
         {
-            var config = new Configuration
+            return new Configuration
             {
                 PlaceHolderName = StandardPlaceHolderName,
                 PlaceHolderTemplate = CreateTemplateEngine(string.Empty, true),
@@ -104,14 +104,17 @@ namespace DJ.App.MarkEmptyDirs
                 CleanUp = false,
                 Exclude = new List<string>(StandardExcludedDirs),
             };
-            
+        }
+        
+        public static Configuration ParseConfiguration(string[] args)
+        {
             var optionParser = new OptionParser(OptionDescriptorDefinitions.OptionDescriptors);
             var options = optionParser.ParseOptions(args);
+            
+            var config = CreateConfiguration();
 
-            
-            
             string directory = null;
-
+            
             Option opt;
             while (options.Count > 0)
             {
