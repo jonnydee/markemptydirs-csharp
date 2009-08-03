@@ -39,8 +39,8 @@ namespace DJ.Util.IO
         private FileInfo _c5FileInfo;
         private FileInfo _c6FileInfo;
         
-        [SetUp]
-        public void SetUp()
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
         {
             _tmpDirInfo = new DirectoryInfo(TmpDirPath);
             _tmpDirInfo.Create();
@@ -65,8 +65,8 @@ namespace DJ.Util.IO
             _c6FileInfo.Create();
         }
 
-        [TearDown]
-        public void TearDown()
+        [TestFixtureTearDown]
+        public void TestFixtureTearDown()
         {
             _c6FileInfo.Delete();
             _c5FileInfo.Delete();
