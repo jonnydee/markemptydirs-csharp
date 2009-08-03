@@ -16,22 +16,38 @@
 //  along with MarkEmptyDirs.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.IO;
 
-using NUnit.Framework;
+using DJ.Util.IO;
 
 namespace DJ.App.MarkEmptyDirs
 {
-    [TestFixture]
-    public class TestMain
+    class DeleteRecursively : IDirectoryVisitor
     {
-        [Test]
-        public void TestCreateConfiguration()
+        public static void Delete(DirectoryInfo dirInfo)
         {
-            var config = MainClass.CreateConfiguration();
-            Assert.IsNotNull(config.Exclude);
-            Assert.Contains(".hg", config.Exclude);
-            Assert.IsNotEmpty(config.PlaceHolderName);
-            Assert.IsNotNull(config.PlaceHolderTemplate);
+            DirectoryWalker.Walk(dirInfo, new DeleteRecursively());
+        }        
+
+        public bool PreVisit(DirectoryInfo dirInfo)
+        {
+            return true;
+        }
+                
+        public bool PostVisit(DirectoryInfo dirInfo)
+        {
+            if (dirInfo.Exists)
+                dirInfo.Delete();
+
+            return true;
+        }
+
+        public bool Visit(FileInfo fileInfo)
+        {
+            if (fileInfo.Exists)
+                fileInfo.Delete();
+                
+            return true;
         }
     }
 }

@@ -16,6 +16,8 @@
 //  along with MarkEmptyDirs.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
+using System.IO;
 
 using NUnit.Framework;
 
@@ -24,6 +26,74 @@ namespace DJ.App.MarkEmptyDirs
     [TestFixture]
     public class TestSyncCommand
     {
-        // TODO Implement tests.
+        public const string TmpDirPath = "tmp";
+
+        private DirectoryInfo _tmpDirInfo;
+        
+        [SetUp]
+        public void SetUp()
+        {
+            _tmpDirInfo = new DirectoryInfo(TmpDirPath);
+            _tmpDirInfo.Create();
+            
+            _tmpDirInfo.CreateSubdirectory("a/b/c").Create();
+            _tmpDirInfo.CreateSubdirectory("a/d/.hg/store").Create();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            DeleteRecursively.Delete(_tmpDirInfo);
+        }
+
+        [Test]
+        public void TestCreatePlaceHolders()
+        {
+            var config = MainClass.CreateConfiguration();
+            config.Directory = _tmpDirInfo;
+
+            var cmd = new SyncCommand();
+            cmd.Execute(config);
+
+            Assert.IsTrue(new FileInfo(Path.Combine(_tmpDirInfo.FullName, "a/b/c/.emptydir")).Exists);
+            Assert.AreEqual(1, new DirectoryInfo(Path.Combine(_tmpDirInfo.FullName, "a/b/c")).GetFiles().Length);
+            Assert.IsTrue(new FileInfo(Path.Combine(_tmpDirInfo.FullName, "a/d/.emptydir")).Exists);
+            Assert.AreEqual(1, new DirectoryInfo(Path.Combine(_tmpDirInfo.FullName, "a/d")).GetFiles().Length);
+            Assert.IsEmpty(_tmpDirInfo.GetFiles());
+            Assert.IsEmpty(new DirectoryInfo(Path.Combine(_tmpDirInfo.FullName, "a")).GetFiles());
+            Assert.IsEmpty(new DirectoryInfo(Path.Combine(_tmpDirInfo.FullName, "a/b")).GetFiles());
+            Assert.IsEmpty(new DirectoryInfo(Path.Combine(_tmpDirInfo.FullName, "a/d/.hg")).GetFiles());
+            Assert.IsEmpty(new DirectoryInfo(Path.Combine(_tmpDirInfo.FullName, "a/d/.hg/store")).GetFiles());
+        }
+
+        [Test]
+        public void TestSyncPlaceHolders()
+        {
+            TestCreatePlaceHolders();
+            var file1 = new FileInfo(Path.Combine(_tmpDirInfo.FullName, "a/b/c/file1"));
+            file1.Create();
+            var dir12 = new DirectoryInfo(Path.Combine(_tmpDirInfo.FullName, "a/d/dir1/dir2"));
+            dir12.Create();
+            
+            var config = MainClass.CreateConfiguration();
+            config.Directory = _tmpDirInfo;
+
+            var cmd = new SyncCommand();
+            cmd.Execute(config);
+
+            Assert.IsFalse(new FileInfo(Path.Combine(_tmpDirInfo.FullName, "a/b/c/.emptydir")).Exists);
+            Assert.AreEqual(1, new DirectoryInfo(Path.Combine(_tmpDirInfo.FullName, "a/b/c")).GetFiles().Length);
+            
+            Assert.IsTrue(new FileInfo(Path.Combine(_tmpDirInfo.FullName, "a/d/dir1/dir2/.emptydir")).Exists);
+            Assert.AreEqual(1, new DirectoryInfo(Path.Combine(_tmpDirInfo.FullName, "a/d/dir1/dir2")).GetFiles().Length);
+            
+            Assert.IsEmpty(_tmpDirInfo.GetFiles());
+            Assert.IsEmpty(new DirectoryInfo(Path.Combine(_tmpDirInfo.FullName, "a")).GetFiles());
+            Assert.IsEmpty(new DirectoryInfo(Path.Combine(_tmpDirInfo.FullName, "a/b")).GetFiles());
+            Assert.IsTrue(new FileInfo(Path.Combine(_tmpDirInfo.FullName, "a/b/c/file1")).Exists);
+            Assert.IsEmpty(new DirectoryInfo(Path.Combine(_tmpDirInfo.FullName, "a/d")).GetFiles());
+            Assert.IsEmpty(new DirectoryInfo(Path.Combine(_tmpDirInfo.FullName, "a/d/.hg")).GetFiles());
+            Assert.IsEmpty(new DirectoryInfo(Path.Combine(_tmpDirInfo.FullName, "a/d/.hg/store")).GetFiles());
+        }
     }
 }
