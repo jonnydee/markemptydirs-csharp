@@ -26,13 +26,13 @@ using DJ.Util.IO;
 namespace DJ.App.MarkEmptyDirs
 {
     
-    public class SyncPlaceHoldersVisitor : IDirectoryVisitor, ICommand
+    public class SyncCommand : IDirectoryVisitor, ICommand
     {
         private readonly List<FileInfo> _existingFiles;
         private Configuration _configuration;
         
 
-        public SyncPlaceHoldersVisitor()
+        public SyncCommand()
         {
             _existingFiles = new List<FileInfo>();            
         }

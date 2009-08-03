@@ -24,7 +24,7 @@ using DJ.Util.IO;
 namespace DJ.App.MarkEmptyDirs
 {
     
-    public class CleanPlaceHoldersVisitor : IDirectoryVisitor, ICommand
+    public class CleanCommand : IDirectoryVisitor, ICommand
     {
         private Configuration _configuration;
 

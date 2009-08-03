@@ -234,9 +234,9 @@ namespace DJ.App.MarkEmptyDirs
                 if (config.Help)
                     cmd = new HelpCommand { Writer = Console.Out };
                 else if (config.CleanUp)
-                    cmd = new CleanPlaceHoldersVisitor();
+                    cmd = new CleanCommand();
                 else
-                    cmd = new SyncPlaceHoldersVisitor();
+                    cmd = new SyncCommand();
     
                 cmd.Execute(config);
             }

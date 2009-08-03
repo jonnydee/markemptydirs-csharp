@@ -48,8 +48,8 @@
     <Compile Include="HelpCommand.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="OptionDescriptorDefinitions.cs" />
-    <Compile Include="SyncPlaceHoldersVisitor.cs" />
-    <Compile Include="CleanPlaceHoldersVisitor.cs" />
+    <Compile Include="SyncCommand.cs" />
+    <Compile Include="CleanCommand.cs" />
     <Compile Include="Configuration.cs" />
   </ItemGroup>
   <ItemGroup>
