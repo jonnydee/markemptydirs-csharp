@@ -23,7 +23,7 @@ using NUnit.Framework;
 
 namespace DJ.Util.IO
 {
-    [TestFixture()]
+    [TestFixture]
     public class TestDirectoryWalker
     {
         public const string TmpDirPath = "tmp";
