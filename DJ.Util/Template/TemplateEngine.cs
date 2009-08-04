@@ -24,15 +24,16 @@ namespace DJ.Util.Template
 {
     public class TemplateEngine
     {
-        private string _source;
         private Dictionary<string, TemplateVariable> _variableMap;
         
-        public TemplateEngine(String source)
+        public TemplateEngine(String template)
         {
-            _source = source;
+            Template = template;
             _variableMap = new Dictionary<string, TemplateVariable>();
         }
 
+        public string Template { private set; get; }
+        
         public void AddVariable(TemplateVariable variable)
         {
             _variableMap[variable.Name] = variable;
@@ -61,7 +62,7 @@ namespace DJ.Util.Template
         
         override public string ToString()
         {
-            return ApplyTemplateVariables(_source);
+            return ApplyTemplateVariables(Template);
         }
 
         protected string ApplyTemplateVariables(string str)
