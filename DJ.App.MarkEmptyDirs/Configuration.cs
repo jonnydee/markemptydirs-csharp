@@ -44,6 +44,8 @@ namespace DJ.App.MarkEmptyDirs
 
         public TemplateEngine PlaceHolderTemplate { set; get; }
 
+        public bool VariableSubstitution { set; get; }
+
         public bool Short { set; get; }
 
         public bool Verbose { set; get; }

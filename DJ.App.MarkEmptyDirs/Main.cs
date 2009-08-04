@@ -36,6 +36,7 @@ namespace DJ.App.MarkEmptyDirs
         public const string ProjectUrl = "http://code.google.com/p/markemptydirs";
         public const string StandardPlaceHolderName = ".emptydir";
         public static readonly string[] StandardExcludedDirs = new[] { ".bzr", ".cvs", ".git", ".hg", ".svn" };
+        public const bool StandardVariableSubstitution = true;
         public const string SettingsEnvironmentVariable = "MarkEmptyDirsOpts";
 
 
@@ -97,6 +98,7 @@ namespace DJ.App.MarkEmptyDirs
             {
                 PlaceHolderName = StandardPlaceHolderName,
                 PlaceHolderTemplate = CreateTemplateEngine(string.Empty),
+                VariableSubstitution = StandardVariableSubstitution,
                 Verbose = false,
                 Short = false,
                 DryRun = false,
@@ -151,6 +153,24 @@ namespace DJ.App.MarkEmptyDirs
                             Logger.Log(ex);
                         }
                     }
+                    continue;
+                }
+                
+                if (OptionDescriptorDefinitions.VariableSubstitutionOptionDescriptor == opt.Descriptor)
+                {
+                    if (!string.IsNullOrEmpty(opt.Value))
+                    {
+                        try
+                        {
+                            config.VariableSubstitution = Convert.ToBoolean(opt.Value);
+                        }
+                        catch
+                        {
+                            throw new Exception(string.Format("No boolean value provided for option: '{0}'", opt.Name));
+                        }
+                    }
+                    else
+                        throw new Exception(string.Format("No value provided for option: '{0}'", opt.Name));
                     continue;
                 }
                 

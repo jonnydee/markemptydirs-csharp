@@ -105,6 +105,15 @@ namespace DJ.App.MarkEmptyDirs
             MandatoryValue = true,
             ValueIdentifier = "placeholder-file",
         };
+        public static readonly OptionDescriptor VariableSubstitutionOptionDescriptor = new OptionDescriptor
+        {
+            LongNames = new[] { "subst" },
+            ShortNames = new[] { 'b' },
+            ShortDescription = string.Format("use variable subsitution (default is '{0}')", MainClass.StandardVariableSubstitution.ToString().ToLower()),
+            CanHaveValue = true,
+            MandatoryValue = true,
+            ValueIdentifier = "true|false",
+        };
 
         public static readonly OptionDescriptor[] OptionDescriptors = new[]
         {
@@ -121,6 +130,7 @@ namespace DJ.App.MarkEmptyDirs
             PlaceHolderOptionDescriptor,
             TextOptionDescriptor,
             PlaceHolderFileOptionDescriptor,
+            VariableSubstitutionOptionDescriptor,
         };
 
     }
