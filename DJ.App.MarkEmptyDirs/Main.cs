@@ -132,9 +132,7 @@ namespace DJ.App.MarkEmptyDirs
                 if (OptionDescriptorDefinitions.TextOptionDescriptor == opt.Descriptor)
                 {
                     if (!string.IsNullOrEmpty(opt.Value))
-                    {
                         config.PlaceHolderTemplate = CreateTemplateEngine(opt.Value);
-                    }
                     continue;
                 }
                 
