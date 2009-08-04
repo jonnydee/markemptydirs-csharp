@@ -130,7 +130,7 @@ namespace DJ.App.MarkEmptyDirs
                 {
                     using (var fileStream = placeHolderFile.Create())
                     {
-                        var byteData = Encoding.ASCII.GetBytes(_configuration.PlaceHolderTemplate.ToString());
+                        var byteData = Encoding.Default.GetBytes(_configuration.PlaceHolderTemplate.ToString());
                         fileStream.Write(byteData, 0, byteData.Length);
                     }
                 }
