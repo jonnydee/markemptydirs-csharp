@@ -15,7 +15,7 @@
     </UpgradeBackupLocation>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>MarkEmptyDirs.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>DJ.App.MarkEmptyDirs.snk</AssemblyOriginatorKeyFile>
     <StartupObject>DJ.App.MarkEmptyDirs.MainClass</StartupObject>
     <AssemblyName>MarkEmptyDirs</AssemblyName>
   </PropertyGroup>
