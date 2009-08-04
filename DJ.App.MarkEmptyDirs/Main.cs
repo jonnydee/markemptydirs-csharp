@@ -126,6 +126,8 @@ namespace DJ.App.MarkEmptyDirs
                 {
                     if (!string.IsNullOrEmpty(opt.Value))
                         config.PlaceHolderName = opt.Value;
+                    else
+                        throw new Exception(string.Format("No value provided for option: '{0}'", opt.Name));
                     continue;
                 }
                 
@@ -151,6 +153,8 @@ namespace DJ.App.MarkEmptyDirs
                             Logger.Log(ex);
                         }
                     }
+                    else
+                        throw new Exception(string.Format("No value provided for option: '{0}'", opt.Name));
                     continue;
                 }
                 
