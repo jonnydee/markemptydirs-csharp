@@ -78,17 +78,16 @@ namespace DJ.App.MarkEmptyDirs
             return args;
         }
 
-        public static TemplateEngine CreateTemplateEngine(string template, bool enableVariableSubstitution)
+        public static TemplateEngine CreateTemplateEngine(string template)
         {
             var engine = new TemplateEngine(template);
-            if (enableVariableSubstitution)
-            {
-                engine.AddVariable(new DateTimeVariable());
-                engine.AddVariable(new EnvironmentVariable());
-                engine.AddVariable(new GuidVariable());
-                engine.AddVariable(new LineFeedVariable());
-                engine.AddVariable(new SpaceVariable());
-            }
+            
+            engine.AddVariable(new DateTimeVariable());
+            engine.AddVariable(new EnvironmentVariable());
+            engine.AddVariable(new GuidVariable());
+            engine.AddVariable(new LineFeedVariable());
+            engine.AddVariable(new SpaceVariable());
+            
             return engine;
         }
 
@@ -97,7 +96,7 @@ namespace DJ.App.MarkEmptyDirs
             return new Configuration
             {
                 PlaceHolderName = StandardPlaceHolderName,
-                PlaceHolderTemplate = CreateTemplateEngine(string.Empty, true),
+                PlaceHolderTemplate = CreateTemplateEngine(string.Empty),
                 Verbose = false,
                 Short = false,
                 DryRun = false,
@@ -132,7 +131,7 @@ namespace DJ.App.MarkEmptyDirs
                 {
                     if (!string.IsNullOrEmpty(opt.Value))
                     {
-                        config.PlaceHolderTemplate = CreateTemplateEngine(opt.Value, true);
+                        config.PlaceHolderTemplate = CreateTemplateEngine(opt.Value);
                     }
                     continue;
                 }
@@ -145,7 +144,7 @@ namespace DJ.App.MarkEmptyDirs
                         {
                             var filename = opt.Value;
                             var placeHolderTemplateText = File.ReadAllText(filename);
-                            config.PlaceHolderTemplate = CreateTemplateEngine(placeHolderTemplateText, true);
+                            config.PlaceHolderTemplate = CreateTemplateEngine(placeHolderTemplateText);
                         }
                         catch (Exception ex)
                         {
