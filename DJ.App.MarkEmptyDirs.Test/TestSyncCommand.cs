@@ -39,7 +39,7 @@ namespace DJ.App.MarkEmptyDirs
             _tmpDirInfo.Create();
 
             _tmpDirInfo.CreateSubdirectory(PathUtil.Combine("a", "b", "c")).Create();
-            _tmpDirInfo.CreateSubdirectory(PathUtil.Combine("a", "d", ".hg", "store")).Create();
+            _tmpDirInfo.CreateSubdirectory(PathUtil.Combine("a", "d", ".git", "store")).Create();
         }
 
         [TearDown]
@@ -64,8 +64,8 @@ namespace DJ.App.MarkEmptyDirs
             Assert.IsEmpty(_tmpDirInfo.GetFiles());
             Assert.IsEmpty(new DirectoryInfo(PathUtil.Combine(_tmpDirInfo.FullName, "a")).GetFiles());
             Assert.IsEmpty(new DirectoryInfo(PathUtil.Combine(_tmpDirInfo.FullName, "a", "b")).GetFiles());
-            Assert.IsEmpty(new DirectoryInfo(PathUtil.Combine(_tmpDirInfo.FullName, "a", "d", ".hg")).GetFiles());
-            Assert.IsEmpty(new DirectoryInfo(PathUtil.Combine(_tmpDirInfo.FullName, "a", "d", ".hg", "store")).GetFiles());
+            Assert.IsEmpty(new DirectoryInfo(PathUtil.Combine(_tmpDirInfo.FullName, "a", "d", ".git")).GetFiles());
+            Assert.IsEmpty(new DirectoryInfo(PathUtil.Combine(_tmpDirInfo.FullName, "a", "d", ".git", "store")).GetFiles());
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace DJ.App.MarkEmptyDirs
         {
             TestCreatePlaceHolders();
             var file1 = new FileInfo(PathUtil.Combine(_tmpDirInfo.FullName, "a", "b", "c", "file1"));
-            file1.Create();
+            file1.Create().Close();
             var dir12 = new DirectoryInfo(PathUtil.Combine(_tmpDirInfo.FullName, "a", "d", "dir1", "dir2"));
             dir12.Create();
             
@@ -94,8 +94,8 @@ namespace DJ.App.MarkEmptyDirs
             Assert.IsEmpty(new DirectoryInfo(PathUtil.Combine(_tmpDirInfo.FullName, "a", "b")).GetFiles());
             Assert.IsTrue(new FileInfo(PathUtil.Combine(_tmpDirInfo.FullName, "a", "b", "c", "file1")).Exists);
             Assert.IsEmpty(new DirectoryInfo(PathUtil.Combine(_tmpDirInfo.FullName, "a", "d")).GetFiles());
-            Assert.IsEmpty(new DirectoryInfo(PathUtil.Combine(_tmpDirInfo.FullName, "a", "d", ".hg")).GetFiles());
-            Assert.IsEmpty(new DirectoryInfo(PathUtil.Combine(_tmpDirInfo.FullName, "a", "d", ".hg", "store")).GetFiles());
+            Assert.IsEmpty(new DirectoryInfo(PathUtil.Combine(_tmpDirInfo.FullName, "a", "d", ".git")).GetFiles());
+            Assert.IsEmpty(new DirectoryInfo(PathUtil.Combine(_tmpDirInfo.FullName, "a", "d", ".git", "store")).GetFiles());
         }
     }
 }
