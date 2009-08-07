@@ -52,17 +52,17 @@ namespace DJ.Util.IO
             _cDirInfo.Create();
 
             _a1FileInfo = new FileInfo(Path.Combine(_aDirInfo.FullName, "1"));
-            _a1FileInfo.Create();
+            _a1FileInfo.Create().Close();
             _a2FileInfo = new FileInfo(Path.Combine(_aDirInfo.FullName, "2"));
-            _a2FileInfo.Create();
+            _a2FileInfo.Create().Close();
             _ab3FileInfo = new FileInfo(Path.Combine(_abDirInfo.FullName, "3"));
-            _ab3FileInfo.Create();
+            _ab3FileInfo.Create().Close();
             _ab4FileInfo = new FileInfo(Path.Combine(_abDirInfo.FullName, "4"));
-            _ab4FileInfo.Create();
+            _ab4FileInfo.Create().Close();
             _c5FileInfo = new FileInfo(Path.Combine(_cDirInfo.FullName, "5"));
-            _c5FileInfo.Create();
+            _c5FileInfo.Create().Close();
             _c6FileInfo = new FileInfo(Path.Combine(_cDirInfo.FullName, "6"));
-            _c6FileInfo.Create();
+            _c6FileInfo.Create().Close();
         }
 
         [TestFixtureTearDown]
