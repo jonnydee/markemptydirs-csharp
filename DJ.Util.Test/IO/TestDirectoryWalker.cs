@@ -101,7 +101,7 @@ namespace DJ.Util.IO
         [Test]
         public void TestDepthFirstVisitAllFileSystemInfos()
         {
-            var visitor = new TestDepthFirstVisitAllFileSystemInfosVisitor() { FileSystemInfoFullNames = GetFileSystemInfoFullNames() };
+            var visitor = new TestDepthFirstVisitAllFileSystemInfosVisitor { FileSystemInfoFullNames = GetFileSystemInfoFullNames() };
             DirectoryWalker.Walk(_tmpDirInfo, visitor);
             Assert.AreEqual(0, visitor.FileSystemInfoFullNames.Count);
         }
@@ -119,7 +119,7 @@ namespace DJ.Util.IO
             public bool PostVisit (DirectoryInfo dirInfo)
             {
                 Console.WriteLine("PostVisit: " + dirInfo.FullName);
-                bool equalFullName = FileSystemInfoFullNames[0] == dirInfo.FullName;
+                var equalFullName = FileSystemInfoFullNames[0] == dirInfo.FullName;
                 if (equalFullName)
                     FileSystemInfoFullNames.RemoveAt(0);
                 return equalFullName;
@@ -128,7 +128,7 @@ namespace DJ.Util.IO
             public bool Visit (FileInfo fileInfo)
             {
                 Console.WriteLine("Visit: " + fileInfo.FullName);
-                bool equalFullName = FileSystemInfoFullNames[0] == fileInfo.FullName;
+                var equalFullName = FileSystemInfoFullNames[0] == fileInfo.FullName;
                 if (equalFullName)
                     FileSystemInfoFullNames.RemoveAt(0);
                 return equalFullName;
@@ -138,7 +138,7 @@ namespace DJ.Util.IO
         [Test]
         public void TestPreVisitFalsePrunesDirectory()
         {
-            var visitor = new TestPreVisitFalsePrunesDirectoryVisitor() 
+            var visitor = new TestPreVisitFalsePrunesDirectoryVisitor
             {
                 FileSystemInfoFullNames = GetFileSystemInfoFullNames(),
                 PruneDirectoryFullName = _abDirInfo.FullName,
