@@ -33,6 +33,8 @@ namespace DJ.Util.Template
         }
 
         public string Template { private set; get; }
+
+        public IDictionary<string, object> DynamicContext { private set; get; }
         
         public void AddVariable(TemplateVariable variable)
         {
@@ -62,7 +64,20 @@ namespace DJ.Util.Template
         
         override public string ToString()
         {
-            return ApplyTemplateVariables(Template);
+            return ToString(null);
+        }
+
+        public string ToString(IDictionary<string, object> dynamicContext)
+        {
+            try
+            {
+                DynamicContext = dynamicContext;
+                return ApplyTemplateVariables(Template);
+            }
+            finally
+            {
+                DynamicContext = null;
+            }
         }
 
         protected string ApplyTemplateVariables(string str)
