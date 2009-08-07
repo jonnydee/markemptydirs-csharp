@@ -40,6 +40,10 @@ namespace DJ.App.MarkEmptyDirs
 
         public bool Help { set; get; }
 
+        public TemplateEngine CreateHookTemplate { set; get; }
+
+        public TemplateEngine DeleteHookTemplate { set; get; }
+
         public string PlaceHolderName { set; get; }
 
         public TemplateEngine PlaceHolderTemplate { set; get; }

@@ -88,6 +88,7 @@ namespace DJ.App.MarkEmptyDirs
             engine.AddVariable(new GuidVariable());
             engine.AddVariable(new LineFeedVariable());
             engine.AddVariable(new SpaceVariable());
+            engine.AddVariable(new PlaceHolderVariable());
             
             return engine;
         }
@@ -212,6 +213,24 @@ namespace DJ.App.MarkEmptyDirs
                 if (OptionDescriptorDefinitions.HelpOptionDescriptor == opt.Descriptor)
                 {
                     config.Help = true;
+                    continue;
+                }
+                
+                if (OptionDescriptorDefinitions.CreateHookOptionDescriptor == opt.Descriptor)
+                {
+                    if (!string.IsNullOrEmpty(opt.Value))
+                        config.CreateHookTemplate = CreateTemplateEngine(opt.Value);
+                    else
+                        throw new Exception(string.Format("No value provided for option: '{0}'", opt.Name));
+                    continue;
+                }
+                
+                if (OptionDescriptorDefinitions.DeleteHookOptionDescriptor == opt.Descriptor)
+                {
+                    if (!string.IsNullOrEmpty(opt.Value))
+                        config.DeleteHookTemplate = CreateTemplateEngine(opt.Value);
+                    else
+                        throw new Exception(string.Format("No value provided for option: '{0}'", opt.Name));
                     continue;
                 }
                 

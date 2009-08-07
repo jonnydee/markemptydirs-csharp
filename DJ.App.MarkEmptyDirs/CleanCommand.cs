@@ -58,24 +58,8 @@ namespace DJ.App.MarkEmptyDirs
 
         public bool Visit(FileInfo fileInfo)
         {
-            if (!fileInfo.Exists || fileInfo.Name != _configuration.PlaceHolderName)
-                return true;
-
-            var placeHolderFile = fileInfo;
-            try
-            {
-                if (!_configuration.DryRun)
-                    placeHolderFile.Delete();
-
-                if (_configuration.Short)
-                    Logger.Log(Logger.LogType.Info, placeHolderFile.FullName, true);
-                else if (_configuration.Verbose)
-                    Logger.Log(Logger.LogType.Info, string.Format("Deleted placeholder: '{0}'", placeHolderFile.FullName));
-            }
-            catch (Exception ex)
-            {
-                Logger.Log(Logger.LogType.Error, string.Format("Deletion of placeholder '{0}' failed: {1}", placeHolderFile.FullName, ex.Message));
-            }
+            if (fileInfo.Name == _configuration.PlaceHolderName && fileInfo.Exists)
+                CommandHelper.DeletePlaceHolder(fileInfo, _configuration);
                 
             return true;
         }

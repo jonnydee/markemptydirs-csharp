@@ -56,6 +56,24 @@ namespace DJ.App.MarkEmptyDirs
             ShortNames = new[] { 'h' },
             ShortDescription = "print help information"
         };
+        public static readonly OptionDescriptor CreateHookOptionDescriptor = new OptionDescriptor
+        {
+            LongNames = new[] { "create-hook" },
+            ShortNames = new[] { 'a' },
+            ShortDescription = string.Format("invoke command after placeholder creation (use §placeholder§ as placeholder name)", new PlaceHolderVariable().ToString()),
+            CanHaveValue = true,
+            MandatoryValue = true,
+            ValueIdentifier = "create-hook-command",
+        };
+        public static readonly OptionDescriptor DeleteHookOptionDescriptor = new OptionDescriptor
+        {
+            LongNames = new[] { "delete-hook" },
+            ShortNames = new[] { 'r' },
+            ShortDescription = string.Format("invoke command before placeholder deletion (use §placeholder§ as placeholder name)", new PlaceHolderVariable().ToString()),
+            CanHaveValue = true,
+            MandatoryValue = true,
+            ValueIdentifier = "delete-hook-command",
+        };
         public static readonly OptionDescriptor ListOptionDescriptor = new OptionDescriptor
         {
             LongNames = new[] { "list" },
@@ -123,6 +141,8 @@ namespace DJ.App.MarkEmptyDirs
 
             CleanOptionDescriptor,
             HelpOptionDescriptor,
+            CreateHookOptionDescriptor,
+            DeleteHookOptionDescriptor,
             ListOptionDescriptor,
 //            SyncOptionDescriptor,
             

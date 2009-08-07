@@ -87,76 +87,20 @@ namespace DJ.App.MarkEmptyDirs
             return true;
         }
 
-        private bool DeletePlaceHolder(DirectoryInfo dirInfo)
-        {
-            foreach (var file in dirInfo.GetFiles())
-            {
-                if (file.Name == _configuration.PlaceHolderName)
-                {
-                    var placeHolderFile = file;
-                    try
-                    {
-                        if (!_configuration.DryRun)
-                        {
-                            placeHolderFile.Delete();
-                        }
-                        _existingFiles.Remove(placeHolderFile);
-                        if (_configuration.Short)
-                            Logger.Log(Logger.LogType.Info, placeHolderFile.FullName, true);
-                        else if (_configuration.Verbose)
-                            Logger.Log(Logger.LogType.Info, string.Format("Deleted placeholder: '{0}'", placeHolderFile.FullName));
-                        return true;
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Log(Logger.LogType.Error, string.Format("Deletion of placeholder '{0}' failed: {1}", placeHolderFile.FullName, ex.Message));
-                        return false;
-                    }
-                }
-            }
-            return false;
-        }
-
-        private bool CreatePlaceHolder(DirectoryInfo dirInfo)
-        {
-            var placeHolderFile = new FileInfo(Path.Combine(dirInfo.FullName, _configuration.PlaceHolderName));
-
-            try
-            {
-                if (placeHolderFile.Exists)
-                    return false;
-
-                if (!_configuration.DryRun)
-                {
-                    using (var fileStream = placeHolderFile.Create())
-                    {
-                        var content = _configuration.VariableSubstitution ? _configuration.PlaceHolderTemplate.ToString() : _configuration.PlaceHolderTemplate.Template;
-                        var byteData = Encoding.Default.GetBytes(content);
-                        fileStream.Write(byteData, 0, byteData.Length);
-                    }
-                }
-                _existingFiles.Add(placeHolderFile);
-                if (_configuration.Short)
-                    Logger.Log(Logger.LogType.Info, placeHolderFile.FullName, true);
-                else if (_configuration.Verbose)
-                    Logger.Log(Logger.LogType.Info, string.Format("Created placeholder: '{0}'", placeHolderFile.FullName));
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Logger.Log(Logger.LogType.Error, string.Format("Creation of placeholder '{0}' failed: {1}", placeHolderFile.FullName, ex.Message));
-            }
-
-            return false;
-        }
-        
         public bool PostVisit(DirectoryInfo dirInfo)
         {
             if (IsPlaceHolderNeeded(dirInfo))
-                CreatePlaceHolder(dirInfo);
+            {
+                var placeHolderFile = CommandHelper.CreatePlaceHolder(dirInfo, _configuration);
+                if (null != placeHolderFile)
+                    _existingFiles.Add(placeHolderFile);
+            }
             else
-                DeletePlaceHolder(dirInfo);
-            
+            {
+                var placeHolderFile = CommandHelper.DeletePlaceHolder(dirInfo, _configuration);
+                if (null != placeHolderFile)
+                    _existingFiles.Remove(placeHolderFile);
+            }
             return true;
         }
 
