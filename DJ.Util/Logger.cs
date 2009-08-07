@@ -36,7 +36,7 @@ namespace DJ.Util
         
         public static void Log(LogType type, Exception ex)
         {
-            Log(type, ex.Message, false);
+            Log(type, ex.GetType().Name + ": " + ex.Message, false);
         }
 
         public static void Log(LogType type, string message)
