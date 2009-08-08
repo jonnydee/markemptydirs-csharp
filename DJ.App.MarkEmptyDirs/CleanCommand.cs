@@ -43,7 +43,7 @@ namespace DJ.App.MarkEmptyDirs
                 throw new Exception(string.Format("Not a directory: '{0}'", _configuration.Directory.FullName));
             }            
 
-            DirectoryWalker.Walk(_configuration.Directory, this);
+            DirectoryWalker.Walk(_configuration.Directory, this, false);
         }
         
         public bool PreVisit(DirectoryInfo dirInfo)
@@ -53,14 +53,14 @@ namespace DJ.App.MarkEmptyDirs
                 
         public bool PostVisit(DirectoryInfo dirInfo)
         {
+            var placeHolderFile = new FileInfo(Path.Combine(dirInfo.FullName, _configuration.PlaceHolderName));
+            if (placeHolderFile.Exists)
+                CommandHelper.DeletePlaceHolder(placeHolderFile, _configuration);
             return true;
         }
 
         public bool Visit(FileInfo fileInfo)
         {
-            if (fileInfo.Name == _configuration.PlaceHolderName && fileInfo.Exists)
-                CommandHelper.DeletePlaceHolder(fileInfo, _configuration);
-                
             return true;
         }
     }
