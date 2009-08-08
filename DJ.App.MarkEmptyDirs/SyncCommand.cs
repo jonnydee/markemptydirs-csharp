@@ -65,8 +65,7 @@ namespace DJ.App.MarkEmptyDirs
             var dirName = dirInfo.FullName;
             foreach (var visitedFileInfo in _existingFiles)
             {
-                var visitedFile = visitedFileInfo.FullName;
-                if (!visitedFile.StartsWith(dirName))
+                if (!visitedFileInfo.FullName.StartsWith(dirName))
                     continue;
 
                 // At this point there is either a file in a sub-directory,
@@ -80,8 +79,7 @@ namespace DJ.App.MarkEmptyDirs
                 // The already visited file is in the current directory.
                 // So if this file is not a placeholder file we do not need
                 // a placeholder.
-                var visitedFileName = visitedFileInfo.Name;
-                if (visitedFileName != _configuration.PlaceHolderName)
+                if (visitedFileInfo.Name != _configuration.PlaceHolderName)
                     return false;
             }
             return true;
