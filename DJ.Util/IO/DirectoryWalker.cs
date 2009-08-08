@@ -23,6 +23,11 @@ namespace DJ.Util.IO
     {
         public static bool Walk(FileSystemInfo fileSystemInfo, IDirectoryVisitor visitor)
         {
+            return Walk(fileSystemInfo, visitor, true);
+        }
+        
+        public static bool Walk(FileSystemInfo fileSystemInfo, IDirectoryVisitor visitor, bool visitFiles)
+        {
             if (!fileSystemInfo.Exists)
                 return false;
 
@@ -39,17 +44,17 @@ namespace DJ.Util.IO
                     var subDirectories = dirInfo.GetDirectories();
                     foreach (var subDirectory in subDirectories)
                     {
-                        continueWalking = Walk(subDirectory, visitor);
+                        continueWalking = Walk(subDirectory, visitor, visitFiles);
                         if (!continueWalking)
                             break;
                     }
 
-                    if (continueWalking)
+                    if (visitFiles && continueWalking)
                     {
                         var files = dirInfo.GetFiles();
                         foreach (var file in files)
                         {
-                            continueWalking = Walk(file, visitor);
+                            continueWalking = Walk(file, visitor, visitFiles);
                             if (!continueWalking)
                                 break;
                         }
