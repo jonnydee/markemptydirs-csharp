@@ -51,14 +51,15 @@ namespace DJ.App.MarkEmptyDirs
                 throw new ArgumentNullException("dirInfo");
 
             var placeHolderFile = new FileInfo(Path.Combine(dirInfo.FullName, config.PlaceHolderName));
+
+            if (placeHolderFile.Exists)
+                return null;
+
+            var dynCtx = new Dictionary<string, object>();
+            dynCtx[PlaceHolderVariable.Id] = placeHolderFile;
+
             try
             {
-                if (placeHolderFile.Exists)
-                    return null;
-
-                var dynCtx = new Dictionary<string, object>();
-                dynCtx[PlaceHolderVariable.Id] = placeHolderFile;
-
                 if (!config.DryRun)
                 {
                     using (var fileStream = placeHolderFile.Create())
@@ -71,35 +72,33 @@ namespace DJ.App.MarkEmptyDirs
                 if (config.Short)
                     Logger.Log(Logger.LogType.Info, placeHolderFile.FullName, true);
                 else if (config.Verbose)
-                    Logger.Log(Logger.LogType.Info, string.Format("Created placeholder: '{0}'", placeHolderFile.FullName));
-
-                if (null != config.CreateHookTemplate)
-                {
-                    var cmdLineString = config.CreateHookTemplate.ToString(dynCtx);
-                    if (config.Short)
-                        Logger.Log(Logger.LogType.Info, cmdLineString, true);
-                    else if (config.Verbose)
-                        Logger.Log(Logger.LogType.Info, string.Format("Executing placeholder creation hook: '{0}'", cmdLineString));
-                    if (!config.DryRun)
-                    {
-                        try
-                        {
-                            RunShellCommand(placeHolderFile.Directory, cmdLineString);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Log(Logger.LogType.Warn, ex);
-                        }
-                    }
-                }
-                return placeHolderFile;
+                    Logger.Log(Logger.LogType.Info, string.Format("Created placeholder: '{0}'", placeHolderFile.FullName));        
             }
             catch (Exception ex)
             {
                 Logger.Log(Logger.LogType.Error, string.Format("Creation of placeholder '{0}' failed: {1}", placeHolderFile.FullName, ex.Message));
+                return null;
             }
 
-            return null;
+            if (null != config.CreateHookTemplate)
+            {
+                try
+                {
+                    var cmdLineString = config.CreateHookTemplate.ToString(dynCtx);
+                    if (!config.DryRun)
+                        RunShellCommand(placeHolderFile.Directory, cmdLineString);
+                    if (config.Short)
+                        Logger.Log(Logger.LogType.Info, cmdLineString, true);
+                    else if (config.Verbose)
+                        Logger.Log(Logger.LogType.Info, string.Format("Executed placeholder creation hook: '{0}'", cmdLineString));
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log(Logger.LogType.Warn, string.Format("Execution of placeholder creation hook '{0}' failed: {1}", placeHolderFile.FullName, ex.Message));
+                }
+            }
+            
+            return placeHolderFile;
         }
         
         public static FileInfo DeletePlaceHolder(DirectoryInfo dirInfo, Configuration config)
@@ -122,34 +121,32 @@ namespace DJ.App.MarkEmptyDirs
             if (placeHolderFile.Name != config.PlaceHolderName)
                 throw new ArgumentException(string.Format("Not a valid placeholder file name: '{0}'", placeHolderFile.FullName), "placeHolderFile");
 
-            try
-            {
-                if (!placeHolderFile.Exists)
-                    return null;
-            
-                var dynCtx = new Dictionary<string, object>();
-                dynCtx[PlaceHolderVariable.Id] = placeHolderFile;
+            if (!placeHolderFile.Exists)
+                return null;
+        
+            var dynCtx = new Dictionary<string, object>();
+            dynCtx[PlaceHolderVariable.Id] = placeHolderFile;
 
-                if (null != config.DeleteHookTemplate)
+            if (null != config.DeleteHookTemplate)
+            {
+                try
                 {
                     var cmdLineString = config.DeleteHookTemplate.ToString(dynCtx);
+                    if (!config.DryRun)
+                        RunShellCommand(placeHolderFile.Directory, cmdLineString);
                     if (config.Short)
                         Logger.Log(Logger.LogType.Info, cmdLineString, true);
                     else if (config.Verbose)
-                        Logger.Log(Logger.LogType.Info, string.Format("Executing placeholder deletion hook: '{0}'", cmdLineString));
-                    if (!config.DryRun)
-                    {
-                        try
-                        {
-                            RunShellCommand(placeHolderFile.Directory, cmdLineString);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Log(Logger.LogType.Warn, ex);
-                        }
-                    }
+                        Logger.Log(Logger.LogType.Info, string.Format("Executed placeholder deletion hook: '{0}'", cmdLineString));
                 }
-                
+                catch (Exception ex)
+                {
+                    Logger.Log(Logger.LogType.Warn, string.Format("Execution of placeholder deletion hook '{0}' failed: {1}", placeHolderFile.FullName, ex.Message));
+                }
+            }
+
+            try
+            {
                 if (!config.DryRun)
                 {
                     if (placeHolderFile.Exists)
@@ -159,14 +156,14 @@ namespace DJ.App.MarkEmptyDirs
                     Logger.Log(Logger.LogType.Info, placeHolderFile.FullName, true);
                 else if (config.Verbose)
                     Logger.Log(Logger.LogType.Info, string.Format("Deleted placeholder: '{0}'", placeHolderFile.FullName));
-                return placeHolderFile;
             }
             catch (Exception ex)
             {
                 Logger.Log(Logger.LogType.Error, string.Format("Deletion of placeholder '{0}' failed: {1}", placeHolderFile.FullName, ex.Message));
+                return null;
             }
 
-            return null;
+            return placeHolderFile;
         }
     }
 }
