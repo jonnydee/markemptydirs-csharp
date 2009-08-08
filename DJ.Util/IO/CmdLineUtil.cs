@@ -21,9 +21,10 @@ namespace DJ.Util.IO
 {
     public static class CmdLineUtil
     {
-        public static string[] SplitCmdAndArgs(string cmd)
+        public static string[] SplitCmdAndArgs(string cmdLineString)
         {
-            return cmd.Split(new[] {' '}, 2);
+            // TODO Handle strings with '"' chars correctly.
+            return cmdLineString.Split(new[] {' '}, 2);
         }        
     }
 }
