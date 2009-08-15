@@ -53,6 +53,7 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="PlaceHolderVariable.cs" />
     <Compile Include="CommandHelper.cs" />
+    <Compile Include="DirectoryVariable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DJ.App.MarkEmptyDirs.snk" />
