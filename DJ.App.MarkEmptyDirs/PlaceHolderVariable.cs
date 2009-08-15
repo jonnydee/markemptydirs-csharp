@@ -74,12 +74,12 @@ namespace DJ.App.MarkEmptyDirs
 
         public override string ArgumentDescription
         {
-            get { return string.Format("'name' for file name only, 'fullname' for full file path (default is '{0}')", DefaultMode); }
+            get { return string.Format("'{0}' for file name only, '{1}' for full file path (default is '{2}')", ModeName, ModeFullName, DefaultMode); }
         }
 
         public override string ArgumentIdentifier
         {
-            get { return "name|fullname"; }
+            get { return string.Format("{0}|{1}", ModeName, ModeFullName); }
         }
 
         public override bool ArgumentMandatory

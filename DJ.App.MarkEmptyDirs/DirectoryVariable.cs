@@ -90,12 +90,12 @@ namespace DJ.App.MarkEmptyDirs
 
         public override string ArgumentDescription
         {
-            get { return string.Format("'base' for base directory, 'current[.rel]' for current directory (default is '{0}')", DefaultMode); }
+            get { return string.Format("'{0}' for base directory, '{1}|{2}' for current directory (default is '{3}')", ModeBase, ModeCurrent, ModeCurrentRelative, DefaultMode); }
         }
 
         public override string ArgumentIdentifier
         {
-            get { return "base|current[.rel]"; }
+            get { return string.Format("{0}|{1}|{2}", ModeBase, ModeCurrent, ModeCurrentRelative); }
         }
 
         public override bool ArgumentMandatory
