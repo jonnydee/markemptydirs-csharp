@@ -28,6 +28,10 @@ namespace DJ.App.MarkEmptyDirs
         public const string Id = "placeholder";
         public const string ModeFullName = "fullname";
         public const string ModeName = "name";
+        public const string DefaultMode = ModeName;
+
+        public const string ContextPlaceHolderFile = Id;
+        
         
         public PlaceHolderVariable() : base(Id)
         {
@@ -35,23 +39,26 @@ namespace DJ.App.MarkEmptyDirs
 
         public override string EvaluateValueFor(TemplateEngine ctx, string arg)
         {
-            if (null == ctx.DynamicContext || !ctx.DynamicContext.ContainsKey(Name))
-                return ToString(arg);
+            if (null == ctx.DynamicContext)
+                throw new ArgumentNullException("DynamicContext");
 
-            var fileInfo = (FileInfo)ctx.DynamicContext[Name];
-            if (!string.IsNullOrEmpty(arg))
+            if (string.IsNullOrEmpty(arg))
+                arg = DefaultMode;
+            
+            var fileInfo = (FileInfo)ctx.DynamicContext[ContextPlaceHolderFile];
+            string fileName = null;
+            switch (arg.ToLower())
             {
-                switch (arg.ToLower())
-                {
-                    case ModeName:
-                        return fileInfo.Name;
-                    case ModeFullName:
-                        return fileInfo.FullName;
-                    default:
-                        break;
-                }
+                case ModeName:
+                    fileName = fileInfo.Name;
+                    break;
+                case ModeFullName:
+                    fileName = fileInfo.FullName;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(Id, arg, "Unknown argument");
             }
-            return fileInfo.FullName;
+            return fileName;
         }
 
         public override string Description
@@ -66,7 +73,7 @@ namespace DJ.App.MarkEmptyDirs
 
         public override string ArgumentDescription
         {
-            get { return "'name' for filename, 'fullname' for full path (default is 'name')"; }
+            get { return string.Format("'name' for file name only, 'fullname' for full file path (default is '{0}')", DefaultMode); }
         }
 
         public override string ArgumentIdentifier
