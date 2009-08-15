@@ -46,15 +46,20 @@ namespace DJ.App.MarkEmptyDirs
             if (string.IsNullOrEmpty(arg))
                 arg = DefaultMode;
             
-            var fileInfo = (FileInfo)ctx.DynamicContext[ContextPlaceHolderFile];
             string fileName = null;
             switch (arg.ToLower())
             {
                 case ModeName:
-                    fileName = fileInfo.Name;
+                    {
+                        var fileInfo = (FileInfo)ctx.DynamicContext[ContextPlaceHolderFile];
+                        fileName = fileInfo.Name;
+                    }
                     break;
                 case ModeFullName:
-                    fileName = fileInfo.FullName;
+                    {
+                        var fileInfo = (FileInfo)ctx.DynamicContext[ContextPlaceHolderFile];
+                        fileName = fileInfo.FullName;
+                    }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(Id, arg, "Unknown argument");
