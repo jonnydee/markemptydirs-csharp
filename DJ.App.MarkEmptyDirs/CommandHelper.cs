@@ -109,18 +109,6 @@ namespace DJ.App.MarkEmptyDirs
                 throw new ArgumentNullException("config");
 
             var placeHolderFile = new FileInfo(Path.Combine(dirInfo.FullName, config.PlaceHolderName));
-            return DeletePlaceHolder(placeHolderFile, config);
-        }
-        
-        public static FileInfo DeletePlaceHolder(FileInfo placeHolderFile, Configuration config)
-        {
-            if (null == placeHolderFile)
-                throw new ArgumentNullException("placeHolderFile");
-            if (null == config)
-                throw new ArgumentNullException("config");
-            if (placeHolderFile.Name != config.PlaceHolderName)
-                throw new ArgumentException(string.Format("Not a valid placeholder file name: '{0}'", placeHolderFile.FullName), "placeHolderFile");
-
             if (!placeHolderFile.Exists)
                 return null;
         
