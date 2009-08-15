@@ -38,14 +38,16 @@ namespace DJ.App.MarkEmptyDirs
         {
             try
             {
-                var cmdFile = new FileInfo(Environment.GetCommandLineArgs()[0]);
-                var cmdExtension = cmdFile.Extension;
-                var cmdName = cmdFile.Name.Substring(0, cmdFile.Name.Length - cmdExtension.Length);
-                return new[] { cmdFile.Name, cmdName, cmdExtension };
+                var cmdFilePath = Environment.GetCommandLineArgs()[0];
+                
+                var cmdNameWithExtension = Path.GetFileName(cmdFilePath);
+                var cmdName = Path.GetFileNameWithoutExtension(cmdFilePath);
+                var cmdExtension = Path.GetExtension(cmdFilePath);
+                return new[] { cmdNameWithExtension, cmdName, cmdExtension };
             }
             catch
             {
-                return new[] { MainClass.StandardCmdName + "." + MainClass.StandardCmdExtension, MainClass.StandardCmdName, MainClass.StandardCmdExtension };
+                return new[] { Path.ChangeExtension(MainClass.StandardCmdName, MainClass.StandardCmdExtension), MainClass.StandardCmdName, MainClass.StandardCmdExtension };
             }
         }
 
