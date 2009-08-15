@@ -84,6 +84,7 @@ namespace DJ.App.MarkEmptyDirs
             var engine = new TemplateEngine(template);
             
             engine.AddVariable(new DateTimeVariable());
+            engine.AddVariable(new DirectoryVariable());
             engine.AddVariable(new EnvironmentVariable());
             engine.AddVariable(new GuidVariable());
             engine.AddVariable(new LineFeedVariable());

@@ -56,7 +56,9 @@ namespace DJ.App.MarkEmptyDirs
                 return null;
 
             var dynCtx = new Dictionary<string, object>();
-            dynCtx[PlaceHolderVariable.Id] = placeHolderFile;
+            dynCtx[PlaceHolderVariable.ContextPlaceHolderFile] = placeHolderFile;
+            dynCtx[DirectoryVariable.ContextBaseDir] = config.Directory;
+            dynCtx[DirectoryVariable.ContextCurrentDir] = dirInfo;
 
             try
             {
@@ -113,7 +115,9 @@ namespace DJ.App.MarkEmptyDirs
                 return null;
         
             var dynCtx = new Dictionary<string, object>();
-            dynCtx[PlaceHolderVariable.Id] = placeHolderFile;
+            dynCtx[PlaceHolderVariable.ContextPlaceHolderFile] = placeHolderFile;
+            dynCtx[DirectoryVariable.ContextBaseDir] = config.Directory;
+            dynCtx[DirectoryVariable.ContextCurrentDir] = dirInfo;
 
             if (null != config.DeleteHookTemplate)
             {
