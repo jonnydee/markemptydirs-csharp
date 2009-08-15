@@ -26,6 +26,7 @@ namespace DJ.App.MarkEmptyDirs
     public class PlaceHolderVariable : TemplateVariable
     {
         public const string Id = "placeholder";
+        
         public const string ModeFullName = "fullname";
         public const string ModeName = "name";
         public const string DefaultMode = ModeName;
