@@ -88,6 +88,7 @@ namespace DJ.App.MarkEmptyDirs
             engine.AddVariable(new EnvironmentVariable());
             engine.AddVariable(new GuidVariable());
             engine.AddVariable(new LineFeedVariable());
+            engine.AddVariable(new SeparatorVariable());
             engine.AddVariable(new SpaceVariable());
             engine.AddVariable(new PlaceHolderVariable());
             
