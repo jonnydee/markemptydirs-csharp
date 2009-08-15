@@ -16,6 +16,7 @@
 //  along with MarkEmptyDirs.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.IO;
 
 using NUnit.Framework;
 
@@ -143,6 +144,64 @@ namespace DJ.Util.Template
             Console.WriteLine(string.Format("SUBSTITUTED STRING: '{0}'", str));
 
             Assert.AreEqual(new string(' ', count), str);
+        }
+
+        [Test]
+        public void TestSeparatorVariableModeDirectorySubstitution()
+        {
+            var variable = new SeparatorVariable();
+            var template = variable.ToString(SeparatorVariable.ModeDirectory);
+            
+            var engine = new TemplateEngine(template);
+            engine.AddVariable(variable);
+
+            var str = engine.ToString();
+            Console.WriteLine(string.Format("SUBSTITUTED STRING: '{0}'", str));
+
+            Assert.AreEqual(Path.DirectorySeparatorChar.ToString(), str);
+        }
+
+        [Test]
+        public void TestSeparatorVariableModePathSubstitution()
+        {
+            var variable = new SeparatorVariable();
+            var template = variable.ToString(SeparatorVariable.ModePath);
+            
+            var engine = new TemplateEngine(template);
+            engine.AddVariable(variable);
+
+            var str = engine.ToString();
+            Console.WriteLine(string.Format("SUBSTITUTED STRING: '{0}'", str));
+
+            Assert.AreEqual(Path.PathSeparator.ToString(), str);
+        }
+
+        [Test]
+        public void TestSeparatorVariableModeVolumeSubstitution()
+        {
+            var variable = new SeparatorVariable();
+            var template = variable.ToString(SeparatorVariable.ModeVolume);
+            
+            var engine = new TemplateEngine(template);
+            engine.AddVariable(variable);
+
+            var str = engine.ToString();
+            Console.WriteLine(string.Format("SUBSTITUTED STRING: '{0}'", str));
+
+            Assert.AreEqual(Path.VolumeSeparatorChar.ToString(), str);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void TestSeparatorVariableModeUnknownSubstitution()
+        {
+            var variable = new SeparatorVariable();
+            var template = variable.ToString("UNKNOWN");
+            
+            var engine = new TemplateEngine(template);
+            engine.AddVariable(variable);
+
+            engine.ToString();
         }
     }
 }
