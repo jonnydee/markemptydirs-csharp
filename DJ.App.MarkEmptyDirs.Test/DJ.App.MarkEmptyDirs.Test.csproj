@@ -48,6 +48,7 @@
     <Compile Include="TestCleanCommand.cs" />
     <Compile Include="DeleteRecursively.cs" />
     <Compile Include="TestDirectoryVariable.cs" />
+    <Compile Include="TestPlaceHolderVariable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
