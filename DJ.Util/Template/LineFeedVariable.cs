@@ -23,8 +23,12 @@ namespace DJ.Util.Template
     
     public class LineFeedVariable : TemplateVariable
     {
+        public const string Id = "lf";
+
+        public const string ArgCount = "count";
+
         
-        public LineFeedVariable() : base("lf")
+        public LineFeedVariable() : base(Id)
         {
         }
 
@@ -53,12 +57,12 @@ namespace DJ.Util.Template
 
         public override string ArgumentDescription
         {
-            get { return "integer describing how many linefeeds should be returned"; }
+            get { return string.Format("{0} : integer describing how many linefeeds should be returned", ArgCount); }
         }
 
         public override string ArgumentIdentifier
         {
-            get { return "count"; }
+            get { return ArgCount; }
         }
             
         public override bool ArgumentMandatory

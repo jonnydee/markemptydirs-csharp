@@ -69,7 +69,7 @@ namespace DJ.App.MarkEmptyDirs
 
         public override string Description
         {
-            get { return "get the placeholder name"; }
+            get { return string.Format("get the placeholder name (default is '{0}')", DefaultMode); }
         }
 
         public override bool CanHaveArgument
@@ -79,7 +79,7 @@ namespace DJ.App.MarkEmptyDirs
 
         public override string ArgumentDescription
         {
-            get { return string.Format("'{0}' for file name only, '{1}' for full file path (default is '{2}')", ModeName, ModeFullName, DefaultMode); }
+            get { return string.Format("{0} : file name only\n{1} : full file path", ModeName, ModeFullName); }
         }
 
         public override string ArgumentIdentifier

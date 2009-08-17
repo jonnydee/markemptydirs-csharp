@@ -80,7 +80,7 @@ namespace DJ.App.MarkEmptyDirs
 
         public override string Description
         {
-            get { return "get the base directory or current directory"; }
+            get { return string.Format("get the base directory or current directory (default is '{0}')", DefaultMode); }
         }
 
         public override bool CanHaveArgument
@@ -90,7 +90,7 @@ namespace DJ.App.MarkEmptyDirs
 
         public override string ArgumentDescription
         {
-            get { return string.Format("'{0}' for base directory, '{1}|{2}' for current directory (default is '{3}')", ModeBase, ModeCurrent, ModeCurrentRelative, DefaultMode); }
+            get { return string.Format("{0} : base directory\n{1} : absolute path of current directory\n{2} : relative path to current directory", ModeBase, ModeCurrent, ModeCurrentRelative); }
         }
 
         public override string ArgumentIdentifier

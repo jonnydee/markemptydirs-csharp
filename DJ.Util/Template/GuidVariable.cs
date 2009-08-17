@@ -22,7 +22,10 @@ namespace DJ.Util.Template
     
     public class GuidVariable : TemplateVariable
     {
-        public GuidVariable() : base("guid")
+        public const string Id = "guid";
+
+
+        public GuidVariable() : base(Id)
         {
         }
         

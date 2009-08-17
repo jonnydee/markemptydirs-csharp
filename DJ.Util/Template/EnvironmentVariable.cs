@@ -24,7 +24,12 @@ namespace DJ.Util.Template
     
     public class EnvironmentVariable : TemplateVariable
     {
-        public EnvironmentVariable() : base("env")
+        public const string Id = "env";
+
+        public const string ArgEnvVarName = "env-var-name";
+        
+
+        public EnvironmentVariable() : base(Id)
         {
         }
 
@@ -54,12 +59,12 @@ namespace DJ.Util.Template
 
         public override string ArgumentDescription
         {
-            get { return "the environment variable's name"; }
+            get { return string.Format("{0} : the environment variable's name", ArgEnvVarName); }
         }
 
         public override string ArgumentIdentifier
         {
-            get { return "env-var-name"; }
+            get { return ArgEnvVarName; }
         }
 
         public override bool ArgumentMandatory
