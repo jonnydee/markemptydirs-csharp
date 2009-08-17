@@ -26,13 +26,13 @@ namespace DJ.App.MarkEmptyDirs
     {   
         public const string Id = "dir";
 
-        public const string ModeBase = "base";
-        public const string ModeCurrent = "current";
-        public const string ModeCurrentRelative = "current.rel";
-        public const string DefaultMode = ModeBase;
+        public const string ArgBase = "base";
+        public const string ArgCurrentAbsolute = "cur.abs";
+        public const string ArgCurrentRelative = "cur.rel";
+        public const string DefaultArg = ArgBase;
 
-        public const string ContextBaseDir = Id + "." + ModeBase;
-        public const string ContextCurrentDir = Id + "." + ModeCurrent;
+        public const string ContextBaseDir = Id + "." + ArgBase;
+        public const string ContextCurrentDir = Id + "." + ArgCurrentAbsolute;
 
         
         public DirectoryVariable() : base(Id)
@@ -45,24 +45,24 @@ namespace DJ.App.MarkEmptyDirs
                 throw new ArgumentNullException("DynamicContext");
 
             if (string.IsNullOrEmpty(arg))
-                arg = DefaultMode;
+                arg = DefaultArg;
 
             string dir = null;
             switch (arg.ToLower())
             {
-                case ModeBase:
+                case ArgBase:
                     {
                         var dirInfo = (DirectoryInfo)ctx.DynamicContext[ContextBaseDir];
                         dir = dirInfo.FullName;
                     }
                     break;
-                case ModeCurrent:
+                case ArgCurrentAbsolute:
                     {
                         var dirInfo = (DirectoryInfo)ctx.DynamicContext[ContextCurrentDir];
                         dir = dirInfo.FullName;
                     }
                     break;
-                case ModeCurrentRelative:
+                case ArgCurrentRelative:
                     {
                         var baseDirInfo = (DirectoryInfo)ctx.DynamicContext[ContextBaseDir];
                         var currentDirInfo = (DirectoryInfo)ctx.DynamicContext[ContextCurrentDir];
@@ -80,7 +80,7 @@ namespace DJ.App.MarkEmptyDirs
 
         public override string Description
         {
-            get { return string.Format("get the base directory or current directory (default is '{0}')", DefaultMode); }
+            get { return string.Format("get the base directory or current directory (default is '{0}')", DefaultArg); }
         }
 
         public override bool CanHaveArgument
@@ -90,12 +90,12 @@ namespace DJ.App.MarkEmptyDirs
 
         public override string ArgumentDescription
         {
-            get { return string.Format("{0} : base directory\n{1} : absolute path of current directory\n{2} : relative path to current directory", ModeBase, ModeCurrent, ModeCurrentRelative); }
+            get { return string.Format("{0} : base directory\n{1} : absolute path of current directory\n{2} : relative path to current directory", ArgBase, ArgCurrentAbsolute, ArgCurrentRelative); }
         }
 
         public override string ArgumentIdentifier
         {
-            get { return string.Format("{0}|{1}|{2}", ModeBase, ModeCurrent, ModeCurrentRelative); }
+            get { return string.Format("{0}|{1}|{2}", ArgBase, ArgCurrentAbsolute, ArgCurrentRelative); }
         }
 
         public override bool ArgumentMandatory

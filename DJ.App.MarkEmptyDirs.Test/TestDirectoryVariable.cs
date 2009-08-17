@@ -30,10 +30,10 @@ namespace DJ.App.MarkEmptyDirs
     public class TestDirectoryVariable
     {
         [Test]
-        public void TestDirectoryVariableModeBaseSubstitution()
+        public void TestDirectoryVariableArgBaseSubstitution()
         {
             var variable = new DirectoryVariable();
-            var template = variable.ToString(DirectoryVariable.ModeBase);
+            var template = variable.ToString(DirectoryVariable.ArgBase);
             
             var engine = new TemplateEngine(template);
             engine.AddVariable(variable);
@@ -49,10 +49,10 @@ namespace DJ.App.MarkEmptyDirs
         }
 
         [Test]
-        public void TestDirectoryVariableModeCurrentSubstitution()
+        public void TestDirectoryVariableArgCurrentAbsoluteSubstitution()
         {
             var variable = new DirectoryVariable();
-            var template = variable.ToString(DirectoryVariable.ModeCurrent);
+            var template = variable.ToString(DirectoryVariable.ArgCurrentAbsolute);
             
             var engine = new TemplateEngine(template);
             engine.AddVariable(variable);
@@ -68,10 +68,10 @@ namespace DJ.App.MarkEmptyDirs
         }
 
         [Test]
-        public void TestDirectoryVariableModeCurrentRelativeSubstitution()
+        public void TestDirectoryVariableArgCurrentRelativeSubstitution()
         {
             var variable = new DirectoryVariable();
-            var template = variable.ToString(DirectoryVariable.ModeCurrentRelative);
+            var template = variable.ToString(DirectoryVariable.ArgCurrentRelative);
             
             var engine = new TemplateEngine(template);
             engine.AddVariable(variable);
@@ -91,7 +91,7 @@ namespace DJ.App.MarkEmptyDirs
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TestDirectoryVariableModeUnknownSubstitution()
+        public void TestDirectoryVariableArgUnknownSubstitution()
         {
             var variable = new DirectoryVariable();
             var template = variable.ToString("UNKNOWN");

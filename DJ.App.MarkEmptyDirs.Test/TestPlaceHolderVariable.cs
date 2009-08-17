@@ -30,10 +30,10 @@ namespace DJ.App.MarkEmptyDirs
     public class TestPlaceHolderVariable
     {
         [Test]
-        public void TestPlaceHolderVariableModeFullNameSubstitution()
+        public void TestPlaceHolderVariableArgFullNameSubstitution()
         {
             var variable = new PlaceHolderVariable();
-            var template = variable.ToString(PlaceHolderVariable.ModeFullName);
+            var template = variable.ToString(PlaceHolderVariable.ArgFullName);
             
             var engine = new TemplateEngine(template);
             engine.AddVariable(variable);
@@ -49,10 +49,10 @@ namespace DJ.App.MarkEmptyDirs
         }
 
         [Test]
-        public void TestPlaceHolderVariableModeNameSubstitution()
+        public void TestPlaceHolderVariableArgNameSubstitution()
         {
             var variable = new PlaceHolderVariable();
-            var template = variable.ToString(PlaceHolderVariable.ModeName);
+            var template = variable.ToString(PlaceHolderVariable.ArgName);
             
             var engine = new TemplateEngine(template);
             engine.AddVariable(variable);
@@ -69,7 +69,7 @@ namespace DJ.App.MarkEmptyDirs
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TestPlaceHolderVariableModeUnknownSubstitution()
+        public void TestPlaceHolderVariableArgUnknownSubstitution()
         {
             var variable = new PlaceHolderVariable();
             var template = variable.ToString("UNKNOWN");

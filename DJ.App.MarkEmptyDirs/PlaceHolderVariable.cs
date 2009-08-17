@@ -27,9 +27,9 @@ namespace DJ.App.MarkEmptyDirs
     {
         public const string Id = "placeholder";
         
-        public const string ModeFullName = "fullname";
-        public const string ModeName = "name";
-        public const string DefaultMode = ModeName;
+        public const string ArgFullName = "fullname";
+        public const string ArgName = "name";
+        public const string DefaultArg = ArgName;
 
         public const string ContextPlaceHolderFile = Id;
         
@@ -44,18 +44,18 @@ namespace DJ.App.MarkEmptyDirs
                 throw new ArgumentNullException("DynamicContext");
 
             if (string.IsNullOrEmpty(arg))
-                arg = DefaultMode;
+                arg = DefaultArg;
             
             string fileName = null;
             switch (arg.ToLower())
             {
-                case ModeName:
+                case ArgName:
                     {
                         var fileInfo = (FileInfo)ctx.DynamicContext[ContextPlaceHolderFile];
                         fileName = fileInfo.Name;
                     }
                     break;
-                case ModeFullName:
+                case ArgFullName:
                     {
                         var fileInfo = (FileInfo)ctx.DynamicContext[ContextPlaceHolderFile];
                         fileName = fileInfo.FullName;
@@ -69,7 +69,7 @@ namespace DJ.App.MarkEmptyDirs
 
         public override string Description
         {
-            get { return string.Format("get the placeholder name (default is '{0}')", DefaultMode); }
+            get { return string.Format("get the placeholder name (default is '{0}')", DefaultArg); }
         }
 
         public override bool CanHaveArgument
@@ -79,12 +79,12 @@ namespace DJ.App.MarkEmptyDirs
 
         public override string ArgumentDescription
         {
-            get { return string.Format("{0} : file name only\n{1} : full file path", ModeName, ModeFullName); }
+            get { return string.Format("{0} : file name only\n{1} : full file path", ArgName, ArgFullName); }
         }
 
         public override string ArgumentIdentifier
         {
-            get { return string.Format("{0}|{1}", ModeName, ModeFullName); }
+            get { return string.Format("{0}|{1}", ArgName, ArgFullName); }
         }
 
         public override bool ArgumentMandatory
