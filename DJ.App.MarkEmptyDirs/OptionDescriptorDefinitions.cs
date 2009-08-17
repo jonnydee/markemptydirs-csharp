@@ -60,7 +60,7 @@ namespace DJ.App.MarkEmptyDirs
         {
             LongNames = new[] { "create-hook" },
             ShortNames = new[] { 'a' },
-            ShortDescription = string.Format("invoke command after placeholder creation (use §placeholder§ as placeholder name)", new PlaceHolderVariable().ToString()),
+            ShortDescription = string.Format("invoke command after placeholder creation (use template variables)", new PlaceHolderVariable().ToString()),
             CanHaveValue = true,
             MandatoryValue = true,
             ValueIdentifier = "create-hook-command",
@@ -69,7 +69,7 @@ namespace DJ.App.MarkEmptyDirs
         {
             LongNames = new[] { "delete-hook" },
             ShortNames = new[] { 'r' },
-            ShortDescription = string.Format("invoke command before placeholder deletion (use §placeholder§ as placeholder name)", new PlaceHolderVariable().ToString()),
+            ShortDescription = string.Format("invoke command before placeholder deletion (use template variables)", new PlaceHolderVariable().ToString()),
             CanHaveValue = true,
             MandatoryValue = true,
             ValueIdentifier = "delete-hook-command",
