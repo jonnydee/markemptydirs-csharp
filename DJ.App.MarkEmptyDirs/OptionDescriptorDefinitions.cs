@@ -27,7 +27,7 @@ namespace DJ.App.MarkEmptyDirs
     {
         public static readonly OptionDescriptor DryRunOptionDescriptor = new OptionDescriptor
         {
-            LongNames = new[] { "dry-run", "dry" },
+            LongNames = new[] { "dry-run" },
             ShortNames = new[] { 'd' },
             ShortDescription = "simulate command execution without any side effects",
         };
