@@ -147,10 +147,10 @@ namespace DJ.Util.Template
         }
 
         [Test]
-        public void TestSeparatorVariableModeDirectorySubstitution()
+        public void TestSeparatorVariableArgDirectorySubstitution()
         {
             var variable = new SeparatorVariable();
-            var template = variable.ToString(SeparatorVariable.ModeDirectory);
+            var template = variable.ToString(SeparatorVariable.ArgDirectory);
             
             var engine = new TemplateEngine(template);
             engine.AddVariable(variable);
@@ -162,10 +162,10 @@ namespace DJ.Util.Template
         }
 
         [Test]
-        public void TestSeparatorVariableModePathSubstitution()
+        public void TestSeparatorVariableArgPathSubstitution()
         {
             var variable = new SeparatorVariable();
-            var template = variable.ToString(SeparatorVariable.ModePath);
+            var template = variable.ToString(SeparatorVariable.ArgPath);
             
             var engine = new TemplateEngine(template);
             engine.AddVariable(variable);
@@ -177,10 +177,10 @@ namespace DJ.Util.Template
         }
 
         [Test]
-        public void TestSeparatorVariableModeVolumeSubstitution()
+        public void TestSeparatorVariableArgVolumeSubstitution()
         {
             var variable = new SeparatorVariable();
-            var template = variable.ToString(SeparatorVariable.ModeVolume);
+            var template = variable.ToString(SeparatorVariable.ArgVolume);
             
             var engine = new TemplateEngine(template);
             engine.AddVariable(variable);
@@ -193,7 +193,7 @@ namespace DJ.Util.Template
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TestSeparatorVariableModeUnknownSubstitution()
+        public void TestSeparatorVariableArgUnknownSubstitution()
         {
             var variable = new SeparatorVariable();
             var template = variable.ToString("UNKNOWN");

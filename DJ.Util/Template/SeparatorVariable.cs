@@ -25,9 +25,9 @@ namespace DJ.Util.Template
     {   
         public const string Id = "separator";
 
-        public const string ModeDirectory = "dir";
-        public const string ModePath = "path";
-        public const string ModeVolume = "vol";
+        public const string ArgDirectory = "dir";
+        public const string ArgPath = "path";
+        public const string ArgVolume = "vol";
 
         
         public SeparatorVariable() : base(Id)
@@ -38,11 +38,11 @@ namespace DJ.Util.Template
         {
             switch (arg.ToLower())
             {
-                case ModeDirectory:
+                case ArgDirectory:
                     return Path.DirectorySeparatorChar.ToString();
-                case ModePath:
+                case ArgPath:
                     return Path.PathSeparator.ToString();
-                case ModeVolume:
+                case ArgVolume:
                     return Path.VolumeSeparatorChar.ToString();
                 default:
                     throw new ArgumentOutOfRangeException(Id, arg, "Unknown argument");
@@ -61,12 +61,12 @@ namespace DJ.Util.Template
 
         public override string ArgumentDescription
         {
-            get { return string.Format("{0} : directory level separator\n{1} : path separator\n{2} : volume separator", ModeDirectory, ModePath, ModeVolume); }
+            get { return string.Format("{0} : directory level separator\n{1} : path separator\n{2} : volume separator", ArgDirectory, ArgPath, ArgVolume); }
         }
 
         public override string ArgumentIdentifier
         {
-            get { return string.Format("{0}|{1}|{2}", ModeDirectory, ModePath, ModeVolume); }
+            get { return string.Format("{0}|{1}|{2}", ArgDirectory, ArgPath, ArgVolume); }
         }
 
         public override bool ArgumentMandatory
