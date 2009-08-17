@@ -51,7 +51,7 @@ namespace DJ.Util.Template
 
         public override string Description
         {
-            get { return "get platform specific directory, path, and volume separators"; }
+            get { return "get platform specific directory, path, or volume separator"; }
         }
 
         public override bool CanHaveArgument
@@ -61,7 +61,7 @@ namespace DJ.Util.Template
 
         public override string ArgumentDescription
         {
-            get { return string.Format("'{0}' directory level separator, '{1}' path separator, '{2}' volume separator", ModeDirectory, ModePath, ModeVolume); }
+            get { return string.Format("{0} : directory level separator\n{1} : path separator\n{2} : volume separator", ModeDirectory, ModePath, ModeVolume); }
         }
 
         public override string ArgumentIdentifier

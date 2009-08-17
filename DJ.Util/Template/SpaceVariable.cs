@@ -22,8 +22,12 @@ namespace DJ.Util.Template
     
     public class SpaceVariable : TemplateVariable
     {
-        
-        public SpaceVariable() : base("sp")
+        public const string Id = "sp";
+
+        public const string ArgCount = "count";
+
+                
+        public SpaceVariable() : base(Id)
         {
         }
 
@@ -52,12 +56,12 @@ namespace DJ.Util.Template
 
         public override string ArgumentDescription
         {
-            get { return "integer describing how many spaces should be returned"; }
+            get { return string.Format("{0} : integer describing how many spaces should be returned", ArgCount); }
         }
 
         public override string ArgumentIdentifier
         {
-            get { return "count"; }
+            get { return ArgCount; }
         }
 
         public override bool ArgumentMandatory

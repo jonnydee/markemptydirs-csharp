@@ -22,8 +22,12 @@ namespace DJ.Util.Template
     
     public class DateTimeVariable : TemplateVariable
     {
+        public const string Id = "datetime";
+
+        public const string ArgPattern = "format-pattern";
         
-        public DateTimeVariable() : base("datetime")
+        
+        public DateTimeVariable() : base(Id)
         {
         }
 
@@ -39,12 +43,12 @@ namespace DJ.Util.Template
 
         public override string ArgumentDescription
         {
-            get { return "C# DateTime format pattern string"; }
+            get { return string.Format("{0} : C# DateTime format pattern string", ArgPattern); }
         }
 
         public override string ArgumentIdentifier
         {
-            get { return "format-pattern"; }
+            get { return ArgPattern; }
         }
 
         public override bool ArgumentMandatory 
