@@ -63,6 +63,7 @@
     <Compile Include="Template\SeparatorVariable.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="Pair.cs" />
+    <Compile Include="HashCodeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DJ.Util.snk" />
