@@ -16,21 +16,23 @@
 // 
 
 using System;
+using System.Collections;
 using System.IO;
 
 namespace DJ.Util
 {
     [Serializable]
-    public struct Pair<A,B>
+    public struct Pair<A,B> : IEnumerable
     {
+        private readonly object[] _elements;
+        
         public Pair(A first, B second)
         {
-            First = first;
-            Second = second;
+            _elements = new object[] { first, second };
         }
         
-        public A First { get; private set; }
-        public B Second { get; private set; }
+        public A First { get { return (A)_elements[0]; } }
+        public B Second { get { return (B)_elements[1]; } }
 
         public override string ToString ()
         {
@@ -43,6 +45,16 @@ namespace DJ.Util
                 return false;
             var other = (Pair<A,B>)obj;
             return Equals(First, other.First) && Equals(Second, other.Second);
+        }
+
+        public override int GetHashCode ()
+        {
+            return HashCodeHelper.GetHashCode(_elements);
+        }
+
+        public IEnumerator GetEnumerator ()
+        {
+            return _elements.GetEnumerator();
         }
 
     }
