@@ -61,6 +61,8 @@
     <Compile Include="IO\OptionParser.cs" />
     <Compile Include="IO\CmdLineUtil.cs" />
     <Compile Include="Template\SeparatorVariable.cs" />
+    <Compile Include="ICommand.cs" />
+    <Compile Include="Pair.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DJ.Util.snk" />
