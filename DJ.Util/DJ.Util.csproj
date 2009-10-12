@@ -62,7 +62,7 @@
     <Compile Include="IO\CmdLineUtil.cs" />
     <Compile Include="Template\SeparatorVariable.cs" />
     <Compile Include="ICommand.cs" />
-    <Compile Include="Pair.cs" />
+    <Compile Include="Touple2.cs" />
     <Compile Include="HashCodeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
