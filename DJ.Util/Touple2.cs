@@ -22,11 +22,11 @@ using System.IO;
 namespace DJ.Util
 {
     [Serializable]
-    public struct Pair<A,B> : IEnumerable
+    public struct Touple2<A,B> : IEnumerable
     {
         private readonly object[] _elements;
         
-        public Pair(A first, B second)
+        public Touple2(A first, B second)
         {
             _elements = new object[] { first, second };
         }
@@ -41,9 +41,9 @@ namespace DJ.Util
 
         public override bool Equals (object obj)
         {
-            if (null == obj || !(obj is Pair<A,B>))
+            if (null == obj || !(obj is Touple2<A,B>))
                 return false;
-            var other = (Pair<A,B>)obj;
+            var other = (Touple2<A,B>)obj;
             return Equals(First, other.First) && Equals(Second, other.Second);
         }
 
