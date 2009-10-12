@@ -64,6 +64,8 @@
     <Compile Include="ICommand.cs" />
     <Compile Include="Touple2.cs" />
     <Compile Include="HashCodeHelper.cs" />
+    <Compile Include="Touple3.cs" />
+    <Compile Include="Touple4.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DJ.Util.snk" />
