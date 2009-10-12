@@ -22,31 +22,32 @@ using System.IO;
 namespace DJ.Util
 {
     [Serializable]
-    public struct Touple2<A,B> : IEnumerable
+    public struct Touple3<A,B,C> : IEnumerable
     {
         private readonly object[] _elements;
         
-        public Touple2(A first, B second)
+        public Touple3(A first, B second, C third)
         {
-            _elements = new object[] { first, second };
+            _elements = new object[] { first, second, third };
         }
         
         public A First { get { return (A)_elements[0]; } }
         public B Second { get { return (B)_elements[1]; } }
+        public C Third { get { return (C)_elements[2]; } }
 
         object this[int index] { get { return _elements[index]; } }
         
         public override string ToString ()
         {
-            return string.Format("({0}, {1})", First, Second);
+            return string.Format("({0}, {1}, {2})", First, Second, Third);
         }
 
         public override bool Equals (object obj)
         {
-            if (null == obj || !(obj is Touple2<A,B>))
+            if (null == obj || !(obj is Touple3<A,B,C>))
                 return false;
-            var other = (Touple2<A,B>)obj;
-            return Equals(First, other.First) && Equals(Second, other.Second);
+            var other = (Touple3<A,B,C>)obj;
+            return Equals(First, other.First) && Equals(Second, other.Second) && Equals(Third, other.Third);
         }
 
         public override int GetHashCode ()
@@ -58,6 +59,5 @@ namespace DJ.Util
         {
             return _elements.GetEnumerator();
         }
-
     }
 }
