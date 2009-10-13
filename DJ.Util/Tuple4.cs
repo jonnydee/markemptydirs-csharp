@@ -22,31 +22,36 @@ using System.IO;
 namespace DJ.Util
 {
     [Serializable]
-    public struct Touple2<A,B> : IEnumerable
+    public struct Tuple4<A,B,C,D> : IEnumerable
     {
         private readonly object[] _elements;
         
-        public Touple2(A first, B second)
+        public Tuple4(A first, B second, C third, D fourth)
         {
-            _elements = new object[] { first, second };
+            _elements = new object[] { first, second, third, fourth };
         }
         
         public A First { get { return (A)_elements[0]; } }
         public B Second { get { return (B)_elements[1]; } }
+        public C Third { get { return (C)_elements[2]; } }
+        public D Fourth { get { return (D)_elements[3]; } }
 
         object this[int index] { get { return _elements[index]; } }
         
         public override string ToString ()
         {
-            return string.Format("({0}, {1})", First, Second);
+            return string.Format("({0}, {1}, {2}, {3})", First, Second, Third, Fourth);
         }
 
         public override bool Equals (object obj)
         {
-            if (null == obj || !(obj is Touple2<A,B>))
+            if (null == obj || !(obj is Tuple4<A,B,C,D>))
                 return false;
-            var other = (Touple2<A,B>)obj;
-            return Equals(First, other.First) && Equals(Second, other.Second);
+            var other = (Tuple4<A,B,C,D>)obj;
+            return Equals(First, other.First) 
+                && Equals(Second, other.Second) 
+                && Equals(Third, other.Third)
+                && Equals(Fourth, other.Fourth);
         }
 
         public override int GetHashCode ()
@@ -58,6 +63,5 @@ namespace DJ.Util
         {
             return _elements.GetEnumerator();
         }
-
     }
 }
