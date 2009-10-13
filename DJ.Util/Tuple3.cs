@@ -22,11 +22,11 @@ using System.IO;
 namespace DJ.Util
 {
     [Serializable]
-    public struct Touple3<A,B,C> : IEnumerable
+    public struct Tuple3<A,B,C> : IEnumerable
     {
         private readonly object[] _elements;
         
-        public Touple3(A first, B second, C third)
+        public Tuple3(A first, B second, C third)
         {
             _elements = new object[] { first, second, third };
         }
@@ -44,9 +44,9 @@ namespace DJ.Util
 
         public override bool Equals (object obj)
         {
-            if (null == obj || !(obj is Touple3<A,B,C>))
+            if (null == obj || !(obj is Tuple3<A,B,C>))
                 return false;
-            var other = (Touple3<A,B,C>)obj;
+            var other = (Tuple3<A,B,C>)obj;
             return Equals(First, other.First) && Equals(Second, other.Second) && Equals(Third, other.Third);
         }
 

@@ -62,10 +62,10 @@
     <Compile Include="IO\CmdLineUtil.cs" />
     <Compile Include="Template\SeparatorVariable.cs" />
     <Compile Include="ICommand.cs" />
-    <Compile Include="Touple2.cs" />
+    <Compile Include="Tuple2.cs" />
     <Compile Include="HashCodeHelper.cs" />
-    <Compile Include="Touple3.cs" />
-    <Compile Include="Touple4.cs" />
+    <Compile Include="Tuple3.cs" />
+    <Compile Include="Tuple4.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DJ.Util.snk" />
