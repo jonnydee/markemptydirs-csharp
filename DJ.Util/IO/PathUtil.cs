@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace DJ.Util.IO
@@ -16,6 +17,11 @@ namespace DJ.Util.IO
                 path = Path.Combine(path, pathComponents[i]);
 
             return path;
+        }
+
+        public static string[] Split(string path)
+        {
+            return path.Split(new[] { Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }
