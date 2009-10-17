@@ -47,14 +47,14 @@ namespace DJ.Util.IO
             throw new ArgumentException(string.Format("Unknown FileSystemInfo type: {0}", info.GetType().AssemblyQualifiedName), "info"); 
         }
 
-        public static bool SubTreeContains(DirectoryInfo tree, FileSystemInfo info)
+        public static bool TreeContains(DirectoryInfo tree, FileSystemInfo info)
         {
             return info.FullName.StartsWith(tree.FullName);
         }
 
         public static string[] GetRelativePath(DirectoryInfo root, FileSystemInfo info)
         {
-            if (!SubTreeContains(root, info))
+            if (!TreeContains(root, info))
                 throw new ArgumentException(string.Format("Path '{0}' not under tree '{1}'", info.FullName, root.FullName), "info");
             
             // Traverse the directory tree upwards until the repository root is reached
