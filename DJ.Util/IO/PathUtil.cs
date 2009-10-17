@@ -43,5 +43,10 @@ namespace DJ.Util.IO
                 return ((FileInfo)info).Directory;
             throw new ArgumentException(string.Format("Unknown FileSystemInfo type: {0}", info.GetType().AssemblyQualifiedName), "info"); 
         }
+
+        public static bool SubTreeContains(DirectoryInfo tree, FileSystemInfo info)
+        {
+            return info.FullName.StartsWith(tree.FullName);
+        }
     }
 }
