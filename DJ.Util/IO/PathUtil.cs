@@ -8,9 +8,12 @@ namespace DJ.Util.IO
     {
         public static string Combine(params string[] pathComponents)
         {
-            if (null == pathComponents || pathComponents.Length == 0)
-                throw new ArgumentException("At least one path component must be provided", "pathComponents");
+            if (null == pathComponents)
+                throw new ArgumentNullException("pathComponents");
 
+            if (pathComponents.Length == 0)
+                return string.Empty;
+            
             var path = pathComponents[0];
 
             for (var i = 1; i < pathComponents.Length; i++)
@@ -47,6 +50,24 @@ namespace DJ.Util.IO
         public static bool SubTreeContains(DirectoryInfo tree, FileSystemInfo info)
         {
             return info.FullName.StartsWith(tree.FullName);
+        }
+
+        public static string[] GetRelativePath(DirectoryInfo root, FileSystemInfo info)
+        {
+            if (!SubTreeContains(root, info))
+                throw new ArgumentException(string.Format("Path '{0}' not under tree '{1}'", info.FullName, root.FullName), "info");
+            
+            // Traverse the directory tree upwards until the repository root is reached
+            // and collect all intermediate FileSystemInfo path components.
+            var pathComponents = new List<string>();
+            while (info.FullName != root.FullName)
+            {
+                pathComponents.Add(info.Name);
+                info = GetParent(info);
+            }
+            pathComponents.Reverse();
+
+            return pathComponents.ToArray();
         }
     }
 }
