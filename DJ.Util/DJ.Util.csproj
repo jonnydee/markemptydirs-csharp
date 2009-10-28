@@ -66,6 +66,7 @@
     <Compile Include="HashCodeHelper.cs" />
     <Compile Include="Tuple3.cs" />
     <Compile Include="Tuple4.cs" />
+    <Compile Include="IO\SymbolicLinkHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DJ.Util.snk" />
