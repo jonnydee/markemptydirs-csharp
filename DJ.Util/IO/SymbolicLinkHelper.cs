@@ -73,7 +73,6 @@ namespace DJ.Util.IO
             
             private static void CreateSymbolicLink(Type unixFileSystemInfoType, string targetPath, string symlinkPath)
             {
-				Init();
                 var ufi = Activator.CreateInstance(unixFileSystemInfoType, targetPath);
                 var method = unixFileSystemInfoType.GetMethod(CreateSymbolicLinkMethodName);
                 method.Invoke(ufi, new[] { symlinkPath });
@@ -83,6 +82,7 @@ namespace DJ.Util.IO
             {
                 try
                 {
+                    Init();
                     CreateSymbolicLink(UnixDirectoryInfoType, targetDirInfo.FullName, symlinkFileInfo.FullName);
                     return true;
                 }
@@ -96,6 +96,7 @@ namespace DJ.Util.IO
             {
                 try
                 {
+                    Init();
                     CreateSymbolicLink(UnixFileInfoType, targetFileInfo.FullName, symlinkFileInfo.FullName);
                     return true;
                 }
