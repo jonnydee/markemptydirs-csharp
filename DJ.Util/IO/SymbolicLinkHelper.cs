@@ -44,16 +44,16 @@ namespace DJ.Util.IO
                 return CreateSymbolicLink(symlinkFileInfo.FullName, targetFileInfo.FullName, SymbolicLinkFlagFile);
             }
 
-            public static bool IsSymbolicLink(FileInfo symlinkFileInfo)
+            public static bool IsSymbolicLink(FileSystemInfo symlinkFileSystemInfo)
             {
                 // TODO Implement method.
-                throw new NotImplementedException("bool IsSymbolicLink(FileInfo symlinkFileInfo)");
+                throw new NotImplementedException("bool IsSymbolicLink(FileSystemInfo symlinkFileSystemInfo)");
             }
     
-            public static Uri GetSymbolicLinkTarget(FileInfo symlinkFileInfo)
+            public static Uri GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)
             {
                 // TODO Implement method.
-                throw new NotImplementedException("Uri GetSymbolicLinkTarget(FileInfo symlinkFileInfo)");
+                throw new NotImplementedException("Uri GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)");
             }
         }
     }
@@ -122,18 +122,18 @@ namespace DJ.Util.IO
                 }
             }
 
-            public static bool IsSymbolicLink(FileInfo symlinkFileInfo)
+            public static bool IsSymbolicLink(FileSystemInfo symlinkFileSystemInfo)
             {
                 Init();
-                var usli = Activator.CreateInstance(UnixSymbolicLinkInfoType, symlinkFileInfo.FullName);
+                var usli = Activator.CreateInstance(UnixSymbolicLinkInfoType, symlinkFileSystemInfo.FullName);
                 var method = UnixSymbolicLinkInfoType.GetMethod(IsSymbolicLinkMethodName);
                 return (bool)method.Invoke(usli, new object[0]);
             }
     
-            public static Uri GetSymbolicLinkTarget(FileInfo symlinkFileInfo)
+            public static Uri GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)
             {
                 // TODO Implement method.
-                throw new NotImplementedException("Uri GetSymbolicLinkTarget(FileInfo symlinkFileInfo)");
+                throw new NotImplementedException("Uri GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)");
             }
         }
     }
@@ -164,27 +164,27 @@ namespace DJ.Util.IO
             }
         }
 
-        public static bool IsSymbolicLink(FileInfo symlinkFileInfo)
+        public static bool IsSymbolicLink(FileSystemInfo symlinkFileSystemInfo)
         {
             try
             {
-                return Windows.SymbolicLinkHelper.IsSymbolicLink(symlinkFileInfo);
+                return Windows.SymbolicLinkHelper.IsSymbolicLink(symlinkFileSystemInfo);
             }
             catch
             {
-                return Unix.SymbolicLinkHelper.IsSymbolicLink(symlinkFileInfo);
+                return Unix.SymbolicLinkHelper.IsSymbolicLink(symlinkFileSystemInfo);
             }
         }
 
-        public static Uri GetSymbolicLinkTarget(FileInfo symlinkFileInfo)
+        public static Uri GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)
         {
             try
             {
-                return Windows.SymbolicLinkHelper.GetSymbolicLinkTarget(symlinkFileInfo);
+                return Windows.SymbolicLinkHelper.GetSymbolicLinkTarget(symlinkFileSystemInfo);
             }
             catch
             {
-                return Unix.SymbolicLinkHelper.GetSymbolicLinkTarget(symlinkFileInfo);
+                return Unix.SymbolicLinkHelper.GetSymbolicLinkTarget(symlinkFileSystemInfo);
             }
         }
     }
