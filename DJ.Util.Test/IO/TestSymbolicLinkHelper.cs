@@ -44,8 +44,12 @@ namespace DJ.Util.IO
         public void TestIsSymbolicLink()
         {
             SymbolicLinkHelper.CreateSymbolicLink(new DirectoryInfo("tmp"), new FileInfo("link_to_tmp_directory"));
+            
             var result = SymbolicLinkHelper.IsSymbolicLink(new FileInfo("link_to_tmp_directory"));
             Assert.IsTrue(result);
+            
+            result = SymbolicLinkHelper.IsSymbolicLink(new DirectoryInfo("."));
+            Assert.IsFalse(result);            
         }
     }
 }
