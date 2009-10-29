@@ -43,6 +43,18 @@ namespace DJ.Util.IO
             {
                 return CreateSymbolicLink(symlinkFileInfo.FullName, targetFileInfo.FullName, SymbolicLinkFlagFile);
             }
+
+            public static bool IsSymbolicLink(FileInfo symlinkFileInfo)
+            {
+                // TODO Implement method.
+                throw new NotImplementedException("bool IsSymbolicLink(FileInfo symlinkFileInfo)");
+            }
+    
+            public static Uri GetSymbolicLinkTarget(FileInfo symlinkFileInfo)
+            {
+                // TODO Implement method.
+                throw new NotImplementedException("Uri GetSymbolicLinkTarget(FileInfo symlinkFileInfo)");
+            }
         }
     }
 
@@ -53,10 +65,13 @@ namespace DJ.Util.IO
             private const string MonoPosixAssemblyName = "Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756";
             private const string UnixDirectoryInfoTypeName = "Mono.Unix.UnixDirectoryInfo";
             private const string UnixFileInfoTypeName = "Mono.Unix.UnixFileInfo";
+            private const string UnixSymbolicLinkInfoTypeName = "Mono.Unix.UnixSymbolicLinkInfo";
             private const string CreateSymbolicLinkMethodName = "CreateSymbolicLink";
+            private const string IsSymbolicLinkMethodName = "get_IsSymbolicLink";
 
             private static Type UnixDirectoryInfoType;
             private static Type UnixFileInfoType;
+            private static Type UnixSymbolicLinkInfoType;
         	private static bool _initialized = false;
 
             private static void Init()
@@ -68,6 +83,7 @@ namespace DJ.Util.IO
                 var assembly = Assembly.Load(assemblyRef);
                 UnixFileInfoType = assembly.GetType(UnixFileInfoTypeName);
                 UnixDirectoryInfoType = assembly.GetType(UnixDirectoryInfoTypeName);
+                UnixSymbolicLinkInfoType = assembly.GetType(UnixSymbolicLinkInfoTypeName);
             	_initialized = true;
             }
             
@@ -105,6 +121,20 @@ namespace DJ.Util.IO
                     return false;
                 }
             }
+
+            public static bool IsSymbolicLink(FileInfo symlinkFileInfo)
+            {
+                Init();
+                var usli = Activator.CreateInstance(UnixSymbolicLinkInfoType, symlinkFileInfo.FullName);
+                var method = UnixSymbolicLinkInfoType.GetMethod(IsSymbolicLinkMethodName);
+                return (bool)method.Invoke(usli, new object[0]);
+            }
+    
+            public static Uri GetSymbolicLinkTarget(FileInfo symlinkFileInfo)
+            {
+                // TODO Implement method.
+                throw new NotImplementedException("Uri GetSymbolicLinkTarget(FileInfo symlinkFileInfo)");
+            }
         }
     }
 
@@ -131,6 +161,30 @@ namespace DJ.Util.IO
             catch (EntryPointNotFoundException)
             {
                 return Unix.SymbolicLinkHelper.CreateSymbolicLink(targetDirInfo, symlinkFileInfo);
+            }
+        }
+
+        public static bool IsSymbolicLink(FileInfo symlinkFileInfo)
+        {
+            try
+            {
+                return Windows.SymbolicLinkHelper.IsSymbolicLink(symlinkFileInfo);
+            }
+            catch
+            {
+                return Unix.SymbolicLinkHelper.IsSymbolicLink(symlinkFileInfo);
+            }
+        }
+
+        public static Uri GetSymbolicLinkTarget(FileInfo symlinkFileInfo)
+        {
+            try
+            {
+                return Windows.SymbolicLinkHelper.GetSymbolicLinkTarget(symlinkFileInfo);
+            }
+            catch
+            {
+                return Unix.SymbolicLinkHelper.GetSymbolicLinkTarget(symlinkFileInfo);
             }
         }
     }
