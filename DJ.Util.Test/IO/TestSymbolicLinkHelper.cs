@@ -27,16 +27,16 @@ namespace DJ.Util.IO
     public class TestSymbolicLinkHelper
     {
         [Test]
-        public void TestCreateSymbolicLinkToDirectory()
+        public void TestCreateSymbolicLinkToFile()
         {
             bool result = SymbolicLinkHelper.CreateSymbolicLink(new FileInfo("file"), new FileInfo("link_to_file"));
             Assert.IsTrue(result);
         }
 
         [Test]
-        public void TestCreateSymbolicLinkToFile()
+        public void TestCreateSymbolicLinkToDirectory()
         {
-            bool result = SymbolicLinkHelper.CreateSymbolicLink(new DirectoryInfo("/"), new FileInfo("link_to_directory"));
+            bool result = SymbolicLinkHelper.CreateSymbolicLink(new DirectoryInfo("tmp"), new FileInfo("link_to_directory"));
             Assert.IsTrue(result);
         }
     }
