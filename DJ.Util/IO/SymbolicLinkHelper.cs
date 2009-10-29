@@ -55,19 +55,25 @@ namespace DJ.Util.IO
             private const string UnixFileInfoTypeName = "Mono.Unix.UnixFileInfo";
             private const string CreateSymbolicLinkMethodName = "CreateSymbolicLink";
 
-            private static readonly Type UnixDirectoryInfoType;
-            private static readonly Type UnixFileInfoType;
+            private static Type UnixDirectoryInfoType;
+            private static Type UnixFileInfoType;
+        	private static bool _initialized = false;
 
-            static SymbolicLinkHelper()
+            private static void Init()
             {
-                var assemblyRef = new AssemblyName { Name = MonoPosixAssemblyName };
+				if (_initialized)
+					return;
+
+				var assemblyRef = new AssemblyName { Name = MonoPosixAssemblyName };
                 var assembly = Assembly.Load(assemblyRef);
                 UnixFileInfoType = assembly.GetType(UnixFileInfoTypeName);
                 UnixDirectoryInfoType = assembly.GetType(UnixDirectoryInfoTypeName);
+            	_initialized = true;
             }
             
             private static void CreateSymbolicLink(Type unixFileSystemInfoType, string targetPath, string symlinkPath)
             {
+				Init();
                 var ufi = Activator.CreateInstance(unixFileSystemInfoType, targetPath);
                 var method = unixFileSystemInfoType.GetMethod(CreateSymbolicLinkMethodName);
                 method.Invoke(ufi, new[] { symlinkPath });
