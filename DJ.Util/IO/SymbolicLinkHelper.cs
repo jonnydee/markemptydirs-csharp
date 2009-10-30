@@ -146,10 +146,21 @@ namespace DJ.Util.IO
             {
                 return Windows.SymbolicLinkHelper.CreateSymbolicLink(targetFileInfo, symlinkFileInfo);
             }
-            catch (EntryPointNotFoundException)
+            catch (Exception ex)
             {
-                return Unix.SymbolicLinkHelper.CreateSymbolicLink(targetFileInfo, symlinkFileInfo);
+				System.Diagnostics.Debug.WriteLine(ex);
             }
+
+			try
+			{
+				return Unix.SymbolicLinkHelper.CreateSymbolicLink(targetFileInfo, symlinkFileInfo);
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(ex);
+			}
+
+        	return false;
         }
 
         public static bool CreateSymbolicLink(DirectoryInfo targetDirInfo, FileInfo symlinkFileInfo)
@@ -158,11 +169,22 @@ namespace DJ.Util.IO
             {
                 return Windows.SymbolicLinkHelper.CreateSymbolicLink(targetDirInfo, symlinkFileInfo);
             }
-            catch (EntryPointNotFoundException)
+            catch (Exception ex)
             {
-                return Unix.SymbolicLinkHelper.CreateSymbolicLink(targetDirInfo, symlinkFileInfo);
-            }
-        }
+				System.Diagnostics.Debug.WriteLine(ex);
+			}
+
+			try
+			{
+				return Unix.SymbolicLinkHelper.CreateSymbolicLink(targetDirInfo, symlinkFileInfo);
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(ex);
+			}
+
+			return false;
+		}
 
         public static bool IsSymbolicLink(FileSystemInfo symlinkFileSystemInfo)
         {
@@ -170,11 +192,22 @@ namespace DJ.Util.IO
             {
                 return Windows.SymbolicLinkHelper.IsSymbolicLink(symlinkFileSystemInfo);
             }
-            catch
-            {
-                return Unix.SymbolicLinkHelper.IsSymbolicLink(symlinkFileSystemInfo);
-            }
-        }
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(ex);
+			}
+
+			try
+			{
+				return Unix.SymbolicLinkHelper.IsSymbolicLink(symlinkFileSystemInfo);
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(ex);
+			}
+
+			return false;
+		}
 
         public static Uri GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)
         {
@@ -182,10 +215,21 @@ namespace DJ.Util.IO
             {
                 return Windows.SymbolicLinkHelper.GetSymbolicLinkTarget(symlinkFileSystemInfo);
             }
-            catch
-            {
-                return Unix.SymbolicLinkHelper.GetSymbolicLinkTarget(symlinkFileSystemInfo);
-            }
-        }
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(ex);
+			}
+
+			try
+			{
+				return Unix.SymbolicLinkHelper.GetSymbolicLinkTarget(symlinkFileSystemInfo);
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(ex);
+			}
+
+			return null;
+		}
     }
 }
