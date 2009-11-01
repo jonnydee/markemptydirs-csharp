@@ -67,7 +67,9 @@ namespace DJ.Util.IO
             private const string UnixFileInfoTypeName = "Mono.Unix.UnixFileInfo";
             private const string UnixSymbolicLinkInfoTypeName = "Mono.Unix.UnixSymbolicLinkInfo";
             private const string CreateSymbolicLinkMethodName = "CreateSymbolicLink";
-            private const string IsSymbolicLinkMethodName = "get_IsSymbolicLink";
+            private const string GetContentsMethodName = "GetContents";
+            private const string FullNamePropertyName = "FullName";
+            private const string IsSymbolicLinkPropertyName = "IsSymbolicLink";
 
             private static Type UnixDirectoryInfoType;
             private static Type UnixFileInfoType;
@@ -102,8 +104,9 @@ namespace DJ.Util.IO
                     CreateSymbolicLink(UnixDirectoryInfoType, targetDirInfo.FullName, symlinkFileInfo.FullName);
                     return true;
                 }
-                catch
+                catch (Exception ex)
                 {
+					System.Diagnostics.Debug.WriteLine(ex);
                     return false;
                 }
             }
@@ -116,8 +119,9 @@ namespace DJ.Util.IO
                     CreateSymbolicLink(UnixFileInfoType, targetFileInfo.FullName, symlinkFileInfo.FullName);
                     return true;
                 }
-                catch
+                catch (Exception ex)
                 {
+					System.Diagnostics.Debug.WriteLine(ex);
                     return false;
                 }
             }
@@ -126,14 +130,18 @@ namespace DJ.Util.IO
             {
                 Init();
                 var usli = Activator.CreateInstance(UnixSymbolicLinkInfoType, symlinkFileSystemInfo.FullName);
-                var method = UnixSymbolicLinkInfoType.GetMethod(IsSymbolicLinkMethodName);
-                return (bool)method.Invoke(usli, new object[0]);
+                var property = UnixSymbolicLinkInfoType.GetProperty(IsSymbolicLinkPropertyName);
+                return (bool)property.GetValue(usli, new object[0]);
             }
     
             public static Uri GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)
             {
-                // TODO Implement method.
-                throw new NotImplementedException("Uri GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)");
+                Init();
+                var usli = Activator.CreateInstance(UnixSymbolicLinkInfoType, symlinkFileSystemInfo.FullName);
+                var method = UnixSymbolicLinkInfoType.GetMethod(GetContentsMethodName);
+                var ufsi = method.Invoke(usli, new object[0]);
+				var property = (PropertyInfo)UnixSymbolicLinkInfoType.GetProperty(FullNamePropertyName);
+				return new Uri((string)property.GetValue(ufsi, new object[0]));
             }
         }
     }
