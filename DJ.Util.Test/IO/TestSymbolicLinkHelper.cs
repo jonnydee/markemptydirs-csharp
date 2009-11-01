@@ -29,27 +29,32 @@ namespace DJ.Util.IO
         [Test]
         public void TestCreateSymbolicLinkToFile()
         {
-            bool result = SymbolicLinkHelper.CreateSymbolicLink(new FileInfo("file"), new FileInfo("link_to_file"));
+			var symlink = new FileInfo("link_to_file");
+            var result = SymbolicLinkHelper.CreateSymbolicLink(new FileInfo("file"), symlink);
+			symlink.Delete();
             Assert.IsTrue(result);
         }
 
         [Test]
         public void TestCreateSymbolicLinkToDirectory()
         {
-            bool result = SymbolicLinkHelper.CreateSymbolicLink(new DirectoryInfo("tmp"), new FileInfo("link_to_directory"));
+			var symlink = new FileInfo("link_to_directory");
+            var result = SymbolicLinkHelper.CreateSymbolicLink(new DirectoryInfo("tmp"), new FileInfo("link_to_directory"));
+			symlink.Delete();
             Assert.IsTrue(result);
         }
 
         [Test]
         public void TestIsSymbolicLink()
         {
-            SymbolicLinkHelper.CreateSymbolicLink(new DirectoryInfo("tmp"), new FileInfo("link_to_tmp_directory"));
-            
+			var symlink = new FileInfo("link_to_tmp_directory");
+            SymbolicLinkHelper.CreateSymbolicLink(new DirectoryInfo("tmp"), symlink);
             var result = SymbolicLinkHelper.IsSymbolicLink(new FileInfo("link_to_tmp_directory"));
+			symlink.Delete();
             Assert.IsTrue(result);
             
             result = SymbolicLinkHelper.IsSymbolicLink(new DirectoryInfo("."));
-            Assert.IsFalse(result);            
+            Assert.IsFalse(result);
         }
     }
 }
