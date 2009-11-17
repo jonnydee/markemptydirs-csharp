@@ -18,14 +18,13 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace DJ.Util.IO
 {
     namespace Windows
     {
-        using System.Runtime.InteropServices;
-        
-        public static class SymbolicLinkHelper
+    	public static class SymbolicLinkHelper
         {
             private const UInt32 SymbolicLinkFlagFile = 0;
             private const UInt32 SymbolicLinkFlagDirectory = 1;

@@ -15,8 +15,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with MarkEmptyDirs.  If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-
 namespace DJ.Util.IO
 {
     public static class CmdLineUtil
