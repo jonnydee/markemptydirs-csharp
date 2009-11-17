@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections;
-using System.IO;
 
 namespace DJ.Util
 {
