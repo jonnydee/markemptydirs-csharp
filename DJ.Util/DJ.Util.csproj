@@ -70,6 +70,8 @@
     <Compile Include="Tuple4.cs" />
     <Compile Include="IO\SymbolicLinkHelper.cs" />
     <Compile Include="ZBase32.cs" />
+    <Compile Include="Base16.cs" />
+    <Compile Include="ModifiedBase64.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DJ.Util.snk" />
