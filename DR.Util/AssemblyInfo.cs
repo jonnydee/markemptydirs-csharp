@@ -3,12 +3,12 @@ using System.Reflection;
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle("DJ.Util")]
+[assembly: AssemblyTitle("DR.Util")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("Copyright (c) 2009 by Johann Duscher (alias Jonny Dee)")]
+[assembly: AssemblyCopyright("Copyright (c) 2009 by Johann Duscher (alias Jonny Dee) and Markus Raufer")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

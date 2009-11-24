@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D929695A-E1F2-4086-9573-9CD1828B6ADA}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>DJ.Util</RootNamespace>
-    <AssemblyName>DJ.Util</AssemblyName>
+    <RootNamespace>DR.Util</RootNamespace>
+    <AssemblyName>DR.Util</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -16,7 +16,7 @@
     </UpgradeBackupLocation>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>DJ.Util.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>DR.Util.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -74,7 +74,7 @@
     <Compile Include="ModifiedBase64.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DJ.Util.snk" />
+    <None Include="DR.Util.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
