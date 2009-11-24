@@ -39,6 +39,10 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DJ.App.MarkEmptyDirs\DJ.App.MarkEmptyDirs.csproj">
+      <Project>{B0B70994-7C86-46E0-B7EE-CA3E84D686F0}</Project>
+      <Name>DJ.App.MarkEmptyDirs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DR\DR.csproj">
       <Project>{124D71F1-ACFC-42BF-91F7-8C6132217EED}</Project>
       <Name>DR</Name>
