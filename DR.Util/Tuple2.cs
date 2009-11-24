@@ -18,7 +18,7 @@
 using System;
 using System.Collections;
 
-namespace DJ.Util
+namespace DR.Util
 {
     [Serializable]
     public struct Tuple2<A,B> : IEnumerable

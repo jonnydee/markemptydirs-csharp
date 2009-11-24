@@ -17,7 +17,7 @@
 
 using System;
 
-namespace DJ.Util
+namespace DR.Util
 {
     public static class Logger
     {

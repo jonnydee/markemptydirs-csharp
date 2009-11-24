@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace DJ.Util.Template
+namespace DR.Util.Template
 {
     public class TemplateEngine
     {

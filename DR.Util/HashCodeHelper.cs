@@ -17,7 +17,7 @@
 
 using System.Collections;
 
-namespace DJ.Util
+namespace DR.Util
 {
     public static class HashCodeHelper
     {

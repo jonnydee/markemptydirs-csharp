@@ -18,7 +18,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DJ.Util.IO
+namespace DR.Util.IO
 {
     
     public enum OptionType

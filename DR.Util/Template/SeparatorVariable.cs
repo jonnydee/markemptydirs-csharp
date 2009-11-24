@@ -18,7 +18,7 @@
 using System;
 using System.IO;
 
-namespace DJ.Util.Template
+namespace DR.Util.Template
 {
     public class SeparatorVariable : TemplateVariable
     {   

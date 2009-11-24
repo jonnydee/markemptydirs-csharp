@@ -17,7 +17,7 @@
 
 using System;
 
-namespace DJ.Util.Template
+namespace DR.Util.Template
 {
     
     public class DateTimeVariable : TemplateVariable

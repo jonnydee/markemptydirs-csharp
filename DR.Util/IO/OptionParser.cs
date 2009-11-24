@@ -18,7 +18,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DJ.Util.IO
+namespace DR.Util.IO
 {
 
     public class OptionParser
