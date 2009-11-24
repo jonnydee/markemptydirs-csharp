@@ -19,7 +19,7 @@ using System.IO;
 
 using NUnit.Framework;
 
-using DJ.Util.IO;
+using DR.Util.IO;
 
 namespace DJ.App.MarkEmptyDirs
 {

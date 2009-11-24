@@ -21,8 +21,8 @@ using System.IO;
 
 using NUnit.Framework;
 
-using DJ.Util.IO;
-using DJ.Util.Template;
+using DR.Util.IO;
+using DR.Util.Template;
 
 namespace DJ.App.MarkEmptyDirs
 {

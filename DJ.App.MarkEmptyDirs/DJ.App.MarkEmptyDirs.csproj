@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -58,13 +58,13 @@
   <ItemGroup>
     <None Include="DJ.App.MarkEmptyDirs.snk" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\DJ.Util\DJ.Util.csproj">
+    <ProjectReference Include="..\DR.Util\DR.Util.csproj">
       <Project>{D929695A-E1F2-4086-9573-9CD1828B6ADA}</Project>
-      <Name>DJ.Util</Name>
+      <Name>DR.Util</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>$(SolutionDir)ilmerge_dlls.bat $(ProjectDir) $(SolutionDir)</PostBuildEvent>
   </PropertyGroup>
