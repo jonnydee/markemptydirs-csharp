@@ -59,9 +59,9 @@
     <None Include="DJ.App.MarkEmptyDirs.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DR.Util\DR.Util.csproj">
-      <Project>{D929695A-E1F2-4086-9573-9CD1828B6ADA}</Project>
-      <Name>DR.Util</Name>
+    <ProjectReference Include="..\DR\DR.csproj">
+      <Project>{124D71F1-ACFC-42BF-91F7-8C6132217EED}</Project>
+      <Name>DR</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

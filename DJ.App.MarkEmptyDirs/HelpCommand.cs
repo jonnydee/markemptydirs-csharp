@@ -20,8 +20,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-using DR.Util.IO;
-using DR.Util.Template;
+using DR.IO;
+using DR.Template;
 
 namespace DJ.App.MarkEmptyDirs
 {

@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0C88F5F5-9DD7-4902-84B0-5BD4C1373609}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>DR.Util</RootNamespace>
-    <AssemblyName>DR.Util.Test</AssemblyName>
+    <RootNamespace>DR</RootNamespace>
+    <AssemblyName>DR.Test</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -45,6 +45,12 @@
     <Compile Include="Template\TestTemplateEngine.cs" />
     <Compile Include="IO\TestSymbolicLinkHelper.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DR\DR.csproj">
+      <Project>{124D71F1-ACFC-42BF-91F7-8C6132217EED}</Project>
+      <Name>DR</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <MonoDevelop>
@@ -56,10 +62,4 @@
     </MonoDevelop>
     <VisualStudio />
   </ProjectExtensions>
-  <ItemGroup>
-    <ProjectReference Include="..\DR.Util\DR.Util.csproj">
-      <Project>{D929695A-E1F2-4086-9573-9CD1828B6ADA}</Project>
-      <Name>DR.Util</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>
