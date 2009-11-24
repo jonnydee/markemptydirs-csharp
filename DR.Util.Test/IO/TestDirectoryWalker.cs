@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 
-namespace DR.Util.IO
+namespace DR.IO
 {
     [TestFixture]
     public class TestDirectoryWalker

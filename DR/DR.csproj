@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{124D71F1-ACFC-42BF-91F7-8C6132217EED}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DR</RootNamespace>
+    <AssemblyName>DR</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>DR.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base16.cs" />
+    <Compile Include="HashCodeHelper.cs" />
+    <Compile Include="ICommand.cs" />
+    <Compile Include="IO\CmdLineUtil.cs" />
+    <Compile Include="IO\DirectoryWalker.cs" />
+    <Compile Include="IO\IDirectoryVisitor.cs" />
+    <Compile Include="IO\Option.cs" />
+    <Compile Include="IO\OptionDescriptor.cs" />
+    <Compile Include="IO\OptionParser.cs" />
+    <Compile Include="IO\PathUtil.cs" />
+    <Compile Include="IO\SymbolicLinkHelper.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="ModifiedBase64.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Template\DateTimeVariable.cs" />
+    <Compile Include="Template\EnvironmentVariable.cs" />
+    <Compile Include="Template\GuidVariable.cs" />
+    <Compile Include="Template\LineFeedVariable.cs" />
+    <Compile Include="Template\SeparatorVariable.cs" />
+    <Compile Include="Template\SpaceVariable.cs" />
+    <Compile Include="Template\TemplateEngine.cs" />
+    <Compile Include="Template\TemplateVariable.cs" />
+    <Compile Include="Tuple2.cs" />
+    <Compile Include="Tuple3.cs" />
+    <Compile Include="Tuple4.cs" />
+    <Compile Include="ZBase32.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="DR.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
