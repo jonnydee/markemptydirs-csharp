@@ -71,6 +71,7 @@
     <Compile Include="Tuple2.cs" />
     <Compile Include="Tuple3.cs" />
     <Compile Include="Tuple4.cs" />
+    <Compile Include="IO\VirtualInputStream.cs" />
     <Compile Include="ZBase32.cs" />
   </ItemGroup>
   <ItemGroup>
