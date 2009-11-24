@@ -20,7 +20,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace DJ.Util.IO
+namespace DR.Util.IO
 {
     namespace Windows
     {

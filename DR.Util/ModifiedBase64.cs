@@ -1,7 +1,7 @@
 
 using System;
 
-namespace DJ.Util
+namespace DR.Util
 {
     public static class ModifiedBase64
     {

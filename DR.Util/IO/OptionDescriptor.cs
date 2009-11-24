@@ -15,7 +15,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with MarkEmptyDirs.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace DJ.Util.IO
+namespace DR.Util.IO
 {
     
     public class OptionDescriptor

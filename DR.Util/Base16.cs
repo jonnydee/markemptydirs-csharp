@@ -2,7 +2,7 @@
 using System;
 using System.Text;
 
-namespace DJ.Util
+namespace DR.Util
 {
     public static class Base16
     {

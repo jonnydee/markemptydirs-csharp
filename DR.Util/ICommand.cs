@@ -15,7 +15,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // 
 
-namespace DJ.Util
+namespace DR.Util
 {
     public interface ICommand<C,R>
     {

@@ -17,7 +17,7 @@
 
 using System.Text;
 
-namespace DJ.Util.Template
+namespace DR.Util.Template
 {
     abstract public class TemplateVariable
     {

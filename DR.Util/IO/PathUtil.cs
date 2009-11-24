@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace DJ.Util.IO
+namespace DR.Util.IO
 {
     public static class PathUtil
     {

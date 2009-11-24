@@ -19,7 +19,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 
-namespace DJ.Util.Template
+namespace DR.Util.Template
 {
     [TestFixture]
     public class TestTemplateEngine
