@@ -59,7 +59,7 @@
     <None Include="DJ.App.MarkEmptyDirs.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DR\DR.csproj">
+    <ProjectReference Include="..\libs\dr-framework\DR\DR.csproj">
       <Project>{124D71F1-ACFC-42BF-91F7-8C6132217EED}</Project>
       <Name>DR</Name>
     </ProjectReference>
