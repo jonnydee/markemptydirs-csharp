@@ -28,13 +28,13 @@ namespace DJ.App.MarkEmptyDirs
     
     public class SyncCommand : IDirectoryVisitor, ICommand
     {
-        private readonly List<FileInfo> _existingFiles;
+        private readonly List<FileSystemInfo> _existingFiles;
         private Configuration _configuration;
         
 
         public SyncCommand()
         {
-            _existingFiles = new List<FileInfo>();            
+            _existingFiles = new List<FileSystemInfo>();            
         }
 
 
@@ -58,6 +58,12 @@ namespace DJ.App.MarkEmptyDirs
         
         public bool PreVisit(DirectoryInfo dirInfo)
         {
+            if (SymbolicLinkHelper.IsSymbolicLink(dirInfo))
+            {
+                _existingFiles.Add(dirInfo);
+                return false;
+            }
+            
             return !_configuration.Exclude.Contains(dirInfo.Name);
         }
 
@@ -74,7 +80,7 @@ namespace DJ.App.MarkEmptyDirs
 
                 // If the already visited file is in a sub-directory,
                 // then no placeholder is needed for the current directory.
-                if (visitedFileInfo.Directory.FullName.Length > dirName.Length)
+                if (PathUtil.GetParent(visitedFileInfo).FullName.Length > dirName.Length)
                     return false;
 
                 // The already visited file is in the current directory.
