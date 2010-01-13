@@ -58,7 +58,7 @@ namespace DJ.App.MarkEmptyDirs
         
         public bool PreVisit(DirectoryInfo dirInfo)
         {
-            if (SymbolicLinkHelper.IsSymbolicLink(dirInfo))
+            if (!_configuration.FollowSymbolicLinks && SymbolicLinkHelper.IsSymbolicLink(dirInfo))
             {
                 _existingFiles.Add(dirInfo);
                 return false;

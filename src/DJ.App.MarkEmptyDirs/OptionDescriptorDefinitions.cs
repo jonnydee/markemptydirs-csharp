@@ -132,6 +132,15 @@ namespace DJ.App.MarkEmptyDirs
             MandatoryValue = true,
             ValueIdentifier = "true|false",
         };
+        public static readonly OptionDescriptor FollowSymbolicLinksOptionDescriptor = new OptionDescriptor
+        {
+            LongNames = new[] { "follow-symlinks" },
+            ShortNames = new[] { 'm' },
+            ShortDescription = string.Format("follow symbolic links (default is '{0}')", MainClass.StandardFollowSymbolicLinks.ToString().ToLower()),
+            CanHaveValue = true,
+            MandatoryValue = true,
+            ValueIdentifier = "true|false",
+        };
 
         public static readonly OptionDescriptor[] OptionDescriptors = new[]
         {
@@ -151,6 +160,7 @@ namespace DJ.App.MarkEmptyDirs
             TextOptionDescriptor,
             PlaceHolderFileOptionDescriptor,
             VariableSubstitutionOptionDescriptor,
+            FollowSymbolicLinksOptionDescriptor,
         };
 
     }

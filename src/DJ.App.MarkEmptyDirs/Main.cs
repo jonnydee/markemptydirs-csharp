@@ -37,6 +37,7 @@ namespace DJ.App.MarkEmptyDirs
         public const string StandardPlaceHolderName = ".emptydir";
         public static readonly string[] StandardExcludedDirs = new[] { ".bzr", "CVS", ".git", ".hg", ".svn" };
         public const bool StandardVariableSubstitution = true;
+        public const bool StandardFollowSymbolicLinks = false;
         public const string SettingsEnvironmentVariable = "MarkEmptyDirsOpts";
 
 
@@ -102,6 +103,7 @@ namespace DJ.App.MarkEmptyDirs
                 PlaceHolderName = StandardPlaceHolderName,
                 PlaceHolderTemplate = CreateTemplateEngine(string.Empty),
                 VariableSubstitution = StandardVariableSubstitution,
+                FollowSymbolicLinks = StandardFollowSymbolicLinks,
                 Verbose = false,
                 Short = false,
                 DryRun = false,
@@ -168,6 +170,24 @@ namespace DJ.App.MarkEmptyDirs
                         try
                         {
                             config.VariableSubstitution = Convert.ToBoolean(opt.Value);
+                        }
+                        catch
+                        {
+                            throw new Exception(string.Format("No boolean value provided for option: '{0}'", opt.Name));
+                        }
+                    }
+                    else
+                        throw new Exception(string.Format("No value provided for option: '{0}'", opt.Name));
+                    continue;
+                }
+                
+                if (OptionDescriptorDefinitions.FollowSymbolicLinksOptionDescriptor == opt.Descriptor)
+                {
+                    if (!string.IsNullOrEmpty(opt.Value))
+                    {
+                        try
+                        {
+                            config.FollowSymbolicLinks = Convert.ToBoolean(opt.Value);
                         }
                         catch
                         {
