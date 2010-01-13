@@ -26,7 +26,8 @@ namespace DJ.App.MarkEmptyDirs
     {
         public static void Delete(DirectoryInfo dirInfo)
         {
-            DirectoryWalker.Walk(dirInfo, new DeleteRecursively());
+            var walker = DirectoryWalker.Create(new DeleteRecursively());
+            walker.Walk(dirInfo);
         }        
 
         public bool PreVisit(DirectoryInfo dirInfo)

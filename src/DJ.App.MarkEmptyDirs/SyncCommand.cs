@@ -52,7 +52,8 @@ namespace DJ.App.MarkEmptyDirs
                 throw new Exception(string.Format("Not a directory: '{0}'", _configuration.Directory.FullName));
             }
             
-            DirectoryWalker.Walk(_configuration.Directory, this);
+            var walker = DirectoryWalker.Create(this);
+            walker.Walk(_configuration.Directory);
         }
         
         public bool PreVisit(DirectoryInfo dirInfo)
