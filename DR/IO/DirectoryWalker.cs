@@ -21,12 +21,26 @@ namespace DR.IO
 {
     public static class DirectoryWalker
     {
-        public static bool Walk(FileSystemInfo fileSystemInfo, IDirectoryVisitor visitor)
+        public static DirectoryWalker<TVisitor> Create<TVisitor>(TVisitor visitor) where TVisitor : IDirectoryVisitor
         {
-            return Walk(fileSystemInfo, visitor, true);
+            return new DirectoryWalker<TVisitor>(visitor);
         }
-        
-        public static bool Walk(FileSystemInfo fileSystemInfo, IDirectoryVisitor visitor, bool visitFiles)
+    }
+    
+    public class DirectoryWalker<TVisitor> where TVisitor : IDirectoryVisitor
+    {
+		public TVisitor Visitor { get; protected set; }
+		
+		public bool VisitFiles { get; set; }
+		
+		
+		public DirectoryWalker(TVisitor visitor)
+		{
+            Visitor = visitor;
+            VisitFiles = true;
+		}
+		
+        public bool Walk(FileSystemInfo fileSystemInfo)
         {
             if (!fileSystemInfo.Exists)
                 return false;
@@ -37,30 +51,30 @@ namespace DR.IO
             {
                 var dirInfo = (DirectoryInfo)fileSystemInfo;
 
-                if (visitor.PreVisit(dirInfo))
+                if (Visitor.PreVisit(dirInfo))
                 {
                     bool continueWalking = true;
                     
                     var subDirectories = dirInfo.GetDirectories();
                     foreach (var subDirectory in subDirectories)
                     {
-                        continueWalking = Walk(subDirectory, visitor, visitFiles);
+                        continueWalking = Walk(subDirectory);
                         if (!continueWalking)
                             break;
                     }
 
-                    if (visitFiles && continueWalking)
+                    if (VisitFiles && continueWalking)
                     {
                         var files = dirInfo.GetFiles();
                         foreach (var file in files)
                         {
-                            continueWalking = Walk(file, visitor, visitFiles);
+                            continueWalking = Walk(file);
                             if (!continueWalking)
                                 break;
                         }
                     }
 
-                    return visitor.PostVisit(dirInfo) && continueWalking;
+                    return Visitor.PostVisit(dirInfo) && continueWalking;
                 }
 
                 return true;
@@ -70,7 +84,7 @@ namespace DR.IO
             
             var fileInfo = (FileInfo)fileSystemInfo;
             
-            return visitor.Visit(fileInfo);
+            return Visitor.Visit(fileInfo);
         }
     }
 }

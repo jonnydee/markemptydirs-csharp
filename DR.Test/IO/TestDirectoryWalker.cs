@@ -101,7 +101,8 @@ namespace DR.IO
         public void TestDepthFirstVisitAllFileSystemInfos()
         {
             var visitor = new TestDepthFirstVisitAllFileSystemInfosVisitor { FileSystemInfoFullNames = GetFileSystemInfoFullNames() };
-            DirectoryWalker.Walk(_tmpDirInfo, visitor);
+            var walker = DirectoryWalker.Create(visitor);
+            walker.Walk(_tmpDirInfo);
             Assert.AreEqual(0, visitor.FileSystemInfoFullNames.Count);
         }
 
@@ -142,7 +143,8 @@ namespace DR.IO
                 FileSystemInfoFullNames = GetFileSystemInfoFullNames(),
                 PruneDirectoryFullName = _abDirInfo.FullName,
             };
-            DirectoryWalker.Walk(_tmpDirInfo, visitor);
+            var walker = DirectoryWalker.Create(visitor);
+            walker.Walk(_tmpDirInfo);
             
             foreach (var fullName in visitor.FileSystemInfoFullNames)
             {
@@ -183,7 +185,8 @@ namespace DR.IO
                 FileSystemInfoFullNames = GetFileSystemInfoFullNames(),
                 StopWalkingAfterVisitFileFullName = _a1FileInfo.FullName,
             };
-            DirectoryWalker.Walk(_tmpDirInfo, visitor);
+            var walker = DirectoryWalker.Create(visitor);
+            walker.Walk(_tmpDirInfo);
 
             var prunedFileSystemInfoFullNames = new List<string>
             {
@@ -232,7 +235,8 @@ namespace DR.IO
                 FileSystemInfoFullNames = GetFileSystemInfoFullNames(),
                 StopWalkingAfterPostVisitDirectoryFullName = _aDirInfo.FullName,
             };
-            DirectoryWalker.Walk(_tmpDirInfo, visitor);
+            var walker = DirectoryWalker.Create(visitor);
+            walker.Walk(_tmpDirInfo);
 
             var prunedFileSystemInfoFullNames = new List<string>
             {
