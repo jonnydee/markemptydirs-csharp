@@ -32,6 +32,11 @@ namespace DJ.App.MarkEmptyDirs
 
         public bool PreVisit(DirectoryInfo dirInfo)
         {
+            if (SymbolicLinkHelper.IsSymbolicLink(dirInfo))
+            {
+                dirInfo.Delete();
+                return false;
+            }
             return true;
         }
                 
