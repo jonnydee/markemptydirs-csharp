@@ -16,6 +16,7 @@
 //  along with MarkEmptyDirs.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 using DR;
@@ -26,8 +27,15 @@ namespace DJ.App.MarkEmptyDirs
     
     public class CleanCommand : IDirectoryVisitor, ICommand
     {
+        private readonly List<FileSystemInfo> _existingFiles;
         private Configuration _configuration;
 
+        
+        public CleanCommand()
+        {
+            _existingFiles = new List<FileSystemInfo>();            
+        }
+        
         
         public void Execute(Configuration config)
         {
@@ -50,12 +58,47 @@ namespace DJ.App.MarkEmptyDirs
         
         public bool PreVisit(DirectoryInfo dirInfo)
         {
-            if (!_configuration.FollowSymbolicLinks && SymbolicLinkHelper.IsSymbolicLink(dirInfo))
+            if (SymbolicLinkHelper.IsSymbolicLink(dirInfo))
+            {
+                if (!_configuration.FollowSymbolicLinks)
+                {
+                    _existingFiles.Add(dirInfo);
+                    return false;
+                }
+
+                // Get the symlink's targetPath and
+                // if it is relative make it absolute based on dirInfo.
+                var targetPath = SymbolicLinkHelper.GetSymbolicLinkTarget(dirInfo);
+                if (!Path.IsPathRooted(targetPath))
+                {
+                    var parentDir = PathUtil.GetParent(dirInfo);
+                    targetPath = Path.Combine(parentDir.FullName, targetPath);
+                    targetPath = Path.GetFullPath(targetPath);
+                }
+
+                if (IsAlreadyVisited(targetPath))
+                {
+                    return false;
+                }
+            }
+
+            if (_configuration.Exclude.Contains(dirInfo.Name))
                 return false;
-            
-            return !_configuration.Exclude.Contains(dirInfo.Name);
+
+            _existingFiles.Add(dirInfo);
+            return true;
         }
                 
+        private bool IsAlreadyVisited(string path)
+        {
+            foreach (var visitedFileInfo in _existingFiles)
+            {
+                if (path == visitedFileInfo.FullName)
+                    return true;
+            }
+            return false;
+        }
+        
         public bool PostVisit(DirectoryInfo dirInfo)
         {
             CommandHelper.DeletePlaceHolder(dirInfo, _configuration);

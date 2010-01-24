@@ -58,21 +58,53 @@ namespace DJ.App.MarkEmptyDirs
         
         public bool PreVisit(DirectoryInfo dirInfo)
         {
-            if (!_configuration.FollowSymbolicLinks && SymbolicLinkHelper.IsSymbolicLink(dirInfo))
+            if (SymbolicLinkHelper.IsSymbolicLink(dirInfo))
             {
-                _existingFiles.Add(dirInfo);
-                return false;
+                if (!_configuration.FollowSymbolicLinks)
+                {
+                    _existingFiles.Add(dirInfo);
+                    return false;
+                }
+
+                // Get the symlink's targetPath and
+                // if it is relative make it absolute based on dirInfo.
+                var targetPath = SymbolicLinkHelper.GetSymbolicLinkTarget(dirInfo);
+                if (!Path.IsPathRooted(targetPath))
+                {
+                    var parentDir = PathUtil.GetParent(dirInfo);
+                    targetPath = Path.Combine(parentDir.FullName, targetPath);
+                    targetPath = Path.GetFullPath(targetPath);
+                }
+
+                if (IsAlreadyVisited(targetPath))
+                {
+                    return false;
+                }
             }
-            
-            return !_configuration.Exclude.Contains(dirInfo.Name);
+
+            if (_configuration.Exclude.Contains(dirInfo.Name))
+                return false;
+
+            _existingFiles.Add(dirInfo);
+            return true;
         }
 
+        private bool IsAlreadyVisited(string path)
+        {
+            foreach (var visitedFileInfo in _existingFiles)
+            {
+                if (path == visitedFileInfo.FullName)
+                    return true;
+            }
+            return false;
+        }
+        
         private bool IsPlaceHolderNeeded(DirectoryInfo dirInfo)
         {
             var dirName = dirInfo.FullName;
             foreach (var visitedFileInfo in _existingFiles)
             {
-                if (!visitedFileInfo.FullName.StartsWith(dirName))
+                if (visitedFileInfo.FullName.Length <= dirName.Length || !visitedFileInfo.FullName.StartsWith(dirName))
                     continue;
 
                 // At this point there is either a file in a sub-directory,

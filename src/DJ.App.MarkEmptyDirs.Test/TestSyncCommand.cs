@@ -46,6 +46,8 @@ namespace DJ.App.MarkEmptyDirs
             _tmpDirInfo.CreateSubdirectory(PathUtil.Combine("a", "d", ".git", "store")).Create();
             _tmpDirInfo.CreateSubdirectory(PathUtil.Combine("a", "e")).Create();
             SymbolicLinkHelper.CreateSymbolicLink(new DirectoryInfo(PathUtil.Combine("..", "..", "..", TmpDirPath2)), new FileInfo(PathUtil.Combine(_tmpDirInfo.ToString(), "a", "e", "link-to-dir")));
+            // This one creates a cycle to make sure cycles are handled correctly.
+            SymbolicLinkHelper.CreateSymbolicLink(new DirectoryInfo(PathUtil.Combine("..", "..")), new FileInfo(PathUtil.Combine(_tmpDirInfo.ToString(), "a", "e", "link-to-parent-of-parent")));
         }
 
         [TearDown]
