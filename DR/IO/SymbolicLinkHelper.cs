@@ -49,10 +49,10 @@ namespace DR.IO
                 throw new NotImplementedException("bool IsSymbolicLink(FileSystemInfo symlinkFileSystemInfo)");
             }
     
-            public static Uri GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)
+            public static string GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)
             {
                 // TODO Implement method.
-                throw new NotImplementedException("Uri GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)");
+                throw new NotImplementedException("string GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)");
             }
         }
     }
@@ -64,15 +64,13 @@ namespace DR.IO
             private const string MonoPosixAssemblyName = "Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756";
             private const string UnixSymbolicLinkInfoTypeName = "Mono.Unix.UnixSymbolicLinkInfo";
             private const string CreateSymbolicLinkToMethodName = "CreateSymbolicLinkTo";
-            private const string GetContentsMethodName = "GetContents";
             private const string IsSymbolicLinkPropertyName = "IsSymbolicLink";
-            private const string FullNamePropertyName = "FullName";
+            private const string ContentsPathPropertyName = "ContentsPath";
 
             private static Type UnixSymbolicLinkInfoType;
             private static MethodInfo CreateSymbolicLinkToMethod;
-            private static MethodInfo GetContentsMethod;
             private static PropertyInfo IsSymbolicLinkProperty;
-            private static PropertyInfo FullNameProperty;
+            private static PropertyInfo ContentsPathProperty;
             
         	private static bool _initialized = false;
 
@@ -87,9 +85,8 @@ namespace DR.IO
                 UnixSymbolicLinkInfoType = assembly.GetType(UnixSymbolicLinkInfoTypeName);
                 
                 CreateSymbolicLinkToMethod = UnixSymbolicLinkInfoType.GetMethod(CreateSymbolicLinkToMethodName, new[] { typeof(string) });
-                GetContentsMethod = UnixSymbolicLinkInfoType.GetMethod(GetContentsMethodName);
                 IsSymbolicLinkProperty = UnixSymbolicLinkInfoType.GetProperty(IsSymbolicLinkPropertyName);
-                FullNameProperty = UnixSymbolicLinkInfoType.GetProperty(FullNamePropertyName);
+                ContentsPathProperty = UnixSymbolicLinkInfoType.GetProperty(ContentsPathPropertyName);
                 
                 _initialized = true;
             }
@@ -137,12 +134,11 @@ namespace DR.IO
                 return (bool)IsSymbolicLinkProperty.GetValue(usli, new object[0]);
             }
     
-            public static Uri GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)
+            public static string GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)
             {
                 Init();
                 var usli = Activator.CreateInstance(UnixSymbolicLinkInfoType, symlinkFileSystemInfo.ToString());
-                var ufsi = GetContentsMethod.Invoke(usli, new object[0]);
-                return new Uri((string)FullNameProperty.GetValue(ufsi, new object[0]));
+                return (string)ContentsPathProperty.GetValue(usli, new object[0]);
             }
         }
     }
@@ -218,7 +214,7 @@ namespace DR.IO
 			return false;
 		}
 
-        public static Uri GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)
+        public static string GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)
         {
             try
             {

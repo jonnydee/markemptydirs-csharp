@@ -53,5 +53,15 @@ namespace DR.IO
             result = SymbolicLinkHelper.IsSymbolicLink(new DirectoryInfo("."));
             Assert.IsFalse(result);
         }
+        
+        [Test]
+        public void TestGetSymbolicLinkTarget()
+        {
+            var symlink = new FileInfo("link_to_tmp_directory");
+            SymbolicLinkHelper.CreateSymbolicLink(new DirectoryInfo("tmp"), symlink);
+            var result = SymbolicLinkHelper.GetSymbolicLinkTarget(new FileInfo("link_to_tmp_directory"));
+            symlink.Delete();
+            Assert.AreEqual("tmp", result);
+        }
     }
 }
