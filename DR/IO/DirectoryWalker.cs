@@ -49,41 +49,47 @@ namespace DR.IO
             
             if ((fileSystemInfo.Attributes & FileAttributes.Directory) != 0)
             {
-                var dirInfo = (DirectoryInfo)fileSystemInfo;
-
-                if (Visitor.PreVisit(dirInfo))
-                {
-                    bool continueWalking = true;
-                    
-                    var subDirectories = dirInfo.GetDirectories();
-                    foreach (var subDirectory in subDirectories)
-                    {
-                        continueWalking = Walk(subDirectory);
-                        if (!continueWalking)
-                            break;
-                    }
-
-                    if (VisitFiles && continueWalking)
-                    {
-                        var files = dirInfo.GetFiles();
-                        foreach (var file in files)
-                        {
-                            continueWalking = Walk(file);
-                            if (!continueWalking)
-                                break;
-                        }
-                    }
-
-                    return Visitor.PostVisit(dirInfo) && continueWalking;
-                }
-
-                return true;
+                return Walk((DirectoryInfo)fileSystemInfo);
             }
 
             // We must be walking a file.
             
-            var fileInfo = (FileInfo)fileSystemInfo;
-            
+            return Walk((FileInfo)fileSystemInfo);
+        }
+        
+        protected bool Walk(DirectoryInfo dirInfo)
+        {
+            if (Visitor.PreVisit(dirInfo))
+            {
+                bool continueWalking = true;
+                
+                var subDirectories = dirInfo.GetDirectories();
+                foreach (var subDirectory in subDirectories)
+                {
+                    continueWalking = Walk(subDirectory);
+                    if (!continueWalking)
+                        break;
+                }
+
+                if (VisitFiles && continueWalking)
+                {
+                    var files = dirInfo.GetFiles();
+                    foreach (var file in files)
+                    {
+                        continueWalking = Walk(file);
+                        if (!continueWalking)
+                            break;
+                    }
+                }
+
+                return Visitor.PostVisit(dirInfo) && continueWalking;
+            }
+
+            return true;
+		}
+        
+        protected bool Walk(FileInfo fileInfo)
+        {
             return Visitor.Visit(fileInfo);
         }
     }
