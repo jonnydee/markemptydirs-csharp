@@ -73,6 +73,7 @@ namespace DJ.App.MarkEmptyDirs
                 {
                     var parentDir = PathUtil.GetParent(dirInfo);
                     targetPath = Path.Combine(parentDir.FullName, targetPath);
+                    // Normalize path.
                     targetPath = Path.GetFullPath(targetPath);
                 }
 
