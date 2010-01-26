@@ -110,13 +110,13 @@ namespace DR.IO
         {
             public List<string> FileSystemInfoFullNames { set; get; }
             
-            public bool PreVisit (DirectoryInfo dirInfo)
+            public bool PreVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
             {
                 Console.WriteLine("PreVisit: " + dirInfo.FullName);
                 return true;
             }
             
-            public bool PostVisit (DirectoryInfo dirInfo)
+            public bool PostVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
             {
                 Console.WriteLine("PostVisit: " + dirInfo.FullName);
                 var equalFullName = FileSystemInfoFullNames[0] == dirInfo.FullName;
@@ -125,7 +125,7 @@ namespace DR.IO
                 return equalFullName;
             }
             
-            public bool Visit (FileInfo fileInfo)
+            public bool Visit(IDirectoryWalkerContext context, FileInfo fileInfo)
             {
                 Console.WriteLine("Visit: " + fileInfo.FullName);
                 var equalFullName = FileSystemInfoFullNames[0] == fileInfo.FullName;
@@ -158,19 +158,19 @@ namespace DR.IO
             public List<string> FileSystemInfoFullNames { set; get; }
             public string PruneDirectoryFullName { set; get; }
             
-            public bool PreVisit (DirectoryInfo dirInfo)
+            public bool PreVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
             {
                 Console.WriteLine("PreVisit: " + dirInfo.FullName);
                 return PruneDirectoryFullName != dirInfo.FullName;
             }
             
-            public bool PostVisit (DirectoryInfo dirInfo)
+            public bool PostVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
             {
                 Console.WriteLine("PostVisit: " + dirInfo.FullName);
                 return FileSystemInfoFullNames.Remove(dirInfo.FullName);
             }
             
-            public bool Visit (FileInfo fileInfo)
+            public bool Visit(IDirectoryWalkerContext context, FileInfo fileInfo)
             {
                 Console.WriteLine("Visit: " + fileInfo.FullName);
                 return FileSystemInfoFullNames.Remove(fileInfo.FullName);
@@ -208,19 +208,19 @@ namespace DR.IO
             public List<string> FileSystemInfoFullNames { set; get; }
             public string StopWalkingAfterVisitFileFullName { set; get; }
             
-            public bool PreVisit (DirectoryInfo dirInfo)
+            public bool PreVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
             {
                 Console.WriteLine("PreVisit: " + dirInfo.FullName);
                 return true;
             }
             
-            public bool PostVisit (DirectoryInfo dirInfo)
+            public bool PostVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
             {
                 Console.WriteLine("PostVisit: " + dirInfo.FullName);
                 return FileSystemInfoFullNames.Remove(dirInfo.FullName);
             }
             
-            public bool Visit (FileInfo fileInfo)
+            public bool Visit(IDirectoryWalkerContext context, FileInfo fileInfo)
             {
                 Console.WriteLine("Visit: " + fileInfo.FullName);
                 return FileSystemInfoFullNames.Remove(fileInfo.FullName) && (StopWalkingAfterVisitFileFullName != fileInfo.FullName);
@@ -257,19 +257,19 @@ namespace DR.IO
             public List<string> FileSystemInfoFullNames { set; get; }
             public string StopWalkingAfterPostVisitDirectoryFullName { set; get; }
             
-            public bool PreVisit (DirectoryInfo dirInfo)
+            public bool PreVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
             {
                 Console.WriteLine("PreVisit: " + dirInfo.FullName);
                 return true;
             }
             
-            public bool PostVisit (DirectoryInfo dirInfo)
+            public bool PostVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
             {
                 Console.WriteLine("PostVisit: " + dirInfo.FullName);
                 return FileSystemInfoFullNames.Remove(dirInfo.FullName) && (StopWalkingAfterPostVisitDirectoryFullName != dirInfo.FullName);
             }
             
-            public bool Visit (FileInfo fileInfo)
+            public bool Visit(IDirectoryWalkerContext context, FileInfo fileInfo)
             {
                 Console.WriteLine("Visit: " + fileInfo.FullName);
                 return FileSystemInfoFullNames.Remove(fileInfo.FullName);

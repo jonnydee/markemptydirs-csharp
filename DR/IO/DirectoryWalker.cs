@@ -16,6 +16,7 @@
 // 
 
 using System.IO;
+using System.Collections.Generic;
 
 namespace DR.IO
 {
@@ -27,15 +28,44 @@ namespace DR.IO
         }
     }
     
-    public class DirectoryWalker<TVisitor> where TVisitor : IDirectoryVisitor
+    public interface IDirectoryWalkerContext
+    {
+        IEnumerable<FileInfo> VisitedFiles { get; }
+        IEnumerable<DirectoryInfo> VisitedDirectories { get; }
+        IEnumerable<FileSystemInfo> VisitedFileSystemInfos { get; }
+    }
+    
+    public class DirectoryWalker<TVisitor> : IDirectoryWalkerContext where TVisitor : IDirectoryVisitor
     {
 		public TVisitor Visitor { get; protected set; }
 		
 		public bool VisitFiles { get; set; }
-		
-		
+        public bool TrackVisitedFiles { get; set; }
+        public bool TrackVisitedDirectories { get; set; }
+
+		private List<FileInfo> _visitedFiles;
+        private List<DirectoryInfo> _visitedDirectories;
+        
+        public IEnumerable<FileInfo> VisitedFiles { get { return _visitedFiles; } }
+        
+        public IEnumerable<DirectoryInfo> VisitedDirectories { get { return _visitedDirectories; } }
+        
+        public IEnumerable<FileSystemInfo> VisitedFileSystemInfos
+        {
+            get
+            {
+                foreach (var dirInfo in VisitedDirectories)
+                    yield return dirInfo;
+                foreach (var fileInfo in VisitedFiles)
+                    yield return fileInfo;
+            }
+        }
+        
 		public DirectoryWalker(TVisitor visitor)
 		{
+            _visitedFiles = new List<FileInfo>();
+            _visitedDirectories = new List<DirectoryInfo>();
+            
             Visitor = visitor;
             VisitFiles = true;
 		}
@@ -51,7 +81,7 @@ namespace DR.IO
             {
                 return Walk((DirectoryInfo)fileSystemInfo);
             }
-
+            
             // We must be walking a file.
             
             return Walk((FileInfo)fileSystemInfo);
@@ -59,10 +89,10 @@ namespace DR.IO
         
         protected bool Walk(DirectoryInfo dirInfo)
         {
-            if (Visitor.PreVisit(dirInfo))
-            {
-                bool continueWalking = true;
+            bool continueWalking = true;
                 
+            if (Visitor.PreVisit(this, dirInfo))
+            {
                 var subDirectories = dirInfo.GetDirectories();
                 foreach (var subDirectory in subDirectories)
                 {
@@ -82,15 +112,23 @@ namespace DR.IO
                     }
                 }
 
-                return Visitor.PostVisit(dirInfo) && continueWalking;
+                continueWalking = Visitor.PostVisit(this, dirInfo) && continueWalking;
             }
 
+            if (TrackVisitedDirectories)
+                _visitedDirectories.Add(dirInfo);
+            
             return true;
 		}
         
         protected bool Walk(FileInfo fileInfo)
         {
-            return Visitor.Visit(fileInfo);
+            bool continueWalking = Visitor.Visit(this, fileInfo);
+            
+            if (TrackVisitedFiles)
+                _visitedFiles.Add(fileInfo);
+            
+            return continueWalking;
         }
     }
 }
