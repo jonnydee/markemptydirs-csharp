@@ -30,8 +30,8 @@ namespace DR.IO
     
     public interface IDirectoryWalkerContext
     {
-        IEnumerable<FileInfo> VisitedFiles { get; }
-        IEnumerable<DirectoryInfo> VisitedDirectories { get; }
+        IList<FileInfo> VisitedFiles { get; }
+        IList<DirectoryInfo> VisitedDirectories { get; }
         IEnumerable<FileSystemInfo> VisitedFileSystemInfos { get; }
     }
     
@@ -46,9 +46,9 @@ namespace DR.IO
 		private List<FileInfo> _visitedFiles;
         private List<DirectoryInfo> _visitedDirectories;
         
-        public IEnumerable<FileInfo> VisitedFiles { get { return _visitedFiles; } }
+        public IList<FileInfo> VisitedFiles { get { return _visitedFiles; } }
         
-        public IEnumerable<DirectoryInfo> VisitedDirectories { get { return _visitedDirectories; } }
+        public IList<DirectoryInfo> VisitedDirectories { get { return _visitedDirectories; } }
         
         public IEnumerable<FileSystemInfo> VisitedFileSystemInfos
         {
@@ -89,10 +89,13 @@ namespace DR.IO
         
         protected bool Walk(DirectoryInfo dirInfo)
         {
-            bool continueWalking = true;
-                
             if (Visitor.PreVisit(this, dirInfo))
             {
+	            if (TrackVisitedDirectories)
+	                _visitedDirectories.Add(dirInfo);
+                
+                bool continueWalking = true;
+                
                 var subDirectories = dirInfo.GetDirectories();
                 foreach (var subDirectory in subDirectories)
                 {
@@ -112,12 +115,9 @@ namespace DR.IO
                     }
                 }
 
-                continueWalking = Visitor.PostVisit(this, dirInfo) && continueWalking;
+                return Visitor.PostVisit(this, dirInfo) && continueWalking;
             }
 
-            if (TrackVisitedDirectories)
-                _visitedDirectories.Add(dirInfo);
-            
             return true;
 		}
         
