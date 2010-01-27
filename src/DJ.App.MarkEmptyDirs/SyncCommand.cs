@@ -28,15 +28,8 @@ namespace DJ.App.MarkEmptyDirs
     
     public class SyncCommand : IDirectoryVisitor, ICommand
     {
-        private readonly List<FileSystemInfo> _existingFiles;
         private Configuration _configuration;
         
-
-        public SyncCommand()
-        {
-            _existingFiles = new List<FileSystemInfo>();            
-        }
-
 
         public void Execute(Configuration config)
         {
@@ -53,16 +46,19 @@ namespace DJ.App.MarkEmptyDirs
             }
             
             var walker = DirectoryWalker.Create(this);
+            walker.TrackVisitedDirectories = true;
+            walker.TrackVisitedFiles = true;
             walker.Walk(_configuration.Directory);
         }
         
-        public bool PreVisit(DirectoryInfo dirInfo)
+        public bool PreVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
         {
             if (SymbolicLinkHelper.IsSymbolicLink(dirInfo))
             {
+                context.VisitedDirectories.Add(dirInfo);
+                
                 if (!_configuration.FollowSymbolicLinks)
                 {
-                    _existingFiles.Add(dirInfo);
                     return false;
                 }
 
@@ -77,7 +73,7 @@ namespace DJ.App.MarkEmptyDirs
                     targetPath = Path.GetFullPath(targetPath);
                 }
 
-                if (IsAlreadyVisited(targetPath))
+                if (IsAlreadyVisited(context, targetPath))
                 {
                     return false;
                 }
@@ -86,26 +82,25 @@ namespace DJ.App.MarkEmptyDirs
             if (_configuration.Exclude.Contains(dirInfo.Name))
                 return false;
 
-            _existingFiles.Add(dirInfo);
             return true;
         }
 
-        private bool IsAlreadyVisited(string path)
+        private bool IsAlreadyVisited(IDirectoryWalkerContext context, string path)
         {
-            foreach (var visitedFileInfo in _existingFiles)
+            foreach (var visitedFileSystemInfo in context.VisitedFileSystemInfos)
             {
-                if (path == visitedFileInfo.FullName)
+                if (path == visitedFileSystemInfo.FullName)
                     return true;
             }
             return false;
         }
         
-        private bool IsPlaceHolderNeeded(DirectoryInfo dirInfo)
+        private bool IsPlaceHolderNeeded(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
         {
             var dirName = dirInfo.FullName;
-            foreach (var visitedFileInfo in _existingFiles)
+            foreach (var visitedFileSystemInfo in context.VisitedFileSystemInfos)
             {
-                if (visitedFileInfo.FullName.Length <= dirName.Length || !visitedFileInfo.FullName.StartsWith(dirName))
+                if (visitedFileSystemInfo.FullName.Length <= dirName.Length || !visitedFileSystemInfo.FullName.StartsWith(dirName))
                     continue;
 
                 // At this point there is either a file in a sub-directory,
@@ -113,38 +108,37 @@ namespace DJ.App.MarkEmptyDirs
 
                 // If the already visited file is in a sub-directory,
                 // then no placeholder is needed for the current directory.
-                if (PathUtil.GetParent(visitedFileInfo).FullName.Length > dirName.Length)
+                if (PathUtil.GetParent(visitedFileSystemInfo).FullName.Length > dirName.Length)
                     return false;
 
                 // The already visited file is in the current directory.
                 // So if this file is not a placeholder file we do not need
                 // a placeholder.
-                if (visitedFileInfo.Name != _configuration.PlaceHolderName)
+                if (visitedFileSystemInfo.Name != _configuration.PlaceHolderName)
                     return false;
             }
             return true;
         }
 
-        public bool PostVisit(DirectoryInfo dirInfo)
+        public bool PostVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
         {
-            if (IsPlaceHolderNeeded(dirInfo))
+            if (IsPlaceHolderNeeded(context, dirInfo))
             {
                 var placeHolderFile = CommandHelper.CreatePlaceHolder(dirInfo, _configuration);
                 if (null != placeHolderFile)
-                    _existingFiles.Add(placeHolderFile);
+                    context.VisitedFiles.Add(placeHolderFile);
             }
             else
             {
                 var placeHolderFile = CommandHelper.DeletePlaceHolder(dirInfo, _configuration);
                 if (null != placeHolderFile)
-                    _existingFiles.Remove(placeHolderFile);
+                    context.VisitedFiles.Remove(placeHolderFile);
             }
             return true;
         }
 
-        public bool Visit(FileInfo fileInfo)
+        public bool Visit(IDirectoryWalkerContext context, FileInfo fileInfo)
         {
-            _existingFiles.Add(fileInfo);
             return true;
         }
     }

@@ -30,7 +30,7 @@ namespace DJ.App.MarkEmptyDirs
             walker.Walk(dirInfo);
         }        
 
-        public bool PreVisit(DirectoryInfo dirInfo)
+        public bool PreVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
         {
             if (SymbolicLinkHelper.IsSymbolicLink(dirInfo))
             {
@@ -40,7 +40,7 @@ namespace DJ.App.MarkEmptyDirs
             return true;
         }
                 
-        public bool PostVisit(DirectoryInfo dirInfo)
+        public bool PostVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
         {
             if (dirInfo.Exists)
                 dirInfo.Delete();
@@ -48,7 +48,7 @@ namespace DJ.App.MarkEmptyDirs
             return true;
         }
 
-        public bool Visit(FileInfo fileInfo)
+        public bool Visit(IDirectoryWalkerContext context, FileInfo fileInfo)
         {
             if (fileInfo.Exists)
                 fileInfo.Delete();

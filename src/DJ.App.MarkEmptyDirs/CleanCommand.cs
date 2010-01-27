@@ -27,15 +27,8 @@ namespace DJ.App.MarkEmptyDirs
     
     public class CleanCommand : IDirectoryVisitor, ICommand
     {
-        private readonly List<FileSystemInfo> _existingFiles;
         private Configuration _configuration;
 
-        
-        public CleanCommand()
-        {
-            _existingFiles = new List<FileSystemInfo>();            
-        }
-        
         
         public void Execute(Configuration config)
         {
@@ -53,16 +46,18 @@ namespace DJ.App.MarkEmptyDirs
 
             var walker = DirectoryWalker.Create(this);
             walker.VisitFiles = false;
+            walker.TrackVisitedDirectories = true;
             walker.Walk(_configuration.Directory);
         }
         
-        public bool PreVisit(DirectoryInfo dirInfo)
+        public bool PreVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
         {
             if (SymbolicLinkHelper.IsSymbolicLink(dirInfo))
             {
+                context.VisitedDirectories.Add(dirInfo);
+
                 if (!_configuration.FollowSymbolicLinks)
                 {
-                    _existingFiles.Add(dirInfo);
                     return false;
                 }
 
@@ -76,7 +71,7 @@ namespace DJ.App.MarkEmptyDirs
                     targetPath = Path.GetFullPath(targetPath);
                 }
 
-                if (IsAlreadyVisited(targetPath))
+                if (IsAlreadyVisited(context, targetPath))
                 {
                     return false;
                 }
@@ -85,27 +80,26 @@ namespace DJ.App.MarkEmptyDirs
             if (_configuration.Exclude.Contains(dirInfo.Name))
                 return false;
 
-            _existingFiles.Add(dirInfo);
             return true;
         }
                 
-        private bool IsAlreadyVisited(string path)
+        private bool IsAlreadyVisited(IDirectoryWalkerContext context, string path)
         {
-            foreach (var visitedFileInfo in _existingFiles)
+            foreach (var visitedFileSystemInfo in context.VisitedFileSystemInfos)
             {
-                if (path == visitedFileInfo.FullName)
+                if (path == visitedFileSystemInfo.FullName)
                     return true;
             }
             return false;
         }
         
-        public bool PostVisit(DirectoryInfo dirInfo)
+        public bool PostVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
         {
             CommandHelper.DeletePlaceHolder(dirInfo, _configuration);
             return true;
         }
 
-        public bool Visit(FileInfo fileInfo)
+        public bool Visit(IDirectoryWalkerContext context, FileInfo fileInfo)
         {
             return true;
         }
