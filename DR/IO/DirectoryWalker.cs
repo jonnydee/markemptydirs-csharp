@@ -115,6 +115,9 @@ namespace DR.IO
                 {
                     return false;
                 }
+                
+                if (TrackVisitedDirectories)
+                    _visitedDirectories.Add(new DirectoryInfo(targetPath));
             }
             
             if (Visitor.PreVisit(this, dirInfo))
