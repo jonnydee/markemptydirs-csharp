@@ -1,5 +1,5 @@
 //  
-//  Copyright (c) 2009 by Johann Duscher (alias Jonny Dee)
+//  Copyright (c) 2009-2010 by Johann Duscher (alias Jonny Dee)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by

@@ -1,4 +1,4 @@
-﻿//  Copyright (C) 2009 by Markus Raufer
+//  Copyright (C) 2009-2010 by Markus Raufer
 //
 //  This file is part of MarkEmptyDirs.
 //

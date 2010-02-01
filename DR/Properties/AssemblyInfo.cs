@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("DR")]
-[assembly: AssemblyCopyright("Copyright (c) 2009 by Johann Duscher (alias Jonny Dee) and Markus Raufer")]
+[assembly: AssemblyCopyright("Copyright (c) 2009-2010 by Johann Duscher (alias Jonny Dee) and Markus Raufer")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
