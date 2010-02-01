@@ -39,6 +39,7 @@ namespace DR.IO
     {
 		public TVisitor Visitor { get; protected set; }
 		
+        public bool FollowSymbolicLinks { get; set; }
 		public bool VisitFiles { get; set; }
         public bool TrackVisitedFiles { get; set; }
         public bool TrackVisitedDirectories { get; set; }
@@ -89,6 +90,33 @@ namespace DR.IO
         
         protected bool Walk(DirectoryInfo dirInfo)
         {
+            if (SymbolicLinkHelper.IsSymbolicLink(dirInfo))
+            {
+                if (TrackVisitedDirectories)
+                    _visitedDirectories.Add(dirInfo);
+                
+                if (!FollowSymbolicLinks)
+                {
+                    return false;
+                }
+
+                // Get the symlink's targetPath and
+                // if it is relative make it absolute based on dirInfo.
+                var targetPath = SymbolicLinkHelper.GetSymbolicLinkTarget(dirInfo);
+                if (!Path.IsPathRooted(targetPath))
+                {
+                    var parentDir = PathUtil.GetParent(dirInfo);
+                    targetPath = Path.Combine(parentDir.FullName, targetPath);
+                    // Normalize path.
+                    targetPath = Path.GetFullPath(targetPath);
+                }
+
+                if (IsVisited(targetPath))
+                {
+                    return false;
+                }
+            }
+            
             if (Visitor.PreVisit(this, dirInfo))
             {
 	            if (TrackVisitedDirectories)
@@ -129,6 +157,16 @@ namespace DR.IO
                 _visitedFiles.Add(fileInfo);
             
             return continueWalking;
+        }
+        
+        protected bool IsVisited(string path)
+        {
+            foreach (var visitedFileSystemInfo in VisitedFileSystemInfos)
+            {
+                if (path == visitedFileSystemInfo.FullName)
+                    return true;
+            }
+            return false;
         }
     }
 }
