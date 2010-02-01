@@ -45,6 +45,7 @@ namespace DJ.App.MarkEmptyDirs
             }            
 
             var walker = DirectoryWalker.Create(this);
+            walker.FollowSymbolicLinks = _configuration.FollowSymbolicLinks;
             walker.VisitFiles = false;
             walker.TrackVisitedDirectories = true;
             walker.Walk(_configuration.Directory);
@@ -52,47 +53,12 @@ namespace DJ.App.MarkEmptyDirs
         
         public bool PreVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
         {
-            if (SymbolicLinkHelper.IsSymbolicLink(dirInfo))
-            {
-                context.VisitedDirectories.Add(dirInfo);
-
-                if (!_configuration.FollowSymbolicLinks)
-                {
-                    return false;
-                }
-
-                // Get the symlink's targetPath and
-                // if it is relative make it absolute based on dirInfo.
-                var targetPath = SymbolicLinkHelper.GetSymbolicLinkTarget(dirInfo);
-                if (!Path.IsPathRooted(targetPath))
-                {
-                    var parentDir = PathUtil.GetParent(dirInfo);
-                    targetPath = Path.Combine(parentDir.FullName, targetPath);
-                    targetPath = Path.GetFullPath(targetPath);
-                }
-
-                if (IsAlreadyVisited(context, targetPath))
-                {
-                    return false;
-                }
-            }
-
             if (_configuration.Exclude.Contains(dirInfo.Name))
                 return false;
 
             return true;
         }
                 
-        private bool IsAlreadyVisited(IDirectoryWalkerContext context, string path)
-        {
-            foreach (var visitedFileSystemInfo in context.VisitedFileSystemInfos)
-            {
-                if (path == visitedFileSystemInfo.FullName)
-                    return true;
-            }
-            return false;
-        }
-        
         public bool PostVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
         {
             CommandHelper.DeletePlaceHolder(dirInfo, _configuration);

@@ -27,6 +27,7 @@ namespace DJ.App.MarkEmptyDirs
         public static void Delete(DirectoryInfo dirInfo)
         {
             var walker = DirectoryWalker.Create(new DeleteRecursively());
+            walker.FollowSymbolicLinks = true;
             walker.Walk(dirInfo);
         }        
 
