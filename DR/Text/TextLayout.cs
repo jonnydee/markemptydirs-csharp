@@ -72,7 +72,7 @@ namespace DR.Text
             while ((length = Math.Min(line.Length, maxColumns - leftIndent - rightIndent)) < line.Length)
             {
                 // Search for  a whitespace to the left.
-                int breakIndex = breakIndex = line.LastIndexOfAny(WhiteSpaces, length);
+                var breakIndex = line.LastIndexOfAny(WhiteSpaces, length);
                 if (-1 != breakIndex)
                 {
                     length = breakIndex + 1;
