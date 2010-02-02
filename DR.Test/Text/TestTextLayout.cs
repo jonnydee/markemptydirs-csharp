@@ -20,9 +20,7 @@ using System.Text;
 
 using NUnit.Framework;
 
-using DR.Text;
-
-namespace DR.IO
+namespace DR.Text
 {
     [TestFixture]
     public class TestTextLayout
