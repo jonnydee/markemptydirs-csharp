@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <XML_DIZ_INFO>
-    <MASTER_PAD_VERSION_INFO>
-        <MASTER_PAD_VERSION>3.10</MASTER_PAD_VERSION>
-    </MASTER_PAD_VERSION_INFO>
+	<MASTER_PAD_VERSION_INFO>
+		<MASTER_PAD_VERSION>3.10</MASTER_PAD_VERSION>
+	</MASTER_PAD_VERSION_INFO>
 	<Company_Info>
-		<Company_Name>None.</Company_Name>
+		<Company_Name>Jonny Dee</Company_Name>
 		<Address_1 />
 		<Address_2 />
 		<City_Town>Ottobrunn</City_Town>
-		<State_Province />
+		<State_Province>Bavaria</State_Province>
 		<Zip_Postal_Code>85521</Zip_Postal_Code>
 		<Country>Germany</Country>
-		<Company_WebSite_URL />
+		<Company_WebSite_URL>http://www.xing.com/profile/Johann_Duscher</Company_WebSite_URL>
 		<Contact_Info>
 			<Author_First_Name>Jonny</Author_First_Name>
 			<Author_Last_Name>Dee</Author_Last_Name>
@@ -21,8 +21,8 @@
 			<Contact_Email>jonny.dee@gmx.net</Contact_Email>
 		</Contact_Info>
 		<Support_Info>
-			<Sales_Email />
-			<Support_Email />
+			<Sales_Email>jonny.dee@gmx.net</Sales_Email>
+			<Support_Email>jonny.dee@gmx.net</Support_Email>
 			<General_Email>jonny.dee@gmx.net</General_Email>
 			<Sales_Phone />
 			<Support_Phone />
@@ -41,13 +41,12 @@
 		<Program_Cost_Other />
 		<Program_Type>Freeware</Program_Type>
 		<Program_Release_Status>New Release</Program_Release_Status>
-		<Program_Install_Support />
+		<Program_Install_Support>No Install Support</Program_Install_Support>
 		<Program_OS_Support>Linux,Mac OS X,Win7 x32,Win7 x64,WinVista,WinVista x64,WinXP</Program_OS_Support>
 		<Program_Language>English</Program_Language>
 		<Program_Change_Info />
 		<Program_Specific_Category>Development Tools</Program_Specific_Category>
 		<Program_Category_Class>Development::Other</Program_Category_Class>
-		<Program_Categories>Version Control</Program_Categories>
 		<Program_System_Requirements>Mono 2.4 or Microsoft.NET 2.0</Program_System_Requirements>
 		<File_Info>
 			<File_Size_Bytes>TODO</File_Size_Bytes>
@@ -68,11 +67,19 @@
 		<English>
 			<Keywords>mercurial, cvs, tool, perforce, vcs, dvcs, mono, .net, git, windows, linux, macosx</Keywords>
 			<Char_Desc_45>Tool for versioning empty directories</Char_Desc_45>
-			<Char_Desc_80>Manages placeholder files necessary to version control empty directories</Char_Desc_80>
-			<Char_Desc_250>CVS, Mercurial, GIT as well as other well-known version control systems cannot version directories. In other words, you cannot add empty directories! A "workaround" for this issue is to use placeholder files which are placed into empty directories. T</Char_Desc_250>
+			<Char_Desc_80>Manages placeholder files necessary to version control empty directories.</Char_Desc_80>
+			<Char_Desc_250>Adding empty directories to CVS, GIT, Mercurial and other VCSs is not possible. Using placeholder files is a common workaround. However, managing them manually is tedious. MarkEmptyDirs will do this job for you and create/delete them automatically.</Char_Desc_250>
 			<Char_Desc_450 />
-			<Char_Desc_2000 />
+			<Char_Desc_2000>CVS, GIT, and Mercurial as well as other well-known version control systems cannot version directories. In other words, you cannot add empty directories. A "workaround" for this issue is to use placeholder files that are placed into empty directories. These placeholder files can then be committed into the repository and will make sure that, upon checkout, the directory tree is entirely reconstructed. The problem with using placeholder files is that you need to create them, and need to delete them if they are not necessary anymore (because sub-directories or real files were added). With big source trees, managing these placeholder files can be cumbersome and error prone. MarkEmptyDirs can manage the creation/deletion of such placeholder files automatically. It creates placeholder files in all empty "leaf" directories. If later on new files or directories are put into such directories, the placeholder files are not necessary anymore, and are removed automatically.</Char_Desc_2000>
 		</English>
+		<German>
+			<Keywords>mercurial, cvs, tool, perforce, vcs, dvcs, mono, .net, git, windows, linux, macosx</Keywords>
+			<Char_Desc_45>Tool zum Versionieren leerer Verzeichnisse</Char_Desc_45>
+			<Char_Desc_80>Verwaltet Platzhalter-Dateien für die Versionierung leerer Verzeichnisse.</Char_Desc_80>
+			<Char_Desc_250>CVS, GIT und Mercurial können keine leeren Verzeichnisse versionieren. Eine Lösung hierfür sind Platzhalter. MarkEmptyDirs erstellt Platzhalter-Dateien in leeren Verzeichnissen und löscht diese wieder, sobald sie nicht mehr gebraucht werden.</Char_Desc_250>
+			<Char_Desc_450>Erleichtert das Arbeiten mit Versionsverwaltungssystemen, indem es automatisch Platzhalter-Dateien in leeren Verzeichnissen erstellt und diese später wieder löscht, sobald neue Dateien in das Verzeichnis gespielt und die Platzhalter-Dateien nicht mehr gebraucht werden.</Char_Desc_450>
+			<Char_Desc_2000 />
+		</German>
 	</Program_Descriptions>
 	<Web_Info>
 		<Application_URLs>
