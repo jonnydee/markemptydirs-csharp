@@ -44,7 +44,7 @@
 		<Program_Install_Support>No Install Support</Program_Install_Support>
 		<Program_OS_Support>Linux,Mac OS X,Win7 x32,Win7 x64,WinVista,WinVista x64,WinXP</Program_OS_Support>
 		<Program_Language>English</Program_Language>
-		<Program_Change_Info />
+		<Program_Change_Info>This version adds a new command line option '--follow-symlinks' which allows to make MarkEmptyDirs follow symbolic links to directories or not. (Currently, symbolic links are only supported on unixoide file systems.). Fixed issue 3: Directory trees with symlinks are not processed properly.</Program_Change_Info>
 		<Program_Specific_Category>Development Tools</Program_Specific_Category>
 		<Program_Category_Class>Development::Other</Program_Category_Class>
 		<Program_System_Requirements>Mono 2.4 or Microsoft.NET 2.0</Program_System_Requirements>
