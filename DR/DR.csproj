@@ -62,11 +62,10 @@
     <Compile Include="Template\SpaceVariable.cs" />
     <Compile Include="Template\TemplateEngine.cs" />
     <Compile Include="Template\TemplateVariable.cs" />
-    <Compile Include="Tuple2.cs" />
-    <Compile Include="Tuple3.cs" />
-    <Compile Include="Tuple4.cs" />
     <Compile Include="IO\VirtualInputStream.cs" />
     <Compile Include="ZBase32.cs" />
+    <Compile Include="Tuples.cs" />
+    <Compile Include="GTuples.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
