@@ -66,6 +66,7 @@
     <Compile Include="ZBase32.cs" />
     <Compile Include="Tuples.cs" />
     <Compile Include="GTuples.cs" />
+    <Compile Include="Text\TextLayout.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -79,4 +80,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Folder Include="Text\" />
+  </ItemGroup>
 </Project>
