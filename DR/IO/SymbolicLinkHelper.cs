@@ -22,6 +22,13 @@ using System.Runtime.InteropServices;
 
 namespace DR.IO
 {
+    internal enum SymbolicLinkSupport
+    {
+        Undefined,
+        Supported,
+        NotSupported,
+    }
+    
     namespace Windows
     {
     	public static class SymbolicLinkHelper
@@ -76,11 +83,15 @@ namespace DR.IO
 
             private static void Init()
             {
-				if (_initialized)
-					return;
+                if (_initialized)
+                    return;
                 
                 var assemblyRef = new AssemblyName { Name = MonoPosixAssemblyName };
                 var assembly = Assembly.Load(assemblyRef);
+                if (null == assembly)
+                {
+                    throw new NotSupportedException("symbolic links");
+                }
                 
                 UnixSymbolicLinkInfoType = assembly.GetType(UnixSymbolicLinkInfoTypeName);
                 
@@ -99,32 +110,16 @@ namespace DR.IO
             
             public static bool CreateSymbolicLink(DirectoryInfo targetDirInfo, FileInfo symlinkFileInfo)
             {
-                try
-                {
-                    Init();
-                    CreateSymbolicLink(targetDirInfo.ToString(), symlinkFileInfo.ToString());
-                    return true;
-                }
-                catch (Exception ex)
-                {
-					System.Diagnostics.Debug.WriteLine(ex);
-                    return false;
-                }
+                Init();
+                CreateSymbolicLink(targetDirInfo.ToString(), symlinkFileInfo.ToString());
+                return true;
             }
     
             public static bool CreateSymbolicLink(FileInfo targetFileInfo, FileInfo symlinkFileInfo)
             {
-                try
-                {
-                    Init();
-                    CreateSymbolicLink(targetFileInfo.ToString(), symlinkFileInfo.ToString());
-                    return true;
-                }
-                catch (Exception ex)
-                {
-					System.Diagnostics.Debug.WriteLine(ex);
-                    return false;
-                }
+                Init();
+                CreateSymbolicLink(targetFileInfo.ToString(), symlinkFileInfo.ToString());
+                return true;
             }
 
             public static bool IsSymbolicLink(FileSystemInfo symlinkFileSystemInfo)
@@ -145,95 +140,163 @@ namespace DR.IO
 
     public static class SymbolicLinkHelper
     {
+        private static SymbolicLinkSupport _windowsSymbolicLinkSupport = SymbolicLinkSupport.Undefined;
+        private static SymbolicLinkSupport _unixSymbolicLinkSupport = SymbolicLinkSupport.Undefined;
+        
         public static bool CreateSymbolicLink(FileInfo targetFileInfo, FileInfo symlinkFileInfo)
         {
-            try
+            if (SymbolicLinkSupport.NotSupported != _windowsSymbolicLinkSupport)
             {
-                return Windows.SymbolicLinkHelper.CreateSymbolicLink(targetFileInfo, symlinkFileInfo);
+                try
+                {
+                    return Windows.SymbolicLinkHelper.CreateSymbolicLink(targetFileInfo, symlinkFileInfo);
+                }
+                catch (EntryPointNotFoundException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    _windowsSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
+                }
+                catch (Exception ex)
+                {
+    				System.Diagnostics.Debug.WriteLine(ex);
+                }
             }
-            catch (Exception ex)
+            
+            if (SymbolicLinkSupport.NotSupported != _unixSymbolicLinkSupport)
             {
-				System.Diagnostics.Debug.WriteLine(ex);
+    			try
+    			{
+    				return Unix.SymbolicLinkHelper.CreateSymbolicLink(targetFileInfo, symlinkFileInfo);
+    			}
+                catch (NullReferenceException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    _unixSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
+                }
+    			catch (Exception ex)
+    			{
+    				System.Diagnostics.Debug.WriteLine(ex);
+    			}
             }
-
-			try
-			{
-				return Unix.SymbolicLinkHelper.CreateSymbolicLink(targetFileInfo, symlinkFileInfo);
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(ex);
-			}
-
+            
         	return false;
         }
 
         public static bool CreateSymbolicLink(DirectoryInfo targetDirInfo, FileInfo symlinkFileInfo)
         {
-            try
+            if (SymbolicLinkSupport.NotSupported != _windowsSymbolicLinkSupport)
             {
-                return Windows.SymbolicLinkHelper.CreateSymbolicLink(targetDirInfo, symlinkFileInfo);
+                try
+                {
+                    return Windows.SymbolicLinkHelper.CreateSymbolicLink(targetDirInfo, symlinkFileInfo);
+                }
+                catch (EntryPointNotFoundException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    _windowsSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
+                }
+                catch (Exception ex)
+                {
+    				System.Diagnostics.Debug.WriteLine(ex);
+    			}
             }
-            catch (Exception ex)
+            
+            if (SymbolicLinkSupport.NotSupported != _unixSymbolicLinkSupport)
             {
-				System.Diagnostics.Debug.WriteLine(ex);
-			}
-
-			try
-			{
-				return Unix.SymbolicLinkHelper.CreateSymbolicLink(targetDirInfo, symlinkFileInfo);
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(ex);
-			}
-
+    			try
+    			{
+    				return Unix.SymbolicLinkHelper.CreateSymbolicLink(targetDirInfo, symlinkFileInfo);
+    			}
+                catch (NullReferenceException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    _unixSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
+                }
+    			catch (Exception ex)
+    			{
+    				System.Diagnostics.Debug.WriteLine(ex);
+    			}
+            }
+            
 			return false;
 		}
 
         public static bool IsSymbolicLink(FileSystemInfo symlinkFileSystemInfo)
         {
-            try
+            if (SymbolicLinkSupport.NotSupported != _windowsSymbolicLinkSupport)
             {
-                return Windows.SymbolicLinkHelper.IsSymbolicLink(symlinkFileSystemInfo);
+                try
+                {
+                    return Windows.SymbolicLinkHelper.IsSymbolicLink(symlinkFileSystemInfo);
+                }
+                catch (EntryPointNotFoundException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    _windowsSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
+                }
+    			catch (Exception ex)
+    			{
+    				System.Diagnostics.Debug.WriteLine(ex);
+    			}
             }
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(ex);
-			}
-
-			try
-			{
-				return Unix.SymbolicLinkHelper.IsSymbolicLink(symlinkFileSystemInfo);
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(ex);
-			}
-
+            
+            if (SymbolicLinkSupport.NotSupported != _unixSymbolicLinkSupport)
+            {
+    			try
+    			{
+    				return Unix.SymbolicLinkHelper.IsSymbolicLink(symlinkFileSystemInfo);
+    			}
+                catch (NullReferenceException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    _unixSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
+                }
+    			catch (Exception ex)
+    			{
+    				System.Diagnostics.Debug.WriteLine(ex);
+                    throw;
+    			}
+            }
+            
 			return false;
 		}
 
         public static string GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)
         {
-            try
+            if (SymbolicLinkSupport.NotSupported != _windowsSymbolicLinkSupport)
             {
-                return Windows.SymbolicLinkHelper.GetSymbolicLinkTarget(symlinkFileSystemInfo);
+                try
+                {
+                    return Windows.SymbolicLinkHelper.GetSymbolicLinkTarget(symlinkFileSystemInfo);
+                }
+                catch (EntryPointNotFoundException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    _windowsSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
+                }
+    			catch (Exception ex)
+    			{
+    				System.Diagnostics.Debug.WriteLine(ex);
+    			}
             }
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(ex);
-			}
-
-			try
-			{
-				return Unix.SymbolicLinkHelper.GetSymbolicLinkTarget(symlinkFileSystemInfo);
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(ex);
-			}
-
+            
+            if (SymbolicLinkSupport.NotSupported != _unixSymbolicLinkSupport)
+            {
+    			try
+    			{
+    				return Unix.SymbolicLinkHelper.GetSymbolicLinkTarget(symlinkFileSystemInfo);
+    			}
+                catch (NullReferenceException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    _unixSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
+                }
+    			catch (Exception ex)
+    			{
+    				System.Diagnostics.Debug.WriteLine(ex);
+    			}
+            }
+            
 			return null;
 		}
     }
