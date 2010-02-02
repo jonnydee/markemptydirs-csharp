@@ -1,4 +1,4 @@
-//  Copyright (C) 2009 by Johann Duscher (alias Jonny Dee)
+//  Copyright (C) 2009-2010 by Johann Duscher (alias Jonny Dee)
 // 
 //  This file is part of MarkEmptyDirs.
 // 

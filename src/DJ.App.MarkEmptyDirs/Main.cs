@@ -1,4 +1,4 @@
-//  Copyright (C) 2009 by Johann Duscher (alias Jonny Dee)
+//  Copyright (C) 2009-2010 by Johann Duscher (alias Jonny Dee)
 //
 //  This file is part of MarkEmptyDirs.
 //
@@ -32,7 +32,7 @@ namespace DJ.App.MarkEmptyDirs
         public const string StandardCmdName = "MarkEmptyDirs";
         public const string StandardCmdExtension = "exe";
         public const string Version = "V1.6dev";
-        public const string Copyright = "Copyright (c) 2009 by Johann Duscher (alias Jonny Dee)";
+        public const string Copyright = "Copyright (c) 2009-2010 by Johann Duscher (alias Jonny Dee)";
         public const string ProjectUrl = "http://code.google.com/p/markemptydirs";
         public const string StandardPlaceHolderName = ".emptydir";
         public static readonly string[] StandardExcludedDirs = new[] { ".bzr", "CVS", ".git", ".hg", ".svn" };
