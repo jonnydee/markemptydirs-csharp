@@ -31,10 +31,14 @@ namespace DJ.App.MarkEmptyDirs
         public const string TmpDirPath = "tmp";
         public const string TmpDirPath2 = "tmp2";
         public const string TmpDirPath3 = "tmp3";
+        public const string TmpDirPath4 = "tmp4";
+        public const string TmpDirPath5 = "tmp5";
 
         private DirectoryInfo _tmpDirInfo;
         private DirectoryInfo _tmpDirInfo2;
         private DirectoryInfo _tmpDirInfo3;
+        private DirectoryInfo _tmpDirInfo4;
+        private DirectoryInfo _tmpDirInfo5;
         
         [SetUp]
         public void SetUp()
@@ -45,15 +49,23 @@ namespace DJ.App.MarkEmptyDirs
             _tmpDirInfo2.Create();
             _tmpDirInfo3 = new DirectoryInfo(TmpDirPath3);
             _tmpDirInfo3.Create();
+            _tmpDirInfo4 = new DirectoryInfo(TmpDirPath4);
+            _tmpDirInfo4.Create();
+            _tmpDirInfo5 = new DirectoryInfo(TmpDirPath5);
+            _tmpDirInfo5.Create();
 
             _tmpDirInfo.CreateSubdirectory(PathUtil.Combine("a", "b", "c")).Create();
             _tmpDirInfo.CreateSubdirectory(PathUtil.Combine("a", "d", ".git", "store")).Create();
             _tmpDirInfo.CreateSubdirectory(PathUtil.Combine("a", "e")).Create();
+            _tmpDirInfo4.CreateSubdirectory(PathUtil.Combine("dir1", "dir2")).Create();
+            _tmpDirInfo5.CreateSubdirectory(PathUtil.Combine("dir3", "dir4")).Create();
+			
             SymbolicLinkHelper.CreateSymbolicLink(new DirectoryInfo(PathUtil.Combine("..", "..", "..", TmpDirPath2)), new FileInfo(PathUtil.Combine(_tmpDirInfo.ToString(), "a", "e", "link-to-dir")));
             // These links create cycles to make sure they are handled correctly.
             SymbolicLinkHelper.CreateSymbolicLink(new DirectoryInfo(PathUtil.Combine("..", "..")), new FileInfo(PathUtil.Combine(_tmpDirInfo.ToString(), "a", "e", "link-to-parent-of-parent")));
-            SymbolicLinkHelper.CreateSymbolicLink(new DirectoryInfo(PathUtil.Combine("..", TmpDirPath)), new FileInfo(PathUtil.Combine(_tmpDirInfo.ToString(), "link-to-self")));
+            SymbolicLinkHelper.CreateSymbolicLink(new DirectoryInfo(PathUtil.Combine("..", TmpDirPath + Path.DirectorySeparatorChar)), new FileInfo(PathUtil.Combine(_tmpDirInfo.ToString(), "link-to-self")));
             SymbolicLinkHelper.CreateSymbolicLink(new DirectoryInfo(PathUtil.Combine("..", TmpDirPath3)), new FileInfo(PathUtil.Combine(_tmpDirInfo3.ToString(), "link-to-self")));
+            SymbolicLinkHelper.CreateSymbolicLink(new DirectoryInfo(PathUtil.Combine("..", "..", "..", TmpDirPath5)), new FileInfo(PathUtil.Combine(_tmpDirInfo4.ToString(), "dir1", "dir2", "link-to-other")));
         }
 
         [TearDown]
@@ -62,6 +74,8 @@ namespace DJ.App.MarkEmptyDirs
             DeleteRecursively.Delete(_tmpDirInfo);
             DeleteRecursively.Delete(_tmpDirInfo2);
             DeleteRecursively.Delete(_tmpDirInfo3);
+            DeleteRecursively.Delete(_tmpDirInfo4);
+            DeleteRecursively.Delete(_tmpDirInfo5);
         }
 
         [Test]
@@ -120,6 +134,20 @@ namespace DJ.App.MarkEmptyDirs
             cmd.Execute(config);
 
             Assert.AreEqual(1, _tmpDirInfo3.GetFileSystemInfos().Length);
+        }
+
+        [Test]
+        public void TestCreatePlaceHoldersWithFollowSymbolicLinks3()
+        {
+            var config = MainClass.CreateConfiguration();
+            config.FollowSymbolicLinks = true;
+            config.Directory = _tmpDirInfo4;
+
+            var cmd = new SyncCommand();
+            cmd.Execute(config);
+
+            Assert.AreEqual(1, _tmpDirInfo5.GetFileSystemInfos().Length);
+            Assert.IsTrue(new FileInfo(PathUtil.Combine(_tmpDirInfo5.FullName, "dir3", "dir4", ".emptydir")).Exists);
         }
 
         [Test]
