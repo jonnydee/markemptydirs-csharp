@@ -37,14 +37,14 @@ namespace DR.IO
     
     public class DirectoryWalker<TVisitor> : IDirectoryWalkerContext where TVisitor : IDirectoryVisitor
     {
-		public TVisitor Visitor { get; protected set; }
-		
+        public TVisitor Visitor { get; protected set; }
+        
         public bool FollowSymbolicLinks { get; set; }
-		public bool VisitFiles { get; set; }
+        public bool VisitFiles { get; set; }
         public bool TrackVisitedFiles { get; set; }
         public bool TrackVisitedDirectories { get; set; }
 
-		private List<FileInfo> _visitedFiles;
+        private List<FileInfo> _visitedFiles;
         private List<DirectoryInfo> _visitedDirectories;
         
         public IList<FileInfo> VisitedFiles { get { return _visitedFiles; } }
@@ -62,15 +62,15 @@ namespace DR.IO
             }
         }
         
-		public DirectoryWalker(TVisitor visitor)
-		{
+        public DirectoryWalker(TVisitor visitor)
+        {
             _visitedFiles = new List<FileInfo>();
             _visitedDirectories = new List<DirectoryInfo>();
             
             Visitor = visitor;
             VisitFiles = true;
-		}
-		
+        }
+        
         public bool Walk(FileSystemInfo fileSystemInfo)
         {
             if (!fileSystemInfo.Exists)
@@ -90,86 +90,133 @@ namespace DR.IO
         
         protected bool Walk(DirectoryInfo dirInfo)
         {
-            if (SymbolicLinkHelper.IsSymbolicLink(dirInfo))
+            bool isSymbolicLink = SymbolicLinkHelper.IsSymbolicLink(dirInfo);
+            var targetDirInfo = isSymbolicLink ? GetAbsoluteTarget(dirInfo) : null;
+            
+            if (IsVisited(dirInfo))
             {
-                if (TrackVisitedDirectories)
-                    _visitedDirectories.Add(dirInfo);
+                if (isSymbolicLink)
+                    AddVisited(targetDirInfo);
                 
-                if (!FollowSymbolicLinks)
-                {
-                    return false;
-                }
-
-                // Get the symlink's targetPath and
-                // if it is relative make it absolute based on dirInfo.
-                var targetPath = SymbolicLinkHelper.GetSymbolicLinkTarget(dirInfo);
-                if (!Path.IsPathRooted(targetPath))
-                {
-                    var parentDir = PathUtil.GetParent(dirInfo);
-                    targetPath = Path.Combine(parentDir.FullName, targetPath);
-                    // Normalize path.
-                    targetPath = Path.GetFullPath(targetPath);
-                }
-
-                if (IsVisited(targetPath))
-                {
-                    return false;
-                }
-                
-                if (TrackVisitedDirectories)
-                    _visitedDirectories.Add(new DirectoryInfo(targetPath));
+                return true;
+            }
+            
+            if (isSymbolicLink && IsVisited(targetDirInfo))
+            {
+                AddVisited(dirInfo);
+                return true;
             }
             
             if (Visitor.PreVisit(this, dirInfo))
             {
-	            if (TrackVisitedDirectories)
-	                _visitedDirectories.Add(dirInfo);
+                AddVisited(dirInfo);
+                if (isSymbolicLink)
+                    AddVisited(targetDirInfo);
                 
                 bool continueWalking = true;
                 
-                var subDirectories = dirInfo.GetDirectories();
-                foreach (var subDirectory in subDirectories)
+                if (FollowSymbolicLinks || !isSymbolicLink)
                 {
-                    continueWalking = Walk(subDirectory);
-                    if (!continueWalking)
-                        break;
-                }
-
-                if (VisitFiles && continueWalking)
-                {
-                    var files = dirInfo.GetFiles();
-                    foreach (var file in files)
+                    var subDirectories = dirInfo.GetDirectories();
+                    foreach (var subDirectory in subDirectories)
                     {
-                        continueWalking = Walk(file);
+                        continueWalking = Walk(subDirectory);
                         if (!continueWalking)
                             break;
                     }
+                    
+                    if (VisitFiles && continueWalking)
+                    {
+                        var files = dirInfo.GetFiles();
+                        foreach (var file in files)
+                        {
+                            continueWalking = Walk(file);
+                            if (!continueWalking)
+                                break;
+                        }
+                    }
+                    
+                    return Visitor.PostVisit(this, dirInfo) && continueWalking;
                 }
-
-                return Visitor.PostVisit(this, dirInfo) && continueWalking;
             }
-
+            
             return true;
-		}
+        }
         
         protected bool Walk(FileInfo fileInfo)
         {
             bool continueWalking = Visitor.Visit(this, fileInfo);
             
-            if (TrackVisitedFiles)
-                _visitedFiles.Add(fileInfo);
+            AddVisited(fileInfo);
             
             return continueWalking;
         }
         
-        protected bool IsVisited(string path)
+        protected void AddVisited(DirectoryInfo dirInfo)
         {
-            foreach (var visitedFileSystemInfo in VisitedFileSystemInfos)
+            if (TrackVisitedDirectories && !IsVisited(dirInfo))
+                VisitedDirectories.Add(dirInfo);
+        }
+        
+        protected void AddVisited(FileInfo fileInfo)
+        {
+            if (TrackVisitedFiles && !IsVisited(fileInfo))
+                VisitedFiles.Add(fileInfo);
+        }
+        
+        public bool IsVisited(FileInfo fileInfo)
+        {
+            if (TrackVisitedFiles)
             {
-                if (path == visitedFileSystemInfo.FullName)
-                    return true;
+                foreach (var visitedFileInfo in VisitedFiles)
+                {
+                    if (fileInfo.FullName == visitedFileInfo.FullName)
+                        return true;
+                }
             }
             return false;
+        }
+        
+        public bool IsVisited(DirectoryInfo dirInfo)
+        {
+            if (TrackVisitedDirectories)
+            {
+                foreach (var visitedDirInfo in VisitedDirectories)
+                {
+                    if (dirInfo.FullName == visitedDirInfo.FullName)
+                        return true;
+                }
+            }
+            return false;
+        }
+        
+        public bool IsVisited(FileSystemInfo fileSystemInfo)
+        {
+            if (fileSystemInfo is DirectoryInfo)
+                return IsVisited((DirectoryInfo)fileSystemInfo);
+            
+            return IsVisited((FileInfo)fileSystemInfo);
+        }
+        
+        private DirectoryInfo GetAbsoluteTarget(DirectoryInfo dirInfo)
+        {
+            // Get the symlink's targetPath and
+            // if it is relative make it absolute based on dirInfo.
+            var targetPath = SymbolicLinkHelper.GetSymbolicLinkTarget(dirInfo);
+            if (!Path.IsPathRooted(targetPath))
+            {
+                var parentDir = PathUtil.GetParent(dirInfo);
+                targetPath = Path.Combine(parentDir.FullName, targetPath);
+                // Normalize path.
+                targetPath = Path.GetFullPath(targetPath);
+            }
+            
+            // Remove trailing directory separator char if any.
+            var lastChar = targetPath[targetPath.Length - 1];
+            if (targetPath.Length > 1 && (lastChar == Path.AltDirectorySeparatorChar || lastChar == Path.DirectorySeparatorChar))
+                targetPath = targetPath.Substring(0, targetPath.Length - 1);
+            
+            return new DirectoryInfo(targetPath);
         }
     }
 }
