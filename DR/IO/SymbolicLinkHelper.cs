@@ -85,21 +85,25 @@ namespace DR.IO
             {
                 if (_initialized)
                     return;
-                
-                var assemblyRef = new AssemblyName { Name = MonoPosixAssemblyName };
-                var assembly = Assembly.Load(assemblyRef);
-                if (null == assembly)
+
+                try
                 {
-                    throw new NotSupportedException("symbolic links");
+                    var assemblyRef = new AssemblyName { Name = MonoPosixAssemblyName };
+                    var assembly = Assembly.Load(assemblyRef);
+
+                    UnixSymbolicLinkInfoType = assembly.GetType(UnixSymbolicLinkInfoTypeName);
+
+                    CreateSymbolicLinkToMethod = UnixSymbolicLinkInfoType.GetMethod(CreateSymbolicLinkToMethodName, new[] { typeof(string) });
+                    IsSymbolicLinkProperty = UnixSymbolicLinkInfoType.GetProperty(IsSymbolicLinkPropertyName);
+                    ContentsPathProperty = UnixSymbolicLinkInfoType.GetProperty(ContentsPathPropertyName);
+
+                    _initialized = true;
+
                 }
-                
-                UnixSymbolicLinkInfoType = assembly.GetType(UnixSymbolicLinkInfoTypeName);
-                
-                CreateSymbolicLinkToMethod = UnixSymbolicLinkInfoType.GetMethod(CreateSymbolicLinkToMethodName, new[] { typeof(string) });
-                IsSymbolicLinkProperty = UnixSymbolicLinkInfoType.GetProperty(IsSymbolicLinkPropertyName);
-                ContentsPathProperty = UnixSymbolicLinkInfoType.GetProperty(ContentsPathPropertyName);
-                
-                _initialized = true;
+                catch (Exception ex)
+                {
+                    throw new NotSupportedException("symbolic links", ex);
+                }
             }
             
             private static void CreateSymbolicLink(string targetPath, string symlinkPath)
@@ -246,7 +250,7 @@ namespace DR.IO
     			{
     				return Unix.SymbolicLinkHelper.IsSymbolicLink(symlinkFileSystemInfo);
     			}
-                catch (NullReferenceException ex)
+                catch (NotSupportedException ex)
                 {
                     System.Diagnostics.Debug.WriteLine(ex);
                     _unixSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
