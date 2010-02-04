@@ -46,6 +46,7 @@
     <Compile Include="Template\TestTemplateEngine.cs" />
     <Compile Include="IO\TestSymbolicLinkHelper.cs" />
     <Compile Include="Text\TestTextLayout.cs" />
+    <Compile Include="TestTuples.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DR\DR.csproj">
