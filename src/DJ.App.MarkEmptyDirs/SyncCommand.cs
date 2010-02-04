@@ -73,13 +73,15 @@ namespace DJ.App.MarkEmptyDirs
 
                 // If the already visited file is in a sub-directory,
                 // then no placeholder is needed for the current directory.
-                if (PathUtil.GetParent(visitedFileSystemInfo).FullName.Length > dirName.Length)
+                var parentDir = PathUtil.GetParent(visitedFileSystemInfo);
+                if (parentDir.FullName.Length > dirName.Length)
                     return false;
 
                 // The already visited file is in the current directory.
                 // So if this file is not a placeholder file we do not need
                 // a placeholder.
-                if (visitedFileSystemInfo.Name != _configuration.PlaceHolderName)
+                var placeHolderFile = new FileInfo(Path.Combine(parentDir.FullName, _configuration.PlaceHolderName));
+                if (!placeHolderFile.Exists)
                     return false;
             }
             return true;
