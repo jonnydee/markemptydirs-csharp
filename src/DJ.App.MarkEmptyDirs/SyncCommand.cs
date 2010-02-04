@@ -62,10 +62,12 @@ namespace DJ.App.MarkEmptyDirs
 
         private bool IsPlaceHolderNeeded(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
         {
+            var foundCandidateFiles = 0;
             var dirName = dirInfo.FullName;
             foreach (var visitedFileSystemInfo in context.VisitedFileSystemInfos)
             {
-                if (visitedFileSystemInfo.FullName.Length <= dirName.Length || !visitedFileSystemInfo.FullName.StartsWith(dirName))
+                var visitedName = visitedFileSystemInfo.FullName;
+                if (visitedName.Length <= dirName.Length || !visitedName.StartsWith(dirName))
                     continue;
 
                 // At this point there is either a file in a sub-directory,
@@ -78,12 +80,21 @@ namespace DJ.App.MarkEmptyDirs
                     return false;
 
                 // The already visited file is in the current directory.
-                // So if this file is not a placeholder file we do not need
-                // a placeholder.
-                var placeHolderFile = new FileInfo(Path.Combine(parentDir.FullName, _configuration.PlaceHolderName));
-                if (!placeHolderFile.Exists)
+                // So increase number of found candidates.
+                ++foundCandidateFiles;
+                // If there are more than one file we know we do not need a placeholder.
+                if (foundCandidateFiles > 1)
                     return false;
             }
+            
+            if (1 == foundCandidateFiles)
+            {
+                // At this point there is exactly one file. If it is a placeholder we actually need one.
+                var placeHolderFile = new FileInfo(Path.Combine(dirInfo.FullName, _configuration.PlaceHolderName));
+                return placeHolderFile.Exists;
+            }
+            
+            // At this point there is no file or subdirectory, so we need a placeholder.
             return true;
         }
 
