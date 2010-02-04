@@ -53,13 +53,13 @@ namespace DR.IO
             public static bool IsSymbolicLink(FileSystemInfo symlinkFileSystemInfo)
             {
                 // TODO Implement method.
-                throw new NotImplementedException("bool IsSymbolicLink(FileSystemInfo symlinkFileSystemInfo)");
+                throw new NotSupportedException("bool IsSymbolicLink(FileSystemInfo symlinkFileSystemInfo)");
             }
     
             public static string GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)
             {
                 // TODO Implement method.
-                throw new NotImplementedException("string GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)");
+                throw new NotSupportedException("string GetSymbolicLinkTarget(FileSystemInfo symlinkFileSystemInfo)");
             }
         }
     }
@@ -160,6 +160,11 @@ namespace DR.IO
                     System.Diagnostics.Debug.WriteLine(ex);
                     _windowsSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
                 }
+                catch (NotSupportedException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    _windowsSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
+                }
                 catch (Exception ex)
                 {
     				System.Diagnostics.Debug.WriteLine(ex);
@@ -172,7 +177,7 @@ namespace DR.IO
     			{
     				return Unix.SymbolicLinkHelper.CreateSymbolicLink(targetFileInfo, symlinkFileInfo);
     			}
-                catch (NullReferenceException ex)
+                catch (NotSupportedException ex)
                 {
                     System.Diagnostics.Debug.WriteLine(ex);
                     _unixSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
@@ -199,6 +204,11 @@ namespace DR.IO
                     System.Diagnostics.Debug.WriteLine(ex);
                     _windowsSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
                 }
+                catch (NotSupportedException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    _windowsSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
+                }
                 catch (Exception ex)
                 {
     				System.Diagnostics.Debug.WriteLine(ex);
@@ -211,7 +221,7 @@ namespace DR.IO
     			{
     				return Unix.SymbolicLinkHelper.CreateSymbolicLink(targetDirInfo, symlinkFileInfo);
     			}
-                catch (NullReferenceException ex)
+                catch (NotSupportedException ex)
                 {
                     System.Diagnostics.Debug.WriteLine(ex);
                     _unixSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
@@ -238,7 +248,12 @@ namespace DR.IO
                     System.Diagnostics.Debug.WriteLine(ex);
                     _windowsSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
                 }
-    			catch (Exception ex)
+                catch (NotSupportedException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    _windowsSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
+                }
+                catch (Exception ex)
     			{
     				System.Diagnostics.Debug.WriteLine(ex);
     			}
@@ -278,7 +293,12 @@ namespace DR.IO
                     System.Diagnostics.Debug.WriteLine(ex);
                     _windowsSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
                 }
-    			catch (Exception ex)
+                catch (NotSupportedException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    _windowsSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
+                }
+                catch (Exception ex)
     			{
     				System.Diagnostics.Debug.WriteLine(ex);
     			}
@@ -290,7 +310,7 @@ namespace DR.IO
     			{
     				return Unix.SymbolicLinkHelper.GetSymbolicLinkTarget(symlinkFileSystemInfo);
     			}
-                catch (NullReferenceException ex)
+                catch (NotSupportedException ex)
                 {
                     System.Diagnostics.Debug.WriteLine(ex);
                     _unixSymbolicLinkSupport = SymbolicLinkSupport.NotSupported;
