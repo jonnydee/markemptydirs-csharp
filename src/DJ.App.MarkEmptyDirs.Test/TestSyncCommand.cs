@@ -33,12 +33,14 @@ namespace DJ.App.MarkEmptyDirs
         public const string TmpDirPath3 = "tmp3";
         public const string TmpDirPath4 = "tmp4";
         public const string TmpDirPath5 = "tmp5";
-
+        public const string TmpDirPath6 = "tmp6";
+        
         private DirectoryInfo _tmpDirInfo;
         private DirectoryInfo _tmpDirInfo2;
         private DirectoryInfo _tmpDirInfo3;
         private DirectoryInfo _tmpDirInfo4;
         private DirectoryInfo _tmpDirInfo5;
+        private DirectoryInfo _tmpDirInfo6;
         
         [SetUp]
         public void SetUp()
@@ -53,6 +55,8 @@ namespace DJ.App.MarkEmptyDirs
             _tmpDirInfo4.Create();
             _tmpDirInfo5 = new DirectoryInfo(TmpDirPath5);
             _tmpDirInfo5.Create();
+            _tmpDirInfo6 = new DirectoryInfo(TmpDirPath6);
+            _tmpDirInfo6.Create();
 
             _tmpDirInfo.CreateSubdirectory(PathUtil.Combine("a", "b", "c")).Create();
             _tmpDirInfo.CreateSubdirectory(PathUtil.Combine("a", "d", ".git", "store")).Create();
@@ -76,6 +80,7 @@ namespace DJ.App.MarkEmptyDirs
             DeleteRecursively.Delete(_tmpDirInfo3);
             DeleteRecursively.Delete(_tmpDirInfo4);
             DeleteRecursively.Delete(_tmpDirInfo5);
+            DeleteRecursively.Delete(_tmpDirInfo6);
         }
 
         [Test]
@@ -98,6 +103,24 @@ namespace DJ.App.MarkEmptyDirs
             Assert.IsEmpty(new DirectoryInfo(PathUtil.Combine(_tmpDirInfo.FullName, "a", "d", ".git")).GetFiles());
             Assert.IsEmpty(new DirectoryInfo(PathUtil.Combine(_tmpDirInfo.FullName, "a", "d", ".git", "store")).GetFiles());
             Assert.IsEmpty(_tmpDirInfo2.GetFiles());
+        }
+        
+        [Test]
+        public void TestCreatePlaceHolders2()
+        {
+            var symlinkTestDir = _tmpDirInfo6;
+            symlinkTestDir.Create();
+            symlinkTestDir.CreateSubdirectory(PathUtil.Combine("foo", "empty"));
+            SymbolicLinkHelper.CreateSymbolicLink(new DirectoryInfo(PathUtil.Combine("foo", "empty")), new FileInfo(PathUtil.Combine(TmpDirPath6, "empty")));
+            
+            var config = MainClass.CreateConfiguration();
+            config.FollowSymbolicLinks = false;
+            config.Directory = symlinkTestDir;
+
+            var cmd = new SyncCommand();
+            cmd.Execute(config);
+            
+            Assert.AreEqual(1, new DirectoryInfo(PathUtil.Combine(TmpDirPath6, "foo", "empty")).GetFileSystemInfos().Length);
         }
 
         [Test]
