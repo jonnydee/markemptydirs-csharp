@@ -91,7 +91,13 @@ namespace DR.IO
         protected bool Walk(DirectoryInfo dirInfo)
         {
             bool isSymbolicLink = SymbolicLinkHelper.IsSymbolicLink(dirInfo);
-            var targetDirInfo = isSymbolicLink ? GetAbsoluteTarget(dirInfo) : null;
+            var targetDirInfo = isSymbolicLink && FollowSymbolicLinks ? GetAbsoluteTarget(dirInfo) : null;
+            
+            if (isSymbolicLink && !FollowSymbolicLinks)
+            {
+                AddVisited(dirInfo);
+                return true;
+            }
             
             if (IsVisited(dirInfo))
             {
