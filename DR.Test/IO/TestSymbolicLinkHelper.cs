@@ -63,5 +63,16 @@ namespace DR.IO
             symlink.Delete();
             Assert.AreEqual("tmp", result);
         }
+        
+        [Test]
+        public void TestGetSymbolicLinkTargetAbsolute()
+        {
+            var symlink = new FileInfo("link_to_tmp_directory");
+            var tmpDir = new DirectoryInfo("tmp");
+            SymbolicLinkHelper.CreateSymbolicLink(tmpDir, symlink);
+            var result = SymbolicLinkHelper.GetSymbolicLinkTargetAbsolute(new FileInfo("link_to_tmp_directory"));
+            symlink.Delete();
+            Assert.AreEqual(tmpDir.FullName, result);
+        }
     }
 }

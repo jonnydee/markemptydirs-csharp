@@ -210,20 +210,7 @@ namespace DR.IO
         {
             // Get the symlink's targetPath and
             // if it is relative make it absolute based on dirInfo.
-            var targetPath = SymbolicLinkHelper.GetSymbolicLinkTarget(dirInfo);
-            if (!Path.IsPathRooted(targetPath))
-            {
-                var parentDir = PathUtil.GetParent(dirInfo);
-                targetPath = Path.Combine(parentDir.FullName, targetPath);
-                // Normalize path.
-                targetPath = Path.GetFullPath(targetPath);
-            }
-            
-            // Remove trailing directory separator char if any.
-            var lastChar = targetPath[targetPath.Length - 1];
-            if (targetPath.Length > 1 && (lastChar == Path.AltDirectorySeparatorChar || lastChar == Path.DirectorySeparatorChar))
-                targetPath = targetPath.Substring(0, targetPath.Length - 1);
-            
+            var targetPath = SymbolicLinkHelper.GetSymbolicLinkTargetAbsolute(dirInfo);
             return new DirectoryInfo(targetPath);
         }
     }
