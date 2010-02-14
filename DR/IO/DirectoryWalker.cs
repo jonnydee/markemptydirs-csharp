@@ -93,36 +93,38 @@ namespace DR.IO
             bool isSymbolicLink = SymbolicLinkHelper.IsSymbolicLink(dirInfo);
             var targetDirInfo = isSymbolicLink && FollowSymbolicLinks ? GetAbsoluteTarget(dirInfo) : null;
             
-            if (isSymbolicLink && !FollowSymbolicLinks)
-            {
-                AddVisited(dirInfo);
-                return true;
-            }
-            
-            if (IsVisited(dirInfo))
-            {
-                if (isSymbolicLink)
-                    AddVisited(targetDirInfo);
-                
-                return true;
-            }
-            
-            if (isSymbolicLink && IsVisited(targetDirInfo))
-            {
-                AddVisited(dirInfo);
-                return true;
-            }
-            
+			// First check if we have already visited dirInfo. If so, we do not have
+			// to do anything.
+			if (IsVisited(dirInfo))
+				return true;
+			
+			// If dirInfo is a symlink -- and we must not follow symlinks or we have
+			// already visited targetDirInfo, we do not have to do anything except
+			// remembering that we have visited dirInfo.
+			if (isSymbolicLink)
+			{
+				if (!FollowSymbolicLinks || IsVisited(targetDirInfo))
+				{
+					AddVisited(dirInfo);
+					return true;
+				}
+			}
+			
+			// At this stage dirInfo either is a normal directory,
+			// or it is a symlink and we must follow symlinks.
+			// In both cases, we need to recurse into dirInfo.
+			
             if (Visitor.PreVisit(this, dirInfo))
             {
+				// Remember that we have visited dirInfo.
                 AddVisited(dirInfo);
+				// If dirInfo is a symlink we also remember that we have visited
+				// targetDirInfo, because visiting the symlink dirInfo is equivalent.
                 if (isSymbolicLink)
                     AddVisited(targetDirInfo);
                 
                 bool continueWalking = true;
                 
-                if (FollowSymbolicLinks || !isSymbolicLink)
-                {
                     var subDirectories = dirInfo.GetDirectories();
                     foreach (var subDirectory in subDirectories)
                     {
@@ -143,7 +145,6 @@ namespace DR.IO
                     }
                     
                     return Visitor.PostVisit(this, dirInfo) && continueWalking;
-                }
             }
             
             return true;
