@@ -91,19 +91,20 @@ namespace DR.IO
         protected bool Walk(DirectoryInfo dirInfo)
         {
             bool isSymbolicLink = SymbolicLinkHelper.IsSymbolicLink(dirInfo);
-            var targetDirInfo = isSymbolicLink && FollowSymbolicLinks ? GetAbsoluteTarget(dirInfo) : null;
             
             // First check if we have already visited dirInfo. If so, we do not have
             // to do anything.
             if (IsVisited(dirInfo))
                 return true;
             
+            DirectoryInfo targetDirInfo = null;
+			
             // If dirInfo is a symlink -- and we must not follow symlinks or we have
             // already visited targetDirInfo, we do not have to do anything except
             // remembering that we have visited dirInfo.
             if (isSymbolicLink)
             {
-                if (!FollowSymbolicLinks || IsVisited(targetDirInfo))
+                if (!FollowSymbolicLinks || IsVisited(targetDirInfo = GetAbsoluteTarget(dirInfo)))
                 {
                     AddVisited(dirInfo);
                     return true;
