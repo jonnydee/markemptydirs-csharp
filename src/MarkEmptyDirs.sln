@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8D70ECCD-A6DC-42A8-9BE6-8C0547499558}"
 	ProjectSection(SolutionItems) = preProject
+		..\docs\wiki\ChangeLog.wiki = ..\docs\wiki\ChangeLog.wiki
 		ilmerge_dlls.bat = ilmerge_dlls.bat
+		..\markemptydirs_pad.xml = ..\markemptydirs_pad.xml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DJ.App.MarkEmptyDirs", "DJ.App.MarkEmptyDirs\DJ.App.MarkEmptyDirs.csproj", "{B0B70994-7C86-46E0-B7EE-CA3E84D686F0}"
@@ -20,14 +22,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0C88F5F5-9DD7-4902-84B0-5BD4C1373609}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C88F5F5-9DD7-4902-84B0-5BD4C1373609}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C88F5F5-9DD7-4902-84B0-5BD4C1373609}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C88F5F5-9DD7-4902-84B0-5BD4C1373609}.Release|Any CPU.Build.0 = Release|Any CPU
-		{124D71F1-ACFC-42BF-91F7-8C6132217EED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{124D71F1-ACFC-42BF-91F7-8C6132217EED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{124D71F1-ACFC-42BF-91F7-8C6132217EED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{124D71F1-ACFC-42BF-91F7-8C6132217EED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B0B70994-7C86-46E0-B7EE-CA3E84D686F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B0B70994-7C86-46E0-B7EE-CA3E84D686F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0B70994-7C86-46E0-B7EE-CA3E84D686F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -36,8 +30,17 @@ Global
 		{D0B59726-4AC8-4AED-8628-29FA8FF25740}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0B59726-4AC8-4AED-8628-29FA8FF25740}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0B59726-4AC8-4AED-8628-29FA8FF25740}.Release|Any CPU.Build.0 = Release|Any CPU
+		{124D71F1-ACFC-42BF-91F7-8C6132217EED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{124D71F1-ACFC-42BF-91F7-8C6132217EED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{124D71F1-ACFC-42BF-91F7-8C6132217EED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{124D71F1-ACFC-42BF-91F7-8C6132217EED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C88F5F5-9DD7-4902-84B0-5BD4C1373609}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C88F5F5-9DD7-4902-84B0-5BD4C1373609}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C88F5F5-9DD7-4902-84B0-5BD4C1373609}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C88F5F5-9DD7-4902-84B0-5BD4C1373609}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		version = 1.0
@@ -54,8 +57,5 @@ Global
 		$3.RemoveTrailingWhitespace = True
 		$3.inheritsSet = VisualStudio
 		$3.inheritsScope = text/plain
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
