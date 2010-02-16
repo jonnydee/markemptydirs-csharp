@@ -32,10 +32,10 @@
 	</Company_Info>
 	<Program_Info>
 		<Program_Name>MarkEmptyDirs</Program_Name>
-		<Program_Version>1.6.1</Program_Version>
-		<Program_Release_Month>02</Program_Release_Month>
-		<Program_Release_Day>16</Program_Release_Day>
-		<Program_Release_Year>2010</Program_Release_Year>
+		<Program_Version>1.7dev</Program_Version>
+		<Program_Release_Month>TODO</Program_Release_Month>
+		<Program_Release_Day>TODO</Program_Release_Day>
+		<Program_Release_Year>TODO</Program_Release_Year>
 		<Program_Cost_Dollars />
 		<Program_Cost_Other_Code />
 		<Program_Cost_Other />
@@ -44,14 +44,14 @@
 		<Program_Install_Support>No Install Support</Program_Install_Support>
 		<Program_OS_Support>Linux,Mac OS X,Win7 x32,Win7 x64,WinVista,WinVista x64,WinXP</Program_OS_Support>
 		<Program_Language>English</Program_Language>
-		<Program_Change_Info>This version fixes an issue with symbolic links that point to directories which are also reachable by not following symbolic links. Additionally, it contains a minor performance optimization.</Program_Change_Info>
+		<Program_Change_Info>TODO</Program_Change_Info>
 		<Program_Specific_Category>Development Tools</Program_Specific_Category>
 		<Program_Category_Class>Development::Other</Program_Category_Class>
 		<Program_System_Requirements>Mono 2.4 (or greater) or Microsoft.NET 2.0 (or greater))</Program_System_Requirements>
 		<File_Info>
-			<File_Size_Bytes>78336</File_Size_Bytes>
-			<File_Size_K>76.5</File_Size_K>
-			<File_Size_MB>0.0747</File_Size_MB>
+			<File_Size_Bytes>TODO</File_Size_Bytes>
+			<File_Size_K>TODO</File_Size_K>
+			<File_Size_MB>TODO</File_Size_MB>
 		</File_Info>
 		<Expire_Info>
 			<Has_Expire_Info>N</Has_Expire_Info>
