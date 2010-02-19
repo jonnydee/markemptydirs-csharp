@@ -85,12 +85,12 @@
 		<Application_URLs>
 			<Application_Info_URL>http://code.google.com/p/markemptydirs/</Application_Info_URL>
 			<Application_Order_URL />
-			<Application_Screenshot_URL />
+			<Application_Screenshot_URL>http://markemptydirs.googlecode.com/hg/docs/screenshot.png?r=latest</Application_Screenshot_URL>
 			<Application_Icon_URL />
-			<Application_XML_File_URL>http://markemptydirs.googlecode.com/files/markemptydirs_pad.xml</Application_XML_File_URL>
+			<Application_XML_File_URL>http://markemptydirs.googlecode.com/hg/markemptydirs_pad.xml?r=latest</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
-			<Primary_Download_URL>http://markemptydirs.googlecode.com/files/MarkEmptyDirs_V1.6.1.zip</Primary_Download_URL>
+			<Primary_Download_URL>TODO</Primary_Download_URL>
 			<Secondary_Download_URL />
 			<Additional_Download_URL_1 />
 			<Additional_Download_URL_2 />
