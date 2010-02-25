@@ -80,6 +80,12 @@ namespace DJ.App.MarkEmptyDirs
             ShortNames = new[] { 'l' },
             ShortDescription = "list all placeholder files",
         };
+        public static readonly OptionDescriptor PurgeOptionDescriptor = new OptionDescriptor
+        {
+            LongNames = new[] { "purge" },
+            ShortNames = new[] { 'g' },
+            ShortDescription = "delete everything within a directory marked with a placeholder",
+        };
 //        public static readonly OptionDescriptor SyncOptionDescriptor = new OptionDescriptor
 //        {
 //            LongNames = new[] { "sync" },
@@ -153,6 +159,7 @@ namespace DJ.App.MarkEmptyDirs
             CreateHookOptionDescriptor,
             DeleteHookOptionDescriptor,
             ListOptionDescriptor,
+            PurgeOptionDescriptor,
 //            SyncOptionDescriptor,
             
             ExcludeOptionDescriptor,

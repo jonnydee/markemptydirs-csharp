@@ -50,6 +50,8 @@ namespace DJ.App.MarkEmptyDirs
 
         public bool VariableSubstitution { set; get; }
 
+        public bool Purge { set; get; }
+		
         public bool FollowSymbolicLinks { set; get; }
 
         public bool Short { set; get; }

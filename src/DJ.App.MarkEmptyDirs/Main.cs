@@ -261,6 +261,11 @@ namespace DJ.App.MarkEmptyDirs
                     config.Short = config.DryRun = config.CleanUp = true;
                     continue;
                 }
+                if (OptionDescriptorDefinitions.PurgeOptionDescriptor == opt.Descriptor)
+                {
+                    config.Purge = true;
+                    continue;
+                }
 
 //                if (OptionDescriptorDefinitions.SyncOptionDescriptor == opt.Descriptor)
 //                {
@@ -300,6 +305,8 @@ namespace DJ.App.MarkEmptyDirs
                     cmd = new HelpCommand { Writer = Console.Out };
                 else if (config.CleanUp)
                     cmd = new CleanCommand();
+                else if (config.Purge)
+                    cmd = new PurgeCommand();
                 else
                     cmd = new SyncCommand();
     
