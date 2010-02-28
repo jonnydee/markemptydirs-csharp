@@ -45,7 +45,7 @@ namespace DR.Text
             LinesAfterParagraph = 0;
         }
         
-        public string Layout(string text)
+        public StringBuilder Layout(string text)
         {
             string[] lines = text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             
@@ -60,7 +60,7 @@ namespace DR.Text
             for (var i = 0; i < LinesAfterParagraph; i++)
                 builder.Append(Environment.NewLine);
             
-            return builder.ToString();
+            return builder;
         }
         
         private static string LayoutLine(StringBuilder builder, string line, int maxColumns, int leftIndentFirstLine, int rightIndentFirstLine, int leftIndentParagraph, int rightIndentParagraph, char leftPaddingChar)

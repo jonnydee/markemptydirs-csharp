@@ -62,7 +62,7 @@ namespace DR.Text
             var expectedResult = builder.ToString();
             Console.WriteLine(string.Format("EXPECTED:{1}{0}", expectedResult, Environment.NewLine));
             
-            var result = _layout.Layout(text);
+            var result = _layout.Layout(text).ToString();
             Console.WriteLine(string.Format("RESULT:{1}{0}", result, Environment.NewLine));
             Assert.AreEqual(expectedResult, result);
         }
