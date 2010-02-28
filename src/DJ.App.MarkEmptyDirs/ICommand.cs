@@ -18,13 +18,13 @@
 using System;
 using System.Collections.Generic;
 
+using DR;
 using DR.IO;
 
 namespace DJ.App.MarkEmptyDirs
 {
 
-    public interface ICommand
+    public interface ICommand : ICommand<Configuration, int>
     {        
-        void Execute(Configuration config);
     }
 }

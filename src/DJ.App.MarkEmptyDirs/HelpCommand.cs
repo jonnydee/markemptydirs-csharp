@@ -212,9 +212,11 @@ namespace DJ.App.MarkEmptyDirs
             return description.ToString();
         }
         
-        public void Execute(Configuration config)
+        public int Execute(Configuration config)
         {
             PrintUsage();
+            
+            return 0;
         }
     }
 

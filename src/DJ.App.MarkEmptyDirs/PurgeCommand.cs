@@ -30,7 +30,7 @@ namespace DJ.App.MarkEmptyDirs
         private Configuration _configuration;
 
         
-        public void Execute(Configuration config)
+        public int Execute(Configuration config)
         {
             _configuration = config;
 
@@ -49,6 +49,8 @@ namespace DJ.App.MarkEmptyDirs
             walker.VisitFiles = false;
             walker.TrackVisitedDirectories = true;
             walker.Walk(_configuration.Directory);
+            
+            return 0;
         }
         
         public bool PreVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
