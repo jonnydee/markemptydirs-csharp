@@ -25,6 +25,7 @@ namespace DR.Text
         private static readonly char[] WhiteSpaces = { ' ', '\t' };
         
         public char LeftPaddingChar { get; set; }
+        public int MinColumns { get; set; }
         public int MaxColumns { get; set; }
         public int LeftIndentFirstLine { get; set; }
         public int RightIndentFirstLine { get; set; }
@@ -36,6 +37,7 @@ namespace DR.Text
         public TextLayout()
         {
             LeftPaddingChar = ' ';
+            MinColumns = 10;
             MaxColumns = int.MaxValue;
             LeftIndentFirstLine = 0;
             RightIndentFirstLine = 0;
@@ -49,13 +51,11 @@ namespace DR.Text
         {
             string[] lines = text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             
-            var builder = new StringBuilder();
-            
             for (var i = 0; i < LinesBeforeParagraph; i++)
                 builder.Append(Environment.NewLine);
             
             foreach (var line in lines)
-                LayoutLine(builder, line, MaxColumns, LeftIndentFirstLine, RightIndentFirstLine, LeftIndentParagraph, RightIndentParagraph, LeftPaddingChar);
+                LayoutLine(builder, line, MinColumns, MaxColumns, LeftIndentFirstLine, RightIndentFirstLine, LeftIndentParagraph, RightIndentParagraph, LeftPaddingChar);
             
             for (var i = 0; i < LinesAfterParagraph; i++)
                 builder.Append(Environment.NewLine);
@@ -63,13 +63,13 @@ namespace DR.Text
             return builder;
         }
         
-        private static string LayoutLine(StringBuilder builder, string line, int maxColumns, int leftIndentFirstLine, int rightIndentFirstLine, int leftIndentParagraph, int rightIndentParagraph, char leftPaddingChar)
+        private static string LayoutLine(StringBuilder builder, string line, int minColumns, int maxColumns, int leftIndentFirstLine, int rightIndentFirstLine, int leftIndentParagraph, int rightIndentParagraph, char leftPaddingChar)
         {
             line = line.Trim(WhiteSpaces);
             var length = 0;
             var leftIndent = leftIndentFirstLine;
             var rightIndent = rightIndentFirstLine;
-            while ((length = Math.Min(line.Length, maxColumns - leftIndent - rightIndent)) < line.Length)
+            while ((length = Math.Min(line.Length, Math.Max(minColumns, maxColumns - leftIndent - rightIndent))) < line.Length)
             {
                 // Search for  a whitespace to the left.
                 var breakIndex = line.LastIndexOfAny(WhiteSpaces, length);
