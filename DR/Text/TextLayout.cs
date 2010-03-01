@@ -49,6 +49,14 @@ namespace DR.Text
         
         public StringBuilder Layout(string text)
         {
+            return Layout(text, null);
+        }
+        
+        public StringBuilder Layout(string text, StringBuilder builder)
+        {
+            if (null == builder)
+                builder = new StringBuilder();
+            
             string[] lines = text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             
             for (var i = 0; i < LinesBeforeParagraph; i++)
