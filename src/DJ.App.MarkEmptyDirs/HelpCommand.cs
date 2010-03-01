@@ -22,6 +22,7 @@ using System.Text;
 
 using DR.IO;
 using DR.Template;
+using DR.Text;
 
 namespace DJ.App.MarkEmptyDirs
 {
@@ -58,40 +59,103 @@ namespace DJ.App.MarkEmptyDirs
             var cmdName = cmdFileName[1];
 
             var usage = new StringBuilder();
-            
-            usage.Append('\n');
-            usage.Append("***\n");
-            usage.Append("*** ").Append(cmdName).Append(" ").Append(MainClass.Version).Append(" -- ").Append(MainClass.Copyright).Append('\n');
-            usage.Append("***\n");
-            usage.Append("*** Project Site: ").Append(MainClass.ProjectUrl).Append('\n');
-            usage.Append("***\n");
-            usage.Append("*** This program is licensed under the GNU General Public License, Version 3.\n");
-            usage.Append("***\n");
-            usage.Append('\n');
-            
-            usage.Append("USAGE:  ").Append(cmdFullName).Append(' ');
-            foreach (var descr in OptionDescriptorDefinitions.OptionDescriptors)
-            {
-                string usageForm = GetUsageForm(descr);
-                usage.Append(usageForm).Append(' ');
-            }
-            usage.Append("<directory>\n\n");
-            usage.Append("Option descriptions:\n");
-            usage.Append(GetDescription(OptionDescriptorDefinitions.OptionDescriptors));
-            usage.Append('\n');
 
-            var envValue = MainClass.GetSettingsInEnvironmentVariable();
-            if (null != envValue)
+            #region Print Header
             {
-                if (string.Empty == envValue)
-                    envValue = "<VARIABLE EMPTY>";
+                var header = new StringBuilder();
+                header.Append(cmdName).Append(" ").Append(MainClass.Version).Append(" -- ").Append(MainClass.Copyright).AppendLine();
+                header.AppendLine();
+                header.Append("Project Site: ").Append(MainClass.ProjectUrl).AppendLine();
+                header.AppendLine();
+                header.Append("This program is licensed under the GNU General Public License, Version 3.").AppendLine();
+                
+                var headerLayout = new TextLayout()
+                {
+                    LinesBeforeParagraph = 1,
+                    LeftIndentFirstLine = 4,
+                    LeftIndentParagraph = 4,
+                    MaxColumns = Console.LargestWindowWidth,
+                    LinesAfterParagraph = 1,
+                };
+                headerLayout.Layout(header.ToString(), usage);
             }
-            else
-                envValue = "<VARIABLE UNDEFINED>";
-            usage.AppendFormat("Defaults set in environment variable '{0}':\n  {1}\n\n", MainClass.SettingsEnvironmentVariable, envValue);
+            #endregion
+            
+            #region Command line with options
+            {
+                var cmdLine = new StringBuilder();
+                cmdLine.Append("USAGE:  ").Append(cmdFullName).Append(' ');
+                foreach (var descr in OptionDescriptorDefinitions.OptionDescriptors)
+                {
+                    string usageForm = GetUsageForm(descr);
+                    cmdLine.Append(usageForm).Append(' ');
+                }
+                cmdLine.Append("<directory>").AppendLine();
+                
+                var cmdLineLayout = new TextLayout()
+                {
+                    LeftIndentFirstLine = 0,
+                    LeftIndentParagraph = 8 + cmdFullName.Length + 1,
+                    MaxColumns = Console.LargestWindowWidth,
+                    LinesAfterParagraph = 1,
+                };
+                cmdLineLayout.Layout(cmdLine.ToString(), usage);
+            }
+            #endregion
+            
+            #region Option descriptions
+            {
+                usage.Append("Option descriptions:\n");
+                usage.Append(GetDescription(OptionDescriptorDefinitions.OptionDescriptors));
+                usage.AppendLine();
+            }
+            #endregion
 
-            usage.Append("Available template variables for placeholder files and corresponding creation/deletion hooks:\n");
-            usage.Append(GetDescription(MainClass.CreateTemplateEngine(string.Empty).ListTemplateVariables()));
+            #region Settings environment variable
+            {
+                var envValue = MainClass.GetSettingsInEnvironmentVariable();
+                if (null != envValue)
+                {
+                    if (string.Empty == envValue)
+                        envValue = "<VARIABLE EMPTY>";
+                }
+                else
+                    envValue = "<VARIABLE UNDEFINED>";
+                
+                var settingsEnvVarLayout = new TextLayout()
+                {
+                    LinesBeforeParagraph = 0,
+                    LeftIndentFirstLine = 0,
+                    LeftIndentParagraph = 0,
+                    MaxColumns = Console.LargestWindowWidth,
+                    LinesAfterParagraph = 0,
+                };
+                
+                var caption = string.Format("Defaults set in environment variable '{0}':", MainClass.SettingsEnvironmentVariable);
+                settingsEnvVarLayout.Layout(caption, usage);
+                
+                settingsEnvVarLayout.LeftIndentFirstLine = settingsEnvVarLayout.LeftIndentParagraph = 2;
+                settingsEnvVarLayout.LinesAfterParagraph = 1;
+                settingsEnvVarLayout.Layout(envValue, usage);
+            }
+            #endregion
+
+            #region Template variables
+            {
+                var templateVarLayout = new TextLayout()
+                {
+                    LinesBeforeParagraph = 0,
+                    LeftIndentFirstLine = 0,
+                    LeftIndentParagraph = 0,
+                    MaxColumns = Console.LargestWindowWidth,
+                    LinesAfterParagraph = 0,
+                };
+                
+                templateVarLayout.Layout("Available template variables for placeholder files and corresponding creation/deletion hooks:", usage);
+                
+                usage.Append(GetDescription(MainClass.CreateTemplateEngine(string.Empty).ListTemplateVariables()));
+            }
+            #endregion
             
             Writer.WriteLine(usage.ToString());
         }
@@ -172,10 +236,18 @@ namespace DJ.App.MarkEmptyDirs
                 optionDescriptions.Add(cols);
             }
 
+            var descriptionLayout = new TextLayout
+            {
+                LeftIndentFirstLine = 2,
+                LeftIndentParagraph = 2 + maxShortNameColumnWidth + 2 + maxLongNameColumnWidth + 2,
+                MaxColumns = Console.LargestWindowWidth,
+            };
+            
             var description = new StringBuilder();
             foreach (var descr in optionDescriptions)
             {
-                description.AppendFormat("  {0,-" + maxShortNameColumnWidth + "}  {1,-" + maxLongNameColumnWidth + "}  {2}\n", descr);
+                var optionDescription = string.Format("{0,-" + maxShortNameColumnWidth + "}  {1,-" + maxLongNameColumnWidth + "}  {2}", descr);
+                descriptionLayout.Layout(optionDescription, description);
             }
 
             return description.ToString();
@@ -183,28 +255,32 @@ namespace DJ.App.MarkEmptyDirs
 
         public string GetDescription(List<TemplateVariable> variables)
         {
-            if (variables.Count == 0)
-                return "  <NO TEMPLATE VARIABLES AVAILABLE>\n";
-            
-            var variableNames = new List<string>();
-            var maxNameColumnWidth = 0;
-            foreach (var variable in variables)
+            var varDescriptionLayout1 = new TextLayout
             {
-                var variableName = variable.ToString();
-                variableNames.Add(variableName);
-                maxNameColumnWidth = Math.Max(maxNameColumnWidth, variableName.Length);
-            }
+                LeftIndentFirstLine = 2,
+                LeftIndentParagraph = 2,
+                MaxColumns = Console.LargestWindowWidth,
+            };
+            
+            var varDescriptionLayout2 = new TextLayout
+            {
+                LeftIndentFirstLine = 6,
+                LeftIndentParagraph = 6,
+                MaxColumns = Console.LargestWindowWidth,
+            };
+            
+            if (variables.Count == 0)
+                return varDescriptionLayout1.Layout("<NO TEMPLATE VARIABLES AVAILABLE>").ToString();
             
             var description = new StringBuilder();
             for (var i = 0; i < variables.Count; i++)
             {
-                description.AppendFormat("  {0,-" + maxNameColumnWidth + "}  {1}\n", variableNames[i], variables[i].Description);
+                var varDescription = string.Format("{0} --> {1}", variables[i].ToString(), variables[i].Description);
+                varDescriptionLayout1.Layout(varDescription, description);
+                
                 if (null != variables[i].ArgumentDescription)
-                {
-                    var lines = variables[i].ArgumentDescription.Split('\n');
-                    for (int j = 0; j < lines.Length; j++)
-                        description.AppendFormat("  {0,-" + maxNameColumnWidth + "}      {1}\n", " ", lines[j]);
-                }
+                    varDescriptionLayout2.Layout(variables[i].ArgumentDescription, description);
+                
                 if (i < variables.Count - 1)
                     description.AppendLine();
             }
