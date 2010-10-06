@@ -74,11 +74,14 @@ namespace DR.Text
         private static string LayoutLine(StringBuilder builder, string line, int minColumns, int maxColumns, int leftIndentFirstLine, int rightIndentFirstLine, int leftIndentParagraph, int rightIndentParagraph, char leftPaddingChar)
         {
             line = line.Trim(WhiteSpaces);
-            var length = 0;
             var leftIndent = leftIndentFirstLine;
             var rightIndent = rightIndentFirstLine;
-            while ((length = Math.Min(line.Length, Math.Max(minColumns, maxColumns - leftIndent - rightIndent))) < line.Length)
+            while (true)
             {
+                var length = Math.Max(minColumns, maxColumns - leftIndent - rightIndent);
+                if (line.Length <= length)
+                    break;
+                
                 // Search for  a whitespace to the left.
                 var breakIndex = line.LastIndexOfAny(WhiteSpaces, length);
                 if (-1 != breakIndex)
