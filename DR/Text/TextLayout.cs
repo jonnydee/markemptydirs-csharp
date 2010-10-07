@@ -78,8 +78,10 @@ namespace DR.Text
             var rightIndent = rightIndentFirstLine;
             while (true)
             {
-                var length = Math.Max(minColumns, maxColumns - leftIndent - rightIndent);
-                if (line.Length <= length)
+                var length = maxColumns - leftIndent - rightIndent;
+                // Do not wrap words to new lines if 'minColumns' width is reached,
+                // or if the line's length fits within the calculated 'length'.
+                if (length < minColumns || line.Length <= length)
                     break;
                 
                 // Search for  a whitespace to the left.
