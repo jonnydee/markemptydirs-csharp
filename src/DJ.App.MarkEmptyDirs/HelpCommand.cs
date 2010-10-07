@@ -56,7 +56,7 @@ namespace DJ.App.MarkEmptyDirs
         {
             get
             {
-                return Console.LargestWindowWidth;
+                return Console.BufferWidth > 0 ? Console.BufferWidth : Console.LargestWindowWidth;
             }
         }
         
