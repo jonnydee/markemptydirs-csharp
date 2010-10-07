@@ -80,8 +80,8 @@ namespace DJ.App.MarkEmptyDirs
                 var headerLayout = new TextLayout()
                 {
                     LinesBeforeParagraph = 1,
-                    LeftIndentFirstLine = 4,
-                    LeftIndentParagraph = 4,
+                    LeftPrefixFirstLine = new string(' ', 4),
+                    LeftPrefixParagraph = new string(' ', 4),
                     MaxColumns = MaxColumns,
                     LinesAfterParagraph = 1,
                 };
@@ -102,8 +102,7 @@ namespace DJ.App.MarkEmptyDirs
                 
                 var cmdLineLayout = new TextLayout()
                 {
-                    LeftIndentFirstLine = 0,
-                    LeftIndentParagraph = 8 + cmdFullName.Length + 1,
+                    LeftPrefixParagraph = new string(' ', 8 + cmdFullName.Length + 1),
                     MaxColumns = MaxColumns,
                     LinesAfterParagraph = 1,
                 };
@@ -132,17 +131,13 @@ namespace DJ.App.MarkEmptyDirs
                 
                 var settingsEnvVarLayout = new TextLayout()
                 {
-                    LinesBeforeParagraph = 0,
-                    LeftIndentFirstLine = 0,
-                    LeftIndentParagraph = 0,
                     MaxColumns = MaxColumns,
-                    LinesAfterParagraph = 0,
                 };
                 
                 var caption = string.Format("Defaults set in environment variable '{0}':", MainClass.SettingsEnvironmentVariable);
                 settingsEnvVarLayout.Layout(caption, usage);
                 
-                settingsEnvVarLayout.LeftIndentFirstLine = settingsEnvVarLayout.LeftIndentParagraph = 2;
+                settingsEnvVarLayout.LeftPrefixFirstLine = settingsEnvVarLayout.LeftPrefixParagraph = new string(' ', 2);
                 settingsEnvVarLayout.LinesAfterParagraph = 1;
                 settingsEnvVarLayout.Layout(envValue, usage);
             }
@@ -152,11 +147,7 @@ namespace DJ.App.MarkEmptyDirs
             {
                 var templateVarLayout = new TextLayout()
                 {
-                    LinesBeforeParagraph = 0,
-                    LeftIndentFirstLine = 0,
-                    LeftIndentParagraph = 0,
                     MaxColumns = MaxColumns,
-                    LinesAfterParagraph = 0,
                 };
                 
                 templateVarLayout.Layout("Available template variables for placeholder files and corresponding creation/deletion hooks:", usage);
@@ -246,8 +237,8 @@ namespace DJ.App.MarkEmptyDirs
 
             var descriptionLayout = new TextLayout
             {
-                LeftIndentFirstLine = 2,
-                LeftIndentParagraph = 2 + maxShortNameColumnWidth + 2 + maxLongNameColumnWidth + 2,
+                LeftPrefixFirstLine = new string(' ', 2),
+                LeftPrefixParagraph = new string(' ', 2 + maxShortNameColumnWidth + 2 + maxLongNameColumnWidth + 2),
                 MaxColumns = MaxColumns,
             };
             
@@ -265,15 +256,15 @@ namespace DJ.App.MarkEmptyDirs
         {
             var varDescriptionLayout1 = new TextLayout
             {
-                LeftIndentFirstLine = 2,
-                LeftIndentParagraph = 2,
+                LeftPrefixFirstLine = new string(' ', 2),
+                LeftPrefixParagraph = new string(' ', 2),
                 MaxColumns = MaxColumns,
             };
             
             var varDescriptionLayout2 = new TextLayout
             {
-                LeftIndentFirstLine = 6,
-                LeftIndentParagraph = 6,
+                LeftPrefixFirstLine = new string(' ', 6),
+                LeftPrefixParagraph = new string(' ', 6),
                 MaxColumns = MaxColumns,
             };
             
