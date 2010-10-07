@@ -25,7 +25,7 @@ namespace DR.Text
         private static readonly char[] WhiteSpaces = { ' ', '\t' };
         
         public char LeftPaddingChar { get; set; }
-        public int MinColumns { get; set; }
+        public int MinParagraphWidth { get; set; }
         public int MaxColumns { get; set; }
         public int LeftIndentFirstLine { get; set; }
         public int RightIndentFirstLine { get; set; }
@@ -37,7 +37,7 @@ namespace DR.Text
         public TextLayout()
         {
             LeftPaddingChar = ' ';
-            MinColumns = 10;
+            MinParagraphWidth = 10;
             MaxColumns = int.MaxValue;
             LeftIndentFirstLine = 0;
             RightIndentFirstLine = 0;
@@ -63,7 +63,7 @@ namespace DR.Text
                 builder.Append(Environment.NewLine);
             
             foreach (var line in lines)
-                LayoutLine(builder, line, MinColumns, MaxColumns, LeftIndentFirstLine, RightIndentFirstLine, LeftIndentParagraph, RightIndentParagraph, LeftPaddingChar);
+                LayoutLine(builder, line, MinParagraphWidth, MaxColumns, LeftIndentFirstLine, RightIndentFirstLine, LeftIndentParagraph, RightIndentParagraph, LeftPaddingChar);
             
             for (var i = 0; i < LinesAfterParagraph; i++)
                 builder.Append(Environment.NewLine);
@@ -71,7 +71,7 @@ namespace DR.Text
             return builder;
         }
         
-        private static string LayoutLine(StringBuilder builder, string line, int minColumns, int maxColumns, int leftIndentFirstLine, int rightIndentFirstLine, int leftIndentParagraph, int rightIndentParagraph, char leftPaddingChar)
+        private static string LayoutLine(StringBuilder builder, string line, int minParagraphWidth, int maxColumns, int leftIndentFirstLine, int rightIndentFirstLine, int leftIndentParagraph, int rightIndentParagraph, char leftPaddingChar)
         {
             line = line.Trim(WhiteSpaces);
             var leftIndent = leftIndentFirstLine;
@@ -81,7 +81,7 @@ namespace DR.Text
                 var length = maxColumns - leftIndent - rightIndent;
                 // Do not wrap words to new lines if 'minColumns' width is reached,
                 // or if the line's length fits within the calculated 'length'.
-                if (length < minColumns || line.Length <= length)
+                if (length < minParagraphWidth || line.Length <= length)
                     break;
                 
                 // Search for  a whitespace to the left.

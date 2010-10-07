@@ -32,7 +32,7 @@ namespace DR.Text
         {
             _layout = new TextLayout
             {
-                MinColumns = 5,
+                MinParagraphWidth = 5,
                 MaxColumns = 15,
                 LeftIndentFirstLine = 2,
                 RightIndentFirstLine = 1,
