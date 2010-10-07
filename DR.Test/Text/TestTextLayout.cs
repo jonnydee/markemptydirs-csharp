@@ -34,9 +34,9 @@ namespace DR.Text
             {
                 MinParagraphWidth = 5,
                 MaxColumns = 15,
-                LeftIndentFirstLine = new string('#', 2),
+                LeftPrefixFirstLine = new string('#', 2),
                 RightIndentFirstLine = 1,
-                LeftIndentParagraph = new string('#', 4),
+                LeftPrefixParagraph = new string('#', 4),
                 RightIndentParagraph = 3,
                 LinesBeforeParagraph = 1,
                 LinesAfterParagraph = 2,
