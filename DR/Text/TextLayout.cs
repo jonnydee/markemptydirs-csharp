@@ -24,25 +24,23 @@ namespace DR.Text
     {
         private static readonly char[] WhiteSpaces = { ' ', '\t' };
         
-        public char LeftPaddingChar { get; set; }
         public int MinParagraphWidth { get; set; }
         public int MaxColumns { get; set; }
-        public int LeftIndentFirstLine { get; set; }
-        public int RightIndentFirstLine { get; set; }
-        public int LeftIndentParagraph { get; set; }
-        public int RightIndentParagraph { get; set; }
+        public string LeftIndentFirstLine { get; set; }
+        public string RightIndentFirstLine { get; set; }
+        public string LeftIndentParagraph { get; set; }
+        public string RightIndentParagraph { get; set; }
         public int LinesBeforeParagraph { get; set; }
         public int LinesAfterParagraph { get; set; }
         
         public TextLayout()
         {
-            LeftPaddingChar = ' ';
             MinParagraphWidth = 10;
             MaxColumns = int.MaxValue;
-            LeftIndentFirstLine = 0;
-            RightIndentFirstLine = 0;
-            LeftIndentParagraph = 0;
-            RightIndentParagraph = 0;
+            LeftIndentFirstLine = string.Empty;
+            RightIndentFirstLine = string.Empty;
+            LeftIndentParagraph = string.Empty;
+            RightIndentParagraph = string.Empty;
             LinesBeforeParagraph = 0;
             LinesAfterParagraph = 0;
         }
@@ -63,7 +61,7 @@ namespace DR.Text
                 builder.Append(Environment.NewLine);
             
             foreach (var line in lines)
-                LayoutLine(builder, line, MinParagraphWidth, MaxColumns, LeftIndentFirstLine, RightIndentFirstLine, LeftIndentParagraph, RightIndentParagraph, LeftPaddingChar);
+                LayoutLine(builder, line, MinParagraphWidth, MaxColumns, LeftIndentFirstLine, RightIndentFirstLine, LeftIndentParagraph, RightIndentParagraph);
             
             for (var i = 0; i < LinesAfterParagraph; i++)
                 builder.Append(Environment.NewLine);
@@ -71,14 +69,14 @@ namespace DR.Text
             return builder;
         }
         
-        private static string LayoutLine(StringBuilder builder, string line, int minParagraphWidth, int maxColumns, int leftIndentFirstLine, int rightIndentFirstLine, int leftIndentParagraph, int rightIndentParagraph, char leftPaddingChar)
+        private static string LayoutLine(StringBuilder builder, string line, int minParagraphWidth, int maxColumns, string leftIndentFirstLine, string rightIndentFirstLine, string leftIndentParagraph, string rightIndentParagraph)
         {
             line = line.Trim(WhiteSpaces);
             var leftIndent = leftIndentFirstLine;
             var rightIndent = rightIndentFirstLine;
             while (true)
             {
-                var length = maxColumns - leftIndent - rightIndent;
+                var length = maxColumns - leftIndent.Length - rightIndent.Length;
                 // Do not wrap words to new lines if 'minColumns' width is reached,
                 // or if the line's length fits within the calculated 'length'.
                 if (length < minParagraphWidth || line.Length <= length)
@@ -92,13 +90,13 @@ namespace DR.Text
                 }
                 
                 var subLine = line.Substring(0, length).Trim(WhiteSpaces);
-                builder.Append(leftPaddingChar, leftIndent).AppendLine(subLine);
+                builder.Append(leftIndent).Append(subLine).AppendLine(rightIndent);
                 
                 line = line.Substring(length).Trim(WhiteSpaces);
                 leftIndent = leftIndentParagraph;
                 rightIndent = rightIndentParagraph;
             }
-            builder.Append(leftPaddingChar, leftIndent).AppendLine(line);
+            builder.Append(leftIndent).Append(line).AppendLine(rightIndent);
             
             return builder.ToString();
         }       
