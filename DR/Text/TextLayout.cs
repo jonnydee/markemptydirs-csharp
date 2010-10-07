@@ -27,9 +27,9 @@ namespace DR.Text
         public int MinParagraphWidth { get; set; }
         public int MaxColumns { get; set; }
         public string LeftIndentFirstLine { get; set; }
-        public string RightIndentFirstLine { get; set; }
+        public int RightIndentFirstLine { get; set; }
         public string LeftIndentParagraph { get; set; }
-        public string RightIndentParagraph { get; set; }
+        public int RightIndentParagraph { get; set; }
         public int LinesBeforeParagraph { get; set; }
         public int LinesAfterParagraph { get; set; }
         
@@ -38,9 +38,9 @@ namespace DR.Text
             MinParagraphWidth = 10;
             MaxColumns = int.MaxValue;
             LeftIndentFirstLine = string.Empty;
-            RightIndentFirstLine = string.Empty;
+            RightIndentFirstLine = 0;
             LeftIndentParagraph = string.Empty;
-            RightIndentParagraph = string.Empty;
+            RightIndentParagraph = 0;
             LinesBeforeParagraph = 0;
             LinesAfterParagraph = 0;
         }
@@ -69,14 +69,14 @@ namespace DR.Text
             return builder;
         }
         
-        private static string LayoutLine(StringBuilder builder, string line, int minParagraphWidth, int maxColumns, string leftIndentFirstLine, string rightIndentFirstLine, string leftIndentParagraph, string rightIndentParagraph)
+        private static string LayoutLine(StringBuilder builder, string line, int minParagraphWidth, int maxColumns, string leftIndentFirstLine, int rightIndentFirstLine, string leftIndentParagraph, int rightIndentParagraph)
         {
             line = line.Trim(WhiteSpaces);
             var leftIndent = leftIndentFirstLine;
             var rightIndent = rightIndentFirstLine;
             while (true)
             {
-                var length = maxColumns - leftIndent.Length - rightIndent.Length;
+                var length = maxColumns - leftIndent.Length - rightIndent;
                 // Do not wrap words to new lines if 'minColumns' width is reached,
                 // or if the line's length fits within the calculated 'length'.
                 if (length < minParagraphWidth || line.Length <= length)
@@ -90,13 +90,13 @@ namespace DR.Text
                 }
                 
                 var subLine = line.Substring(0, length).Trim(WhiteSpaces);
-                builder.Append(leftIndent).Append(subLine).AppendLine(rightIndent);
+                builder.Append(leftIndent).AppendLine(subLine);
                 
                 line = line.Substring(length).Trim(WhiteSpaces);
                 leftIndent = leftIndentParagraph;
                 rightIndent = rightIndentParagraph;
             }
-            builder.Append(leftIndent).Append(line).AppendLine(rightIndent);
+            builder.Append(leftIndent).AppendLine(line);
             
             return builder.ToString();
         }       
