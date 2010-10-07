@@ -52,6 +52,14 @@ namespace DJ.App.MarkEmptyDirs
             }
         }
 
+        int MaxColumns
+        {
+            get
+            {
+                return Console.LargestWindowWidth;
+            }
+        }
+        
         void PrintUsage()
         {
             var cmdFileName = GetCommandFileName();
@@ -74,7 +82,7 @@ namespace DJ.App.MarkEmptyDirs
                     LinesBeforeParagraph = 1,
                     LeftIndentFirstLine = 4,
                     LeftIndentParagraph = 4,
-                    MaxColumns = Console.LargestWindowWidth,
+                    MaxColumns = MaxColumns,
                     LinesAfterParagraph = 1,
                 };
                 headerLayout.Layout(header.ToString(), usage);
@@ -96,7 +104,7 @@ namespace DJ.App.MarkEmptyDirs
                 {
                     LeftIndentFirstLine = 0,
                     LeftIndentParagraph = 8 + cmdFullName.Length + 1,
-                    MaxColumns = Console.LargestWindowWidth,
+                    MaxColumns = MaxColumns,
                     LinesAfterParagraph = 1,
                 };
                 cmdLineLayout.Layout(cmdLine.ToString(), usage);
@@ -127,7 +135,7 @@ namespace DJ.App.MarkEmptyDirs
                     LinesBeforeParagraph = 0,
                     LeftIndentFirstLine = 0,
                     LeftIndentParagraph = 0,
-                    MaxColumns = Console.LargestWindowWidth,
+                    MaxColumns = MaxColumns,
                     LinesAfterParagraph = 0,
                 };
                 
@@ -147,7 +155,7 @@ namespace DJ.App.MarkEmptyDirs
                     LinesBeforeParagraph = 0,
                     LeftIndentFirstLine = 0,
                     LeftIndentParagraph = 0,
-                    MaxColumns = Console.LargestWindowWidth,
+                    MaxColumns = MaxColumns,
                     LinesAfterParagraph = 0,
                 };
                 
@@ -240,7 +248,7 @@ namespace DJ.App.MarkEmptyDirs
             {
                 LeftIndentFirstLine = 2,
                 LeftIndentParagraph = 2 + maxShortNameColumnWidth + 2 + maxLongNameColumnWidth + 2,
-                MaxColumns = Console.LargestWindowWidth,
+                MaxColumns = MaxColumns,
             };
             
             var description = new StringBuilder();
@@ -259,14 +267,14 @@ namespace DJ.App.MarkEmptyDirs
             {
                 LeftIndentFirstLine = 2,
                 LeftIndentParagraph = 2,
-                MaxColumns = Console.LargestWindowWidth,
+                MaxColumns = MaxColumns,
             };
             
             var varDescriptionLayout2 = new TextLayout
             {
                 LeftIndentFirstLine = 6,
                 LeftIndentParagraph = 6,
-                MaxColumns = Console.LargestWindowWidth,
+                MaxColumns = MaxColumns,
             };
             
             if (variables.Count == 0)
