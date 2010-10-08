@@ -79,7 +79,11 @@ namespace DJ.App.MarkEmptyDirs
 
         public override string ArgumentDescription
         {
-            get { return string.Format("{0} : file name only\n{1} : full file path", ArgName, ArgFullName); }
+            get
+            {
+                return string.Format("{0} : file name only", ArgName) + Environment.NewLine + 
+                       string.Format("{0} : full file path", ArgFullName);
+            }
         }
 
         public override string ArgumentIdentifier

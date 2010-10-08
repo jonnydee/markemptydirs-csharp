@@ -90,7 +90,12 @@ namespace DJ.App.MarkEmptyDirs
 
         public override string ArgumentDescription
         {
-            get { return string.Format("{0} : base directory\n{1} : absolute path of current directory\n{2} : relative path to current directory", ArgBase, ArgCurrentAbsolute, ArgCurrentRelative); }
+            get
+            {
+                return string.Format("{0} : base directory", ArgBase) + Environment.NewLine +
+                       string.Format("{0} : absolute path of current directory", ArgCurrentAbsolute) + Environment.NewLine +
+                       string.Format("{0} : relative path to current directory", ArgCurrentRelative);
+            }
         }
 
         public override string ArgumentIdentifier
