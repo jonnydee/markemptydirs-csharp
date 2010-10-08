@@ -60,7 +60,12 @@ namespace DR.Template
 
         public override string ArgumentDescription
         {
-            get { return string.Format("{0} : directory level separator\n{1} : path separator\n{2} : volume separator", ArgDirectory, ArgPath, ArgVolume); }
+            get
+            {
+                return string.Format("{0} : directory level separator", ArgDirectory) + Environment.NewLine +
+                       string.Format("{0} : path separator", ArgPath) + Environment.NewLine +
+                       string.Format("{0} : volume separator", ArgVolume);
+            }
         }
 
         public override string ArgumentIdentifier
