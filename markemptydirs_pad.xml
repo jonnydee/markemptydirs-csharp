@@ -32,10 +32,10 @@
 	</Company_Info>
 	<Program_Info>
 		<Program_Name>MarkEmptyDirs</Program_Name>
-		<Program_Version>1.7dev</Program_Version>
-		<Program_Release_Month>TODO</Program_Release_Month>
-		<Program_Release_Day>TODO</Program_Release_Day>
-		<Program_Release_Year>TODO</Program_Release_Year>
+		<Program_Version>1.7</Program_Version>
+		<Program_Release_Month>10</Program_Release_Month>
+		<Program_Release_Day>08</Program_Release_Day>
+		<Program_Release_Year>2010</Program_Release_Year>
 		<Program_Cost_Dollars />
 		<Program_Cost_Other_Code />
 		<Program_Cost_Other />
@@ -49,9 +49,9 @@
 		<Program_Category_Class>Development::Other</Program_Category_Class>
 		<Program_System_Requirements>Mono 2.4 (or greater) or Microsoft.NET 2.0 (or greater))</Program_System_Requirements>
 		<File_Info>
-			<File_Size_Bytes>TODO</File_Size_Bytes>
-			<File_Size_K>TODO</File_Size_K>
-			<File_Size_MB>TODO</File_Size_MB>
+			<File_Size_Bytes>80896</File_Size_Bytes>
+			<File_Size_K>79</File_Size_K>
+			<File_Size_MB>0.08</File_Size_MB>
 		</File_Info>
 		<Expire_Info>
 			<Has_Expire_Info>N</Has_Expire_Info>
@@ -85,12 +85,12 @@
 		<Application_URLs>
 			<Application_Info_URL>http://code.google.com/p/markemptydirs/</Application_Info_URL>
 			<Application_Order_URL />
-			<Application_Screenshot_URL>http://markemptydirs.googlecode.com/hg/docs/screenshot.png</Application_Screenshot_URL>
+			<Application_Screenshot_URL>http://markemptydirs.googlecode.com/hg/docs/screenshot.png?r=latest</Application_Screenshot_URL>
 			<Application_Icon_URL />
-			<Application_XML_File_URL>http://markemptydirs.googlecode.com/hg/markemptydirs_pad.xml</Application_XML_File_URL>
+			<Application_XML_File_URL>http://markemptydirs.googlecode.com/hg/markemptydirs_pad.xml?r=latest</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
-			<Primary_Download_URL>TODO</Primary_Download_URL>
+			<Primary_Download_URL>http://markemptydirs.googlecode.com/files/MarkEmptyDirs_V1.7.zip</Primary_Download_URL>
 			<Secondary_Download_URL />
 			<Additional_Download_URL_1 />
 			<Additional_Download_URL_2 />
