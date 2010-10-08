@@ -84,7 +84,7 @@ namespace DJ.App.MarkEmptyDirs
         {
             LongNames = new[] { "purge" },
             ShortNames = new[] { 'g' },
-            ShortDescription = "delete everything within a directory marked with a placeholder",
+            ShortDescription = "delete everything within directories containing placeholders",
         };
 //        public static readonly OptionDescriptor SyncOptionDescriptor = new OptionDescriptor
 //        {
