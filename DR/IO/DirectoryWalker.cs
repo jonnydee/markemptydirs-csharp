@@ -30,9 +30,9 @@ namespace DR.IO
     
     public interface IDirectoryWalkerContext
     {
-        IList<FileInfo> VisitedFiles { get; }
-        IList<DirectoryInfo> VisitedDirectories { get; }
-        IEnumerable<FileSystemInfo> VisitedFileSystemInfos { get; }
+        IDictionary<string, FileInfo> VisitedFiles { get; }
+        IDictionary<string, DirectoryInfo> VisitedDirectories { get; }
+        //IEnumerable<FileSystemInfo> VisitedFileSystemInfos { get; }
     }
     
     public class DirectoryWalker<TVisitor> : IDirectoryWalkerContext where TVisitor : IDirectoryVisitor
@@ -44,28 +44,28 @@ namespace DR.IO
         public bool TrackVisitedFiles { get; set; }
         public bool TrackVisitedDirectories { get; set; }
 
-        private List<FileInfo> _visitedFiles;
-        private List<DirectoryInfo> _visitedDirectories;
+        private Dictionary<string,FileInfo> _visitedFiles;
+        private Dictionary<string,DirectoryInfo> _visitedDirectories;
         
-        public IList<FileInfo> VisitedFiles { get { return _visitedFiles; } }
+        public  IDictionary <string,FileInfo> VisitedFiles { get { return _visitedFiles; } }
+
+        public IDictionary<string, DirectoryInfo> VisitedDirectories { get { return _visitedDirectories; } }
         
-        public IList<DirectoryInfo> VisitedDirectories { get { return _visitedDirectories; } }
-        
-        public IEnumerable<FileSystemInfo> VisitedFileSystemInfos
-        {
-            get
-            {
-                foreach (var dirInfo in VisitedDirectories)
-                    yield return dirInfo;
-                foreach (var fileInfo in VisitedFiles)
-                    yield return fileInfo;
-            }
-        }
+        //public IEnumerable<FileSystemInfo> VisitedFileSystemInfos
+        //{
+        //    get
+        //    {
+        //        foreach (FileSystemInfo dirInfo in VisitedDirectories.Values)
+        //            yield return dirInfo;
+        //        foreach (FileSystemInfo fileInfo in VisitedFiles.Values)
+        //            yield return fileInfo;
+        //    }
+        //}
         
         public DirectoryWalker(TVisitor visitor)
         {
-            _visitedFiles = new List<FileInfo>();
-            _visitedDirectories = new List<DirectoryInfo>();
+            _visitedFiles = new Dictionary<string, FileInfo>();
+            _visitedDirectories = new Dictionary<string, DirectoryInfo>();
             
             Visitor = visitor;
             VisitFiles = true;
@@ -126,8 +126,8 @@ namespace DR.IO
                 
                 bool continueWalking = true;
                 
-                var subDirectories = dirInfo.GetDirectories();
-                foreach (var subDirectory in subDirectories)
+                DirectoryInfo[] subDirectories = dirInfo.GetDirectories();
+                foreach (DirectoryInfo subDirectory in subDirectories)
                 {
                     continueWalking = Walk(subDirectory);
                     if (!continueWalking)
@@ -136,8 +136,8 @@ namespace DR.IO
                 
                 if (VisitFiles && continueWalking)
                 {
-                    var files = dirInfo.GetFiles();
-                    foreach (var file in files)
+                    FileInfo[] files = dirInfo.GetFiles();
+                    foreach (FileInfo file in files)
                     {
                         continueWalking = Walk(file);
                         if (!continueWalking)
@@ -162,55 +162,50 @@ namespace DR.IO
         
         protected void AddVisited(DirectoryInfo dirInfo)
         {
-            if (TrackVisitedDirectories && !IsVisited(dirInfo))
-                VisitedDirectories.Add(dirInfo);
+            if (dirInfo != null && TrackVisitedDirectories && !IsVisited(dirInfo))
+                VisitedDirectories.Add(dirInfo.FullName, dirInfo);
         }
         
         protected void AddVisited(FileInfo fileInfo)
         {
-            if (TrackVisitedFiles && !IsVisited(fileInfo))
-                VisitedFiles.Add(fileInfo);
+            if (fileInfo != null && TrackVisitedFiles && !IsVisited(fileInfo))
+                VisitedFiles.Add(fileInfo.FullName, fileInfo);
         }
         
         public bool IsVisited(FileInfo fileInfo)
         {
-            if (TrackVisitedFiles)
-            {
-                foreach (var visitedFileInfo in VisitedFiles)
-                {
-                    if (fileInfo.FullName == visitedFileInfo.FullName)
-                        return true;
-                }
-            }
+            if (TrackVisitedFiles && fileInfo != null)
+                return VisitedFiles.ContainsKey(fileInfo.FullName);
+            
             return false;
         }
         
         public bool IsVisited(DirectoryInfo dirInfo)
         {
-            if (TrackVisitedDirectories)
-            {
-                foreach (var visitedDirInfo in VisitedDirectories)
-                {
-                    if (dirInfo.FullName == visitedDirInfo.FullName)
-                        return true;
-                }
-            }
+            if (TrackVisitedDirectories && dirInfo != null)
+                return VisitedDirectories.ContainsKey(dirInfo.FullName);
+            
             return false;
         }
         
         public bool IsVisited(FileSystemInfo fileSystemInfo)
         {
-            if (fileSystemInfo is DirectoryInfo)
-                return IsVisited((DirectoryInfo)fileSystemInfo);
-            
-            return IsVisited((FileInfo)fileSystemInfo);
+            if (fileSystemInfo != null)
+            {
+                if (fileSystemInfo is DirectoryInfo)
+                    return IsVisited((DirectoryInfo)fileSystemInfo);
+
+                return IsVisited((FileInfo)fileSystemInfo);
+            }
+
+            return false;
         }
         
         private DirectoryInfo GetAbsoluteTarget(DirectoryInfo dirInfo)
         {
             // Get the symlink's targetPath and
             // if it is relative make it absolute based on dirInfo.
-            var targetPath = SymbolicLinkHelper.GetSymbolicLinkTargetAbsolute(dirInfo);
+            string targetPath = SymbolicLinkHelper.GetSymbolicLinkTargetAbsolute(dirInfo);
             return new DirectoryInfo(targetPath);
         }
     }
