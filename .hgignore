@@ -3,6 +3,7 @@ syntax: glob
 bin
 obj
 test-results
+dist
 *.orig
 *~
 *.mergebackup
@@ -18,3 +19,5 @@ _ReSharper.*
 *.pdb
 *.exe
 *.mdb
+**.DS_Store
+**.user

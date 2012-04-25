@@ -45,7 +45,7 @@ namespace DJ.App.MarkEmptyDirs
                 throw new Exception(string.Format("Not a directory: '{0}'", _configuration.Directory.FullName));
             }
 
-            DirectoryWalker<SyncCommand> walker = DirectoryWalker.Create(this);
+            var walker = DirectoryWalker.Create(this);
             walker.FollowSymbolicLinks = _configuration.FollowSymbolicLinks;
             walker.TrackVisitedDirectories = true;
             walker.TrackVisitedFiles = true;
