@@ -64,22 +64,19 @@ namespace DJ.App.MarkEmptyDirs
 
         private bool IsPlaceHolderNeeded(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
         {
-            int foundCandidateFiles = 0;
-            string dirName = dirInfo.FullName;
-            
-            
-            FileInfo[] files = dirInfo.GetFiles();
-            int num_files = files.GetLength(0);
+            var files = dirInfo.GetFiles();
+            var numFiles = files.GetLength(0);
 
-            // there is more than one file, so we do not need a placeholder.
-            if (num_files > 1)                
+            // If there is more than one file we do not need a placeholder.
+            if (numFiles > 1)
                 return false;
 
-            DirectoryInfo[] subDirectories = dirInfo.GetDirectories();
+            var subDirectories = dirInfo.GetDirectories();
+            var numDirectories = subDirectories.GetLength(0);
             
-            if (subDirectories.GetLength(0) != 0)
+            // If there are subdirectories we check if any of them will be walked, in that case we do not need a placeholder.
+            if (numDirectories > 0)
             {
-                // there are subdirectories, so we check if any of them will be walked, in that case we do not need a placeholder.
                 foreach (DirectoryInfo dir in subDirectories)
                 {
                     if (PreVisit(context, dir))
@@ -87,20 +84,15 @@ namespace DJ.App.MarkEmptyDirs
                 }
             }
 
-            //here we know that there is 0 or 1 file and subdirectories that are not going to be walked (special directories, excluded ones)
+            // Here we know that there is 0 or 1 file and subdirectories that are not going to be walked (special directories, excluded ones)
 
-            if (num_files == 0)
-                // At this point there are no files and no tracked subdirectories.
+            if (0 == numFiles)
+                // At this point there are no files and no tracked subdirectories, so we need a placeholder.
                 return true;
-            else
-            {
-                // At this point there is exactly one file. If it is a placeholder we actually need one.
-                FileInfo placeHolderFile = new FileInfo(Path.Combine(dirInfo.FullName, _configuration.PlaceHolderName));
-                return placeHolderFile.Exists;
-            }
-
-            // At this point there is no file or subdirectory, so we need a placeholder.
-            return true;
+            
+            // At this point there is exactly one file. If it is a placeholder we actually need one.
+            var placeHolderFile = new FileInfo(Path.Combine(dirInfo.FullName, _configuration.PlaceHolderName));
+            return placeHolderFile.Exists;
 
             /*
             foreach (FileSystemInfo visitedFileSystemInfo in context.VisitedFileSystemInfos)
