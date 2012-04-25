@@ -32,7 +32,6 @@ namespace DR.IO
     {
         IDictionary<string, FileInfo> VisitedFiles { get; }
         IDictionary<string, DirectoryInfo> VisitedDirectories { get; }
-        //IEnumerable<FileSystemInfo> VisitedFileSystemInfos { get; }
     }
     
     public class DirectoryWalker<TVisitor> : IDirectoryWalkerContext where TVisitor : IDirectoryVisitor
@@ -44,10 +43,10 @@ namespace DR.IO
         public bool TrackVisitedFiles { get; set; }
         public bool TrackVisitedDirectories { get; set; }
 
-        private Dictionary<string,FileInfo> _visitedFiles;
-        private Dictionary<string,DirectoryInfo> _visitedDirectories;
+        private Dictionary<string, FileInfo> _visitedFiles;
+        private Dictionary<string, DirectoryInfo> _visitedDirectories;
         
-        public  IDictionary <string,FileInfo> VisitedFiles { get { return _visitedFiles; } }
+        public IDictionary<string, FileInfo> VisitedFiles { get { return _visitedFiles; } }
 
         public IDictionary<string, DirectoryInfo> VisitedDirectories { get { return _visitedDirectories; } }
         
@@ -126,8 +125,8 @@ namespace DR.IO
                 
                 bool continueWalking = true;
                 
-                DirectoryInfo[] subDirectories = dirInfo.GetDirectories();
-                foreach (DirectoryInfo subDirectory in subDirectories)
+                var subDirectories = dirInfo.GetDirectories();
+                foreach (var subDirectory in subDirectories)
                 {
                     continueWalking = Walk(subDirectory);
                     if (!continueWalking)
@@ -136,8 +135,8 @@ namespace DR.IO
                 
                 if (VisitFiles && continueWalking)
                 {
-                    FileInfo[] files = dirInfo.GetFiles();
-                    foreach (FileInfo file in files)
+                    var files = dirInfo.GetFiles();
+                    foreach (var file in files)
                     {
                         continueWalking = Walk(file);
                         if (!continueWalking)
@@ -162,19 +161,19 @@ namespace DR.IO
         
         protected void AddVisited(DirectoryInfo dirInfo)
         {
-            if (dirInfo != null && TrackVisitedDirectories && !IsVisited(dirInfo))
+            if (null != dirInfo && TrackVisitedDirectories && !IsVisited(dirInfo))
                 VisitedDirectories.Add(dirInfo.FullName, dirInfo);
         }
         
         protected void AddVisited(FileInfo fileInfo)
         {
-            if (fileInfo != null && TrackVisitedFiles && !IsVisited(fileInfo))
+            if (null != fileInfo && TrackVisitedFiles && !IsVisited(fileInfo))
                 VisitedFiles.Add(fileInfo.FullName, fileInfo);
         }
         
         public bool IsVisited(FileInfo fileInfo)
         {
-            if (TrackVisitedFiles && fileInfo != null)
+            if (TrackVisitedFiles && null != fileInfo)
                 return VisitedFiles.ContainsKey(fileInfo.FullName);
             
             return false;
@@ -182,7 +181,7 @@ namespace DR.IO
         
         public bool IsVisited(DirectoryInfo dirInfo)
         {
-            if (TrackVisitedDirectories && dirInfo != null)
+            if (TrackVisitedDirectories && null != dirInfo)
                 return VisitedDirectories.ContainsKey(dirInfo.FullName);
             
             return false;
@@ -190,22 +189,20 @@ namespace DR.IO
         
         public bool IsVisited(FileSystemInfo fileSystemInfo)
         {
-            if (fileSystemInfo != null)
-            {
-                if (fileSystemInfo is DirectoryInfo)
-                    return IsVisited((DirectoryInfo)fileSystemInfo);
-
-                return IsVisited((FileInfo)fileSystemInfo);
-            }
-
-            return false;
+            if (null == fileSystemInfo)
+                return false;
+            
+            if (fileSystemInfo is DirectoryInfo)
+                return IsVisited((DirectoryInfo)fileSystemInfo);
+            
+            return IsVisited((FileInfo)fileSystemInfo);
         }
         
         private DirectoryInfo GetAbsoluteTarget(DirectoryInfo dirInfo)
         {
             // Get the symlink's targetPath and
             // if it is relative make it absolute based on dirInfo.
-            string targetPath = SymbolicLinkHelper.GetSymbolicLinkTargetAbsolute(dirInfo);
+            var targetPath = SymbolicLinkHelper.GetSymbolicLinkTargetAbsolute(dirInfo);
             return new DirectoryInfo(targetPath);
         }
     }
