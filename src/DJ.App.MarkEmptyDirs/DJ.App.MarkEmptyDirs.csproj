@@ -13,7 +13,6 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <StartupObject>DJ.App.MarkEmptyDirs.MainClass</StartupObject>
     <AssemblyName>MarkEmptyDirs</AssemblyName>

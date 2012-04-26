@@ -9,7 +9,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>DJ.App.MarkEmptyDirs</RootNamespace>
     <AssemblyName>DJ.App.MarkEmptyDirs.Test</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <ReleaseVersion>1.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -31,11 +30,9 @@
   <ItemGroup>
     <Reference Include="nunit.core, Version=2.4.6.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <Package>mono-nunit</Package>
     </Reference>
     <Reference Include="nunit.framework, Version=2.4.6.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <Package>mono-nunit</Package>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
