@@ -161,13 +161,13 @@ namespace DR.IO
         
         protected void AddVisited(DirectoryInfo dirInfo)
         {
-            if (null != dirInfo && TrackVisitedDirectories && !IsVisited(dirInfo))
+            if (TrackVisitedDirectories && !IsVisited(dirInfo))
                 VisitedDirectories.Add(dirInfo.FullName, dirInfo);
         }
         
         protected void AddVisited(FileInfo fileInfo)
         {
-            if (null != fileInfo && TrackVisitedFiles && !IsVisited(fileInfo))
+            if (TrackVisitedFiles && !IsVisited(fileInfo))
                 VisitedFiles.Add(fileInfo.FullName, fileInfo);
         }
         
@@ -189,9 +189,6 @@ namespace DR.IO
         
         public bool IsVisited(FileSystemInfo fileSystemInfo)
         {
-            if (null == fileSystemInfo)
-                return false;
-            
             if (fileSystemInfo is DirectoryInfo)
                 return IsVisited((DirectoryInfo)fileSystemInfo);
             
