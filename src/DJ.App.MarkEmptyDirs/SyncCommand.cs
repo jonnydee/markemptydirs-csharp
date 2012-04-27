@@ -54,39 +54,34 @@ namespace DJ.App.MarkEmptyDirs
             return 0;
         }
         
+        private bool MustVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
+        {
+            return !_configuration.Exclude.Contains(dirInfo.Name);
+        }
+        
         public bool PreVisit(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
         {
-            if (_configuration.Exclude.Contains(dirInfo.Name))
-                return false;
-
-            return true;
+            return MustVisit(context, dirInfo);
         }
 
         private bool IsPlaceHolderNeeded(IDirectoryWalkerContext context, DirectoryInfo dirInfo)
         {
             var files = dirInfo.GetFiles();
-            var numFiles = files.GetLength(0);
 
             // If there is more than one file we do not need a placeholder.
-            if (numFiles > 1)
+            if (files.Length > 1)
                 return false;
 
-            var subDirectories = dirInfo.GetDirectories();
-            var numDirectories = subDirectories.GetLength(0);
-            
             // If there are subdirectories we check if any of them will be walked, in that case we do not need a placeholder.
-            if (numDirectories > 0)
+            foreach (DirectoryInfo dir in dirInfo.GetDirectories())
             {
-                foreach (DirectoryInfo dir in subDirectories)
-                {
-                    if (PreVisit(context, dir))
-                        return false;
-                }
+                if (MustVisit(context, dir))
+                    return false;
             }
 
             // Here we know that there is 0 or 1 file and subdirectories that are not going to be walked (special directories, excluded ones)
 
-            if (0 == numFiles)
+            if (files.Length == 0)
                 // At this point there are no files and no tracked subdirectories, so we need a placeholder.
                 return true;
             
