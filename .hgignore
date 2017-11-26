@@ -1,0 +1,23 @@
+syntax: glob
+
+bin
+obj
+test-results
+dist
+*.orig
+*~
+*.mergebackup
+*.o
+*.so
+*.userprefs
+*.usertasks
+_ReSharper.*
+*.resharper.user
+*.resharper
+*.suo
+*.pidb
+*.pdb
+*.exe
+*.mdb
+**.DS_Store
+**.user

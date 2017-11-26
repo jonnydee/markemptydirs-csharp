@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B0B70994-7C86-46E0-B7EE-CA3E84D686F0}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>DJ.App.MarkEmptyDirs</RootNamespace>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SignAssembly>true</SignAssembly>
+    <StartupObject>DJ.App.MarkEmptyDirs.MainClass</StartupObject>
+    <AssemblyName>MarkEmptyDirs</AssemblyName>
+    <ReleaseVersion>1.0</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>3</WarningLevel>
+    <AssemblyOriginatorKeyFile>DJ.App.MarkEmptyDirs.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyOriginatorKeyFile>MarkEmptyDirs.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="HelpCommand.cs" />
+    <Compile Include="ICommand.cs" />
+    <Compile Include="OptionDescriptorDefinitions.cs" />
+    <Compile Include="SyncCommand.cs" />
+    <Compile Include="CleanCommand.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="PlaceHolderVariable.cs" />
+    <Compile Include="CommandHelper.cs" />
+    <Compile Include="DirectoryVariable.cs" />
+    <Compile Include="PurgeCommand.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DJ.App.MarkEmptyDirs.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\libs\dr-framework\DR\DR.csproj">
+      <Project>{124D71F1-ACFC-42BF-91F7-8C6132217EED}</Project>
+      <Name>DR</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>$(SolutionDir)ilmerge_dlls.bat $(ProjectDir) $(SolutionDir)</PostBuildEvent>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="Flat" ResourceNamePolicy="FileFormatDefault" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+    <VisualStudio />
+  </ProjectExtensions>
+</Project>
